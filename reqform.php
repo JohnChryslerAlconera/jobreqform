@@ -11,9 +11,8 @@ if(!isset($gettoken)){
 if(isset($userdetails)){
 
 ?>
-
-
-<a href="logout.php">LOGOUT</a>
+<a href="logout.php"><button>LOGOUT</button></a>
+<a href="submitted.php"><button>View Submitted</button></a>
 <!DOCTYPE html>
 <html>
 <head>

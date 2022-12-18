@@ -21,12 +21,12 @@ class RequestForm {
 			$this->con = null;
 		}
 		public function getUser(){
-			if(isset($_POST['account_id'])){
-				$account_id = $_POST['account_id'];
+			if(isset($_POST['employee_id'])){
+				$employee_id = $_POST['employee_id'];
 				$password = $_POST['password'];
 			$conn = $this->openConnection();
-			$stmt = $conn->prepare("SELECT * FROM users WHERE account_id = ?");
-			$stmt->execute([$account_id]);
+			$stmt = $conn->prepare("SELECT * FROM users WHERE employee_id = ?");
+			$stmt->execute([$employee_id]);
 			$user = $stmt->fetch();
 			if($stmt->rowCount() > 0){
 				$this->set_userdata($user);
@@ -49,7 +49,7 @@ class RequestForm {
 
 			$firstname = $_POST['firstname'];
 			$lastname = $_POST['lastname'];
-			$account_id = $_POST['account_id'];
+			$employee_id = $_POST['employee_id'];
 			$contact = $_POST['contact'];
 			$department = $_POST['department'];
 			$dept_head_firstname = $_POST['dept_head_firstname'];
@@ -58,26 +58,26 @@ class RequestForm {
 			$position = $_POST['position'];
 			$password = $_POST['password'];
 			$cpassword = $_POST['cpassword'];
-			if($this->check_user_exist($account_id) == 0){
+			if($this->check_user_exist($employee_id) == 0){
 			if($password != $cpassword){
 				echo "Passwords do not match";
 			}else{
 			$hashed_password = password_hash($password, PASSWORD_DEFAULT);
 			$conn = $this->openConnection();
-			$stmt = $conn->prepare("INSERT INTO `users`(`firstname`, `lastname`, `account_id`, `contact`, `department`, `dept_head_fullname`, `position`, `password`) 
+			$stmt = $conn->prepare("INSERT INTO `users`(`firstname`, `lastname`, `employee_id`, `contact`, `department`, `dept_head_fullname`, `position`, `password`) 
 				VALUES (?,?,?,?,?,?,?,?)");
-			$stmt->execute([$firstname, $lastname, $account_id, $contact, $department, $dept_head_fullname, $position, $hashed_password]);
+			$stmt->execute([$firstname, $lastname, $employee_id, $contact, $department, $dept_head_fullname, $position, $hashed_password]);
 			$count = $stmt->rowCount();
 			if($count > 0){
 				echo "Added";
-				header("Location: login.php");
+				header("Location: userpanel.php");
 			}else{
 				echo "something is wrong";
 				}
 			}
 			
 		}else{
-			echo "this account_id is already registered";
+			echo "this employee_id is already registered";
 		}
 	}
 
@@ -87,7 +87,7 @@ class RequestForm {
 			session_start();
 		}
 		$_SESSION['userdata'] = array("fullname" => $array['firstname']. " ". $array['lastname'], 
-			"account_id" => $array['account_id'], "contact" => $array['contact'],
+			"employee_id" => $array['employee_id'], "contact" => $array['contact'],
 			 "department" => $array['department'], "dept_head_fullname" => $array['dept_head_fullname'], 
 			 "position" => $array['position'], "access" => $array['access']);
 		return $_SESSION['userdata'];
@@ -137,12 +137,29 @@ class RequestForm {
 			}
 		
 		}
+		public function getSubmitted(){
+			$userdetails = $this->get_userdata();
+			$employeeid = $userdetails['employee_id'];
+			$conn = $this->openConnection();
+		$stmt = $conn->prepare("SELECT * FROM requests WHERE dept_acc_id = ?");
+		$stmt->execute([$employeeid]);
+		$form = $stmt->fetchAll();
+		$count = $stmt->rowCount();
+		if($count > 0 ){
+			return $form;
+
+		}
+	}
+
+
+
+
 		public function userInsertData(){
 			if (isset($_POST['submit'])) {
 					date_default_timezone_set('Asia/Manila');
 					$fullname = $_POST['fullname'];
 					$req_dept = $_POST['req_dept'];
-					$account_id = $_POST['account_id'];
+					$employee_id = $_POST['employee_id'];
 					$contact = $_POST['contact'];
 					$date_sub = date('Y-m-d H:i:s');
 					$token = $_POST['csrf_token'];
@@ -168,7 +185,7 @@ class RequestForm {
 				$conn = $this->openConnection();
 				$stmt = $conn->prepare("INSERT INTO requests(req_name, req_dept, dept_acc_id, contact, dept_head_fullname, euser_fullname, position, equip_type, equip_num, equip_issues, required_services,date_added)
 					VALUES(?,?,?,?,?,?,?,?,?,?,?,?)");
-				$stmt->execute([$fullname, $req_dept, $account_id, $contact, $dept_head_fullname, $euser_fullname, $position, $equip_type, $equip_num, $equip_issues, $required_services, $date_sub]);
+				$stmt->execute([$fullname, $req_dept, $employee_id, $contact, $dept_head_fullname, $euser_fullname, $position, $equip_type, $equip_num, $equip_issues, $required_services, $date_sub]);
 					// $insertid = $conn->lastInsertId();
 				$count = $stmt->rowCount();
 				if($count > 0){
@@ -207,14 +224,14 @@ class RequestForm {
 	public function addAdmin(){
 		if(isset($_POST['add'])){
 
-			$account_id = $_POST['account_id'];
+			$employee_id = $_POST['employee_id'];
 			$password = $_POST['password'];
 
-			if($this->check_admin_exist($account_id) == 0){
+			if($this->check_admin_exist($employee_id) == 0){
 
 			$conn = $this->openConnection();
-			$stmt = $conn->prepare("INSERT INTO users(account_id, password) VALUES(?,?)");
-			$stmt->execute([$account_id,$password]);
+			$stmt = $conn->prepare("INSERT INTO users(employee_id, password) VALUES(?,?)");
+			$stmt->execute([$employee_id,$password]);
 
 
 			echo "added";
@@ -229,20 +246,20 @@ class RequestForm {
 	
 	public function check_admin_exist(){
 		if(isset($_POST['add'])){
-			$account_id = $_POST['account_id'];
+			$employee_id = $_POST['employee_id'];
 		$conn = $this->openConnection();
-		$stmt = $conn->prepare("SELECT * FROM users WHERE account_id = ?");
-		$stmt->execute([$account_id]);
+		$stmt = $conn->prepare("SELECT * FROM users WHERE employee_id = ?");
+		$stmt->execute([$employee_id]);
 		$count = $stmt->rowCount();
 		return $count;
 	}
 }
 	public function check_user_exist(){
 		if(isset($_POST['register'])){
-			$account_id = $_POST['account_id'];
+			$employee_id = $_POST['employee_id'];
 		$conn = $this->openConnection();
-		$stmt = $conn->prepare("SELECT * FROM users WHERE account_id = ?");
-		$stmt->execute([$account_id]);
+		$stmt = $conn->prepare("SELECT * FROM users WHERE employee_id = ?");
+		$stmt->execute([$employee_id]);
 		$count = $stmt->rowCount();
 		return $count;
 	}

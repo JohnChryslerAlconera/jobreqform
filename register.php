@@ -20,7 +20,7 @@ $register = $class->register();
 
 		<input required type="text" name="firstname" placeholder="firstname"><br>
 		<input required type="text" name="lastname" placeholder="lastname"><br>
-		<input required type="text" name="account_id" placeholder="Account ID"><br>
+		<input required type="text" name="employee_id" placeholder="Employee ID"><br>
 		<input required type="text" name="contact" placeholder="contact"><br>
 		<input required type="text" name="department" placeholder="department"><br>
 		<input required type="text" name="dept_head_firstname" placeholder="Department/Office Head Firstname">
