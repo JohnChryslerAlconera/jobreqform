@@ -20,7 +20,7 @@ $register = $class->register();
 
 		<input required type="text" name="firstname" placeholder="firstname"><br>
 		<input required type="text" name="lastname" placeholder="lastname"><br>
-		<input required type="text" name="employee_id" placeholder="Employee ID"><br>
+		<input required type="text" name="employee_id" placeholder="Account ID"><br>
 		<input required type="text" name="contact" placeholder="contact"><br>
 		<input required type="text" name="department" placeholder="department"><br>
 		<input required type="text" name="dept_head_firstname" placeholder="Department/Office Head Firstname">
@@ -65,7 +65,7 @@ $register = $class->register();
             backdrop-filter: blur(30px);
             ">
           <div class="card-body p-5 shadow-5 text-center">
-            <h2 class="fw-bold mb-5">Sign up now</h2>
+            <h2 class="fw-bold mb-5">Register now!</h2>
             <form>
               <!-- 2 column grid layout with text inputs for the first and last names -->
               <div class="row">
@@ -132,9 +132,5 @@ $register = $class->register();
         </div>
       </div>
 
-      <div class="col-lg-6 mb-5 mb-lg-0">
-        <img src="https://mdbootstrap.com/img/new/ecommerce/vertical/004.jpg" class="w-100 rounded-4 shadow-4"
-          alt="" />
-      </div>
     </div>
   </div>
