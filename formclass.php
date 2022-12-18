@@ -70,7 +70,7 @@ class RequestForm {
 			$count = $stmt->rowCount();
 			if($count > 0){
 				echo "Added";
-				header("Location: userpanel.php");
+				header("Location: login.php");
 			}else{
 				echo "something is wrong";
 				}
@@ -141,7 +141,7 @@ class RequestForm {
 			$userdetails = $this->get_userdata();
 			$employeeid = $userdetails['employee_id'];
 			$conn = $this->openConnection();
-		$stmt = $conn->prepare("SELECT * FROM requests WHERE dept_acc_id = ?");
+		$stmt = $conn->prepare("SELECT * FROM requests WHERE employee_id = ?");
 		$stmt->execute([$employeeid]);
 		$form = $stmt->fetchAll();
 		$count = $stmt->rowCount();

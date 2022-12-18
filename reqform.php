@@ -43,7 +43,7 @@ if(isset($userdetails)){
 					<input type="hidden" name="csrf_token" value="<?php echo $token;?>">
 				<input type="hidden" name="fullname" value="<?php echo $userdetails['fullname'];?>">
 				<input type="hidden" name="req_dept" value="<?php echo $userdetails['department'];?>">
-				<input type="hidden" name="account_id" value="<?php echo $userdetails['account_id'];?>">
+				<input type="hidden" name="employee_id" value="<?php echo $userdetails['employee_id'];?>">
 				<input type="hidden" name="contact" value="<?php echo $userdetails['contact'];?>">
 				<input type="hidden" name="dept_head_fullname" value="<?php echo $userdetails['dept_head_fullname'];?>">
 				<input type="hidden" name="position" value="<?php echo $userdetails['position'];?>">
@@ -300,7 +300,7 @@ if(isset($userdetails)){
        					
 				 <input type="text" name="fullname" value="<?php echo $userdetails['fullname'];?>">
 				 <input type="text" name="req_dept" value="<?php echo $userdetails['department'];?>">
-				 <input type="text" name="account_id" value="<?php echo $userdetails['account_id'];?>">
+				 <input type="text" name="employee_id" value="<?php echo $userdetails['employee_id'];?>">
 				 <input type="text" name="contact" value="<?php echo $userdetails['contact'];?>">
 				 <input type="text" name="dept_head_fullname" value="<?php echo $userdetails['dept_head_fullname'];?>">
 				 <input type="text" name="position" value="<?php echo $userdetails['position'];?>">
