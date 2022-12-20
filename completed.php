@@ -49,6 +49,7 @@ foreach ($completed as $row) {
     <li class="list-group-item"><?php echo $row['equip_issues']; ?></li>
     <li class="list-group-item"><?php echo $row['required_services']; ?></li>
     <li class="list-group-item"><?php echo $row['date_added']; ?></li>
+     <li class="list-group-item"><?php echo $row['reason']; ?></li>
 
   </ul>
 </div>

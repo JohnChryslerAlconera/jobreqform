@@ -4,7 +4,6 @@ require_once('formclass.php');
 $userdetails = $class->get_userdata();
 $session = $class->sessionAdmin();
 $approved = $class->getApproved();
-$status = $class->updateStatus();
 $remarks = $class->remarks();
 if(isset($userdetails)){
 ?>
@@ -19,7 +18,7 @@ if(isset($userdetails)){
 </head>
 <body>
 	<h1>APPROVED REQUESTS</h1>
-<button onclick="history.back()">Go Back</button>
+<a href="adminpanel.php"><button>Go Back to home</button></a>
 <?php 
 switch($approved){
 	case null:
@@ -51,7 +50,7 @@ foreach ($approved as $row) {
     <li class="list-group-item"><?php echo $row['required_services']; ?></li>
     <li class="list-group-item"><?php echo $row['date_added']; ?></li>
     <form method="post">
-      <li class="list-group-item">Reason for Denial</li>
+      <li class="list-group-item">Doned remarks</li>
         <input type="hidden" name="id" value="<?php echo $row['id'];?>">
         <input type="hidden" name="form_status" value="<?php echo $row['form_status'];?>">
          <li class="list-group-item"><textarea name="reason" rows="6" cols="30" placeholder=""></textarea></li>

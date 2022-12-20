@@ -19,7 +19,7 @@ if(isset($userdetails)){
 </head>
 <body>
 	<h1>DENIED REQUESTS</h1>
-<button onclick="history.back()">Go Back</button>
+<a href="adminpanel.php"><button>Go Back to home</button></a>
 <?php 
 switch($denied){
 	case null:

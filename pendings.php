@@ -18,7 +18,7 @@ if(isset($userdetails)){
 </head>
 <body>
 	<h1>PENDING REQUESTS</h1>
-<button onclick="history.back()">Go Back</button>
+<a href="adminpanel.php"><button>Go Back to home</button></a>
 <?php 
 switch($pendings){
 	case null:

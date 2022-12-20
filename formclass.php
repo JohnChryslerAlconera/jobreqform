@@ -171,10 +171,12 @@ class RequestForm {
 				$stmt->execute([$fullname, $req_dept, $account_id, $contact, $dept_head_fullname, $euser_fullname, $position, $equip_type, $equip_num, $equip_issues, $required_services, $date_sub]);
 				$count = $stmt->rowCount();
 				if($count > 0){
+
 				?>
 				<script>
 					alert("Your request is added");
 					window.location.href = "reqform.php";
+
 				</script>
 				<?php
 				}else{
@@ -185,6 +187,14 @@ class RequestForm {
 				}
 	}
 }
+	public function getinsertedID(){
+		$insert = $this->userInsertData();
+		if($insert == TRUE){
+			$id = $insert->lastInsertId();
+			$id->fetchAll();
+			return $id;
+		}
+	}
 	public function addAdmin(){
 		if(isset($_POST['add'])){
 
@@ -257,7 +267,7 @@ class RequestForm {
 	}
 	public function getApproved(){
 		$conn = $this->openConnection();
-		$stmt = $conn->prepare("SELECT * FROM requests WHERE form_status = :form_status");
+		$stmt = $conn->prepare("SELECT * FROM requests WHERE form_status = :form_status AND reason IS NULL");
 		$stmt->execute(['form_status' => 'approved']);
 		$approved = $stmt->fetchAll();
 		$count = $stmt->rowCount();
@@ -304,9 +314,7 @@ class RequestForm {
 	// }
 
 	public function updateStatus(){
-		if(empty($_POST['update'])){
-			echo "please select one to update";
-		if(isset($_POST['update'])){	
+		if(isset($_POST['update'])){
 			$id =  $_POST['id'];
 			$form_status = $_POST['form_status'];
 			$changed_status_by = $_POST['changed_status_by'];
@@ -319,9 +327,10 @@ class RequestForm {
 			}else{
 				"error";
 				}
+			}else{
+				echo "select a table to update";
 			}
 		}
-	}
 	public function redirect(){	
 	 	$userdetails = $this->get_userdata();
 			if(isset($userdetails)){

@@ -1,14 +1,19 @@
 <?php
-	require_once('formclass.php');
 	require('fpdf/fpdf.php');
-	$printid = $class->fpdfPrint();
+	$userdetails = $class->get_userdata();
+	if(isset($userdetails)){
+	if(isset($_POST['printpdf'])){
 
 
 	$pdf = new FPDF();
 
-	$pdf->SetFont('Arial', '', 12);
-	$pdf->Cell(130, 5, );
-	$pdf->Cell();
+
+	$pdf->AddPage();
+	$pdf->SetFont('Arial', 'B', 12);
+	$pdf->Cell(50, 10, "Requester name:", 1, 0);
+	$pdf->Cell(50, 10, $userdetails['fullname'], 1, 0);
+
+
 	$pdf->Cell();
 	$pdf->Cell();
 	$pdf->Cell();
@@ -24,6 +29,7 @@
 	
 
 
-
-
+	$pdf->Output();
+	}
+}
 ?>

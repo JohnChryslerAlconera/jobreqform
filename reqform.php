@@ -1,7 +1,9 @@
 <?php
+
 require_once('formclass.php');
 $userdetails = $class->get_userdata();
 $gettoken = $class->get_token();
+
 if(!isset($gettoken)){
 	$token = md5(uniqid(rand(), true));
 		$_SESSION['csrf_token'] = $token;
@@ -10,6 +12,10 @@ if(!isset($gettoken)){
 
 
 if(isset($userdetails)){
+	$dataid = $class->getinsertedID();
+	if(isset($dataid)){
+		echo $dataid['euser_fullname']; 
+	}
 ?>
 
 
@@ -17,8 +23,8 @@ if(isset($userdetails)){
 <!DOCTYPE html>
 <html>
 <head>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 
-	<link href="https:cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<style>
@@ -289,15 +295,46 @@ if(isset($userdetails)){
 			<tr>
 
 					<td> 
-						<button type="submit" name="submit" class="btn btn-success">Submit Request/Print PDF   </button>
+						
+						<!-- Button trigger modal -->
+<button type="submit" class="btn btn-primary" name="options" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+  Submit
+</button>
 
-						<a href="logout.php">LOGOUT</a>
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+ <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+       					
+				<input type="text" name="fullname" value="<?php echo $userdetails['fullname'];?>">
+				<input type="text" name="req_dept" value="<?php echo $userdetails['department'];?>">
+				<input type="text" name="account_id" value="<?php echo $userdetails['account_id'];?>">
+				<input type="text" name="contact" value="<?php echo $userdetails['contact'];?>">
+				<input type="text" name="dept_head_fullname" value="<?php echo $userdetails['dept_head_fullname'];?>">
+				<input type="text" name="position" value="<?php echo $userdetails['position'];?>">
+				
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Understood</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 		</form>
 					</td>
 			</tr>
 		</div></div>
 	</table>
 </div>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.2.min.js" integrity="sha256-2krYZKh//PcchRtd+H+VyyQoZ/e3EcrkxhM8ycwASPA="crossorigin="anonymous"></script>
 </body>
 </html>
