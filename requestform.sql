@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 16, 2022 at 12:20 PM
+-- Generation Time: Dec 20, 2022 at 04:15 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.5
 
@@ -24,10 +24,10 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `formdata`
+-- Table structure for table `requests`
 --
 
-CREATE TABLE `formdata` (
+CREATE TABLE `requests` (
   `id` int(225) NOT NULL,
   `req_name` varchar(225) NOT NULL,
   `req_dept` varchar(225) NOT NULL,
@@ -40,27 +40,19 @@ CREATE TABLE `formdata` (
   `equip_num` varchar(225) NOT NULL,
   `equip_issues` varchar(225) NOT NULL,
   `required_services` varchar(225) NOT NULL,
-  `date_added` date NOT NULL DEFAULT current_timestamp(),
-  `changed_status_by` varchar(225) NOT NULL,
-  `form_status` varchar(225) NOT NULL DEFAULT 'pending'
+  `date_added` datetime NOT NULL,
+  `changed_status_by` varchar(225) DEFAULT NULL,
+  `form_status` varchar(225) NOT NULL DEFAULT 'pending',
+  `reason` longtext DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `formdata`
---
-
-INSERT INTO `formdata` (`id`, `req_name`, `req_dept`, `dept_acc_id`, `contact`, `dept_head_fullname`, `position`, `euser_fullname`, `equip_type`, `equip_num`, `equip_issues`, `required_services`, `date_added`, `changed_status_by`, `form_status`) VALUES
-(33, 'aefesf', 'marketing', '0815', '123', 'awd awd', 'awda', 'binyang  taso ', 'dell computer', '1223', 'ga blue ang screen', 'Diagnostic,Computer upgrade', '2022-12-14', '', 'approved'),
-(34, 'fsefsef', 'agri', '1111', '123', 'waa waaa', 'ojteee', 'densed  ggg ', 'cpu', '0945sfse', 'Application crash or OS blue screen,Printer bunking,', 'Diagnostic', '2022-12-14', 'josh awd', 'denied'),
-(43, 'kiara', 'dawawd', '5544', '23231', '2awdawd', 'adaw', '', '', '', 'dawdaw', 'dawd', '2022-12-15', 'josh awd', 'approved');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `members`
+-- Table structure for table `users`
 --
 
-CREATE TABLE `members` (
+CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `firstname` varchar(225) NOT NULL,
   `lastname` varchar(225) NOT NULL,
@@ -74,30 +66,31 @@ CREATE TABLE `members` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `members`
+-- Dumping data for table `users`
 --
 
-INSERT INTO `members` (`id`, `firstname`, `lastname`, `account_id`, `contact`, `department`, `dept_head_fullname`, `position`, `password`, `access`) VALUES
+INSERT INTO `users` (`id`, `firstname`, `lastname`, `account_id`, `contact`, `department`, `dept_head_fullname`, `position`, `password`, `access`) VALUES
 (39, 'joshua', 'dionio', '1234', 124, 'agri', 'kaira pamoceno', 'clerk', '$2y$10$lADSJVi0pc3/O.lC5BdZjeta1rm7mJZK833wkGkosAcNvEHXbuhoK', 'user'),
 (40, 'awd', 'awd', '5555', 0, 'awdwad', 'adad ad', 'awd', '$2y$10$n.Qoq0aUNBDKo/yVHNik..FGj6QCcRCOgpZcI6.HNdrruaHHjjc7W', 'user'),
 (41, 'awd', 'awd', '5555', 0, 'awdwad', 'adad ad', 'awd', '$2y$10$79ytZQ.nv1qi7JltJchlo.kPuEsY1JBpBVdr9OnoRvcLQ.1zCsyca', 'user'),
 (42, 'josh', 'awd', '2121', 0, 'wdawd', 'awdaw awd', 'dawd', 'pass', 'administrator'),
-(43, 'patrick', 'dionio', '1212', 12344, 'awda', 'dawd awdaw', 'dawawd', '$2y$10$uD.ZLppFw6qh0aHz9/9nK.mAdkk95dw1LTgZQJQZ9dSjtz5HbZjQi', 'user');
+(43, 'patrick', 'dionio', '1212', 12344, 'awda', 'dawd awdaw', 'dawawd', 'pass', 'user'),
+(44, 'dawd', 'adaw', '4321', 112, 'da', 'awd adad', 'adwaw', '$2y$10$yf5dzBJzg5JY/n/imDxjuOZamJnF1plE1rlO.6nhFHD6ZxZe4HuM2', 'user');
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `formdata`
+-- Indexes for table `requests`
 --
-ALTER TABLE `formdata`
+ALTER TABLE `requests`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `members`
+-- Indexes for table `users`
 --
-ALTER TABLE `members`
+ALTER TABLE `users`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -105,16 +98,16 @@ ALTER TABLE `members`
 --
 
 --
--- AUTO_INCREMENT for table `formdata`
+-- AUTO_INCREMENT for table `requests`
 --
-ALTER TABLE `formdata`
-  MODIFY `id` int(225) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+ALTER TABLE `requests`
+  MODIFY `id` int(225) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
--- AUTO_INCREMENT for table `members`
+-- AUTO_INCREMENT for table `users`
 --
-ALTER TABLE `members`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
