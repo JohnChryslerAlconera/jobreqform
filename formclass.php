@@ -21,19 +21,20 @@ class RequestForm {
 			$this->con = null;
 		}
 		public function getUser(){
-			if(isset($_POST['employee_id'])){
-				$employee_id = $_POST['employee_id'];
+			if(isset($_POST['account_id'])){
+				$account_id = $_POST['account_id'];
 				$password = $_POST['password'];
 			$conn = $this->openConnection();
-			$stmt = $conn->prepare("SELECT * FROM users WHERE employee_id = ?");
-			$stmt->execute([$employee_id]);
+			$stmt = $conn->prepare("SELECT * FROM users WHERE account_id = ?");
+			$stmt->execute([$account_id]);
 			$user = $stmt->fetch();
 			if($stmt->rowCount() > 0){
-				
-			if(password_verify($password, $user['password'])){
-				echo "theres one existed";
 				$this->set_userdata($user);
+			if(password_verify($password, $user['password'])){
+				// echo "theres one existed";
+				// if(password_verify($_POST['password'], $user['password'])) {
 					header("Location: reqform.php");
+					$this->set_userdata($user);
 				
 				}else{
 					echo "not correct";
@@ -45,9 +46,10 @@ class RequestForm {
 		
 				public function register(){
 		if(isset($_POST['register'])){
+
 			$firstname = $_POST['firstname'];
 			$lastname = $_POST['lastname'];
-			$employee_id = $_POST['employee_id'];
+			$account_id = $_POST['account_id'];
 			$contact = $_POST['contact'];
 			$department = $_POST['department'];
 			$dept_head_firstname = $_POST['dept_head_firstname'];
@@ -56,15 +58,15 @@ class RequestForm {
 			$position = $_POST['position'];
 			$password = $_POST['password'];
 			$cpassword = $_POST['cpassword'];
-			if($this->check_user_exist($employee_id) == 0){
+			if($this->check_user_exist($account_id) == 0){
 			if($password != $cpassword){
 				echo "Passwords do not match";
 			}else{
 			$hashed_password = password_hash($password, PASSWORD_DEFAULT);
 			$conn = $this->openConnection();
-			$stmt = $conn->prepare("INSERT INTO `users`(`firstname`, `lastname`, `employee_id`, `contact`, `department`, `dept_head_fullname`, `position`, `password`) 
+			$stmt = $conn->prepare("INSERT INTO `users`(`firstname`, `lastname`, `account_id`, `contact`, `department`, `dept_head_fullname`, `position`, `password`) 
 				VALUES (?,?,?,?,?,?,?,?)");
-			$stmt->execute([$firstname, $lastname, $employee_id, $contact, $department, $dept_head_fullname, $position, $hashed_password]);
+			$stmt->execute([$firstname, $lastname, $account_id, $contact, $department, $dept_head_fullname, $position, $hashed_password]);
 			$count = $stmt->rowCount();
 			if($count > 0){
 				echo "Added";
@@ -75,7 +77,7 @@ class RequestForm {
 			}
 			
 		}else{
-			echo "this employee_id is already registered";
+			echo "this account_id is already registered";
 		}
 	}
 
@@ -88,7 +90,7 @@ class RequestForm {
 			session_start();
 		}
 		$_SESSION['userdata'] = array("fullname" => $array['firstname']. " ". $array['lastname'], 
-			"employee_id" => $array['employee_id'], "contact" => $array['contact'],
+			"account_id" => $array['account_id'], "contact" => $array['contact'],
 			 "department" => $array['department'], "dept_head_fullname" => $array['dept_head_fullname'], 
 			 "position" => $array['position'], "access" => $array['access']);
 		return $_SESSION['userdata'];
@@ -106,12 +108,48 @@ class RequestForm {
 		return null;
 	}
 }
+	// public function set_token($token){
+			
+	// 	return $_SESSION['csrf_token'];
+	// 		return $_SESSION['csrf_token_time'];
+		
+	// } 
+	public function get_token(){
+
+		if(isset($_POST) & !empty($_POST)){
+			if(isset($_POST['csrf_token'])){
+				if($_POST['csrf_token'] == $_SESSION['csrf_token']){
+					$max_time = 5;
+					if(isset($_SESSION['csrf_token_time'])){
+						$token_time = $_SESSION['csrf_token_time'];
+						if(($token_time + $max_time) >= time()){
+							}else{
+								unset($_SESSION['csrf_token']);
+								unset($_SESSION['csrf_token_time']);
+								echo "CSRF Expired";
+							}
+							}
+
+				}else{
+					echo "expired";
+					 }
+
+			} 
+			}else{
+				echo "Youre not fully filled up yet!";
+			}
+		
+		}
 		public function userInsertData(){
 			if (isset($_POST['submit'])) {
+					date_default_timezone_set('Asia/Manila');
 					$fullname = $_POST['fullname'];
 					$req_dept = $_POST['req_dept'];
-					$employee_id = $_POST['employee_id'];
+					$account_id = $_POST['account_id'];
 					$contact = $_POST['contact'];
+					$date_sub = date('Y-m-d H:i:s');
+					$token = $_POST['csrf_token'];
+
 					$dept_head_fullname = $_POST['dept_head_fullname'];
 					$position = $_POST['position'];
 				$euser_fname = $_POST['euserfname'];
@@ -124,36 +162,48 @@ class RequestForm {
 				$equip_type = $_POST['equip_type'];
 				$equip_num = $_POST['equip_number'];
 				$equip_issues= implode(',', $_POST['issues']);
+				if(strlen($equip_issues) == 0){
+					echo "need to check or write issue";
+				}else{	
 				$required_services = implode(',', $_POST['services']);
+				if(strlen($required_services) == 0){
+					echo "check one or more services";
+				}else{
 				$conn = $this->openConnection();
-				$stmt = $conn->prepare("INSERT INTO requests(req_name, req_dept, dept_acc_id, contact, dept_head_fullname, euser_fullname, position, equip_type, equip_num, equip_issues, required_services)
-					VALUES(?,?,?,?,?,?,?,?,?,?,?)");
-				$stmt->execute([$fullname, $req_dept, $employee_id, $contact, $dept_head_fullname, $euser_fullname, $position, $equip_type, $equip_num, $equip_issues, $required_services]);
+				$stmt = $conn->prepare("INSERT INTO requests(req_name, req_dept, dept_acc_id, contact, dept_head_fullname, euser_fullname, position, equip_type, equip_num, equip_issues, required_services,date_added)
+					VALUES(?,?,?,?,?,?,?,?,?,?,?,?)");
+				$stmt->execute([$fullname, $req_dept, $account_id, $contact, $dept_head_fullname, $euser_fullname, $position, $equip_type, $equip_num, $equip_issues, $required_services, $date_sub]);
 				$count = $stmt->rowCount();
 				if($count > 0){
 				echo "added";
 				$rowId = $stmt->fetch();
+			
 				
 
 				}else{
 					echo "not added";
 				}
+			
+		}
+				}
+
 	}
 }
+
 
 
 	
 	public function addAdmin(){
 		if(isset($_POST['add'])){
 
-			$employee_id = $_POST['employee_id'];
+			$account_id = $_POST['account_id'];
 			$password = $_POST['password'];
 
-			if($this->check_admin_exist($employee_id) == 0){
+			if($this->check_admin_exist($account_id) == 0){
 
 			$conn = $this->openConnection();
-			$stmt = $conn->prepare("INSERT INTO users(employee_id, password) VALUES(?,?)");
-			$stmt->execute([$employee_id,$password]);
+			$stmt = $conn->prepare("INSERT INTO users(account_id, password) VALUES(?,?)");
+			$stmt->execute([$account_id,$password]);
 
 
 			echo "added";
@@ -168,20 +218,20 @@ class RequestForm {
 	
 	public function check_admin_exist(){
 		if(isset($_POST['add'])){
-			$employee_id = $_POST['employee_id'];
+			$account_id = $_POST['account_id'];
 		$conn = $this->openConnection();
-		$stmt = $conn->prepare("SELECT * FROM users WHERE employee_id = ?");
-		$stmt->execute([$employee_id]);
+		$stmt = $conn->prepare("SELECT * FROM users WHERE account_id = ?");
+		$stmt->execute([$account_id]);
 		$count = $stmt->rowCount();
 		return $count;
 	}
 }
 	public function check_user_exist(){
 		if(isset($_POST['register'])){
-			$employee_id = $_POST['employee_id'];
+			$account_id = $_POST['account_id'];
 		$conn = $this->openConnection();
-		$stmt = $conn->prepare("SELECT * FROM users WHERE employee_id = ?");
-		$stmt->execute([$employee_id]);
+		$stmt = $conn->prepare("SELECT * FROM users WHERE account_id = ?");
+		$stmt->execute([$account_id]);
 		$count = $stmt->rowCount();
 		return $count;
 	}
@@ -199,9 +249,11 @@ class RequestForm {
 
 
 	public function getPendings(){
+			date_default_timezone_set('Asia/Manila');
+		$now = date('Y-m-d H:i:s');
+		$lastweek = date('Y-m-d H:i:s', strtotime("-7 days"));
 		$conn = $this->openConnection();
-		$stmt = $conn->prepare("SELECT * FROM requests
-		 WHERE form_status = :form_status");
+		$stmt = $conn->prepare("SELECT * FROM requests WHERE form_status = :form_status ORDER BY date_added DESC");
 		$stmt->execute(['form_status' => 'pending']);
 		$pendings = $stmt->fetchAll();
 		$count = $stmt->rowCount();
@@ -213,8 +265,7 @@ class RequestForm {
 	}
 	public function getApproved(){
 		$conn = $this->openConnection();
-		$stmt = $conn->prepare("SELECT * FROM requests
-		 WHERE form_status = :form_status");
+		$stmt = $conn->prepare("SELECT * FROM requests WHERE form_status = :form_status");
 		$stmt->execute(['form_status' => 'approved']);
 		$approved = $stmt->fetchAll();
 		$count = $stmt->rowCount();
@@ -225,8 +276,7 @@ class RequestForm {
 	}
 	public function getDenied(){
 		$conn = $this->openConnection();
-		$stmt = $conn->prepare("SELECT * FROM requests
-		 WHERE form_status = :form_status");
+		$stmt = $conn->prepare("SELECT * FROM requests WHERE form_status = :form_status AND reason IS NULL");
 		$stmt->execute(['form_status' => 'denied']);
 		$denied = $stmt->fetchAll();
 		$count = $stmt->rowCount();
@@ -235,8 +285,35 @@ class RequestForm {
 		
 		}
 	}
+	public function getCompleted(){
+		$conn = $this->openConnection();
+		$stmt = $conn->prepare("SELECT * FROM requests WHERE changed_status_by IS NOT NULL AND reason IS NOT NULL");
+		$stmt->execute();
+		$completed = $stmt->fetchAll();
+		$count = $stmt->rowCount();
+		if($count > 0 ){
+			return $completed;	
+		
+		}
+	}
+	// public function getnew_requests(){
+	// 	date_default_timezone_set('Asia/Manila');
+	// 	$now = date('Y-m-d H:i:s');
+	// 	$lastweek = date('Y-m-d H:i:s', strtotime("-7 days"));
+	// 	$conn = $this->openConnection();
+	// 	$stmt = $conn->prepare("SELECT * FROM requests WHERE date_added BETWEEN ? AND ?
+	// 		");
+	// 	$stmt->execute([$lastweek,$now]);
+	// 	$newrequests = $stmt->fetchAll();
+	// 	$count = $stmt->rowCount();
+	// 	if($count > 0){
+	// 		return $newrequests;
+	// 	}
+	// }
 
 	public function updateStatus(){
+		if(empty($_POST['update'])){
+			echo "please select one to update";
 		if(isset($_POST['update'])){	
 			$id =  $_POST['id'];
 			$form_status = $_POST['form_status'];
@@ -249,9 +326,8 @@ class RequestForm {
 				"successfully updated";
 			}else{
 				"error";
+				}
 			}
-
-
 		}
 	}
 	public function redirect(){	
@@ -275,6 +351,35 @@ class RequestForm {
 			header("Location: login.php");
 		} 
 	}
+	public function remarks(){
+		if(isset($_POST['comment'])){
+			$id = $_POST['id'];
+			$reason = $_POST['reason'];
+			$form_status = $_POST['form_status'];
+			$conn = $this->openConnection();
+			$stmt = $conn->prepare("UPDATE requests SET reason = :reason WHERE id = :id");
+			$stmt->execute(['reason' => $reason, 'id' => $id]);
+		$count = $stmt->rowCount();
+		if ($count > 0) {
+			echo "commented";
+		}
+		$fetch = $stmt->fetch();
+		return $fetch;
+
+		}
+	}
+
+
+
+
+	
+
+
+
+
+
+
+
 
 
 
