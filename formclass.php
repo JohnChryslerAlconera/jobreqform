@@ -82,9 +82,6 @@ class RequestForm {
 	}
 
 }	
-
-		
-	
 	public function set_userdata($array){
 		if(!isset($_SESSION)){
 			session_start();
@@ -119,19 +116,19 @@ class RequestForm {
 		if(isset($_POST) & !empty($_POST)){
 			if(isset($_POST['csrf_token'])){
 				if($_POST['csrf_token'] == $_SESSION['csrf_token']){
-					$max_time = 5;
+					$max_time = 60*30;
 					if(isset($_SESSION['csrf_token_time'])){
 						$token_time = $_SESSION['csrf_token_time'];
 						if(($token_time + $max_time) >= time()){
+							$this->userInsertData();
 							}else{
 								unset($_SESSION['csrf_token']);
 								unset($_SESSION['csrf_token_time']);
 								echo "CSRF Expired";
 							}
 							}
-
 				}else{
-					echo "expired";
+					echo "Token expired! ,Please fill up again!";
 					 }
 
 			} 
@@ -158,7 +155,6 @@ class RequestForm {
 				$euser_suffix = $_POST['eusersuffix'];
 				$euser_fullname = $euser_fname. " ". $euser_midname. " ". $euser_lname. " ". $euser_suffix;
 				// $form_date = $_POST['form_date'];
-
 				$equip_type = $_POST['equip_type'];
 				$equip_num = $_POST['equip_number'];
 				$equip_issues= implode(',', $_POST['issues']);
@@ -175,24 +171,20 @@ class RequestForm {
 				$stmt->execute([$fullname, $req_dept, $account_id, $contact, $dept_head_fullname, $euser_fullname, $position, $equip_type, $equip_num, $equip_issues, $required_services, $date_sub]);
 				$count = $stmt->rowCount();
 				if($count > 0){
-				echo "added";
-				$rowId = $stmt->fetch();
-			
-				
-
+				?>
+				<script>
+					alert("Your request is added");
+					window.location.href = "reqform.php";
+				</script>
+				<?php
 				}else{
 					echo "not added";
 				}
 			
 		}
 				}
-
 	}
 }
-
-
-
-	
 	public function addAdmin(){
 		if(isset($_POST['add'])){
 
@@ -369,21 +361,8 @@ class RequestForm {
 		}
 	}
 
-
-
-
-	
-
-
-
-
-
-
-
-
-
-
 }
+
 
 
 

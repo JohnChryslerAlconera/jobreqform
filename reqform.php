@@ -2,12 +2,13 @@
 require_once('formclass.php');
 $userdetails = $class->get_userdata();
 $gettoken = $class->get_token();
-$token = md5(uniqid(rand(), true));
+if(!isset($gettoken)){
+	$token = md5(uniqid(rand(), true));
 		$_SESSION['csrf_token'] = $token;
 		$_SESSION['csrf_token_time'] = time();
-		if(!isset($_SESSION['csrf_token'])){
-$insert = $class->userInsertData();
 }
+
+
 if(isset($userdetails)){
 ?>
 
@@ -289,7 +290,6 @@ if(isset($userdetails)){
 
 					<td> 
 						<button type="submit" name="submit" class="btn btn-success">Submit Request/Print PDF   </button>
-						<!-- <input type="hidden" name="inputid" value="<?php echo $insert['id'];?>"> -->
 
 						<a href="logout.php">LOGOUT</a>
 		</form>
