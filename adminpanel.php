@@ -23,10 +23,13 @@ $session = $class->sessionAdmin();
   <div class="container-fluid">
 
 <a href="addadmin.php">CLICK HERE TO ADD NEW ADMIN</a>
+<!-- <a href="newrequests.php">NEW REQUESTS</a> -->
 <a href="pendings.php">Pendings</a>
 <a href="approved.php">APPROVED</a>
 <a href="denied.php">DENIED</a>
+<a href="completed.php">COMPLETED</a>
 <a href="logout.php">LOGOUT</a>
+
 </div>
 </nav>
 </body>

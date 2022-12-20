@@ -1,10 +1,14 @@
 <?php
 require_once('formclass.php');
 $userdetails = $class->get_userdata();
+$gettoken = $class->get_token();
+$token = md5(uniqid(rand(), true));
+		$_SESSION['csrf_token'] = $token;
+		$_SESSION['csrf_token_time'] = time();
+		if(!isset($_SESSION['csrf_token'])){
 $insert = $class->userInsertData();
+}
 if(isset($userdetails)){
-
-
 ?>
 
 
@@ -35,7 +39,8 @@ if(isset($userdetails)){
 	<table>
 		<div class="border border-5">
 		<tr>
-			<form action="" method="post">
+			<form role="form" method="post">
+					<input type="hidden" name="csrf_token" value="<?php echo $token;?>">
 				<input type="hidden" name="fullname" value="<?php echo $userdetails['fullname'];?>">
 				<input type="hidden" name="req_dept" value="<?php echo $userdetails['department'];?>">
 				<input type="hidden" name="account_id" value="<?php echo $userdetails['account_id'];?>">
@@ -49,7 +54,6 @@ if(isset($userdetails)){
 				 }
 
 			?>
-			<input type="date" name="form_date">
 		</tr>
 		
 		<tr>
@@ -88,7 +92,7 @@ if(isset($userdetails)){
 		<div class="form-floating mb-3 mt-3">
 						
 						<input type="text" name="equip_type" class="form-control" required>
-						<label>Equipment Type/Description:</label>
+						<label for="cb">Equipment Type/Description:</label>
 					</div>
 				</div>
 					</td>
@@ -96,7 +100,7 @@ if(isset($userdetails)){
 						<div class="container mt-3">
 		<div class="form-floating mb-3 mt-3">
 						<input type="text" name="equip_number" class="form-control" required>
-						<label>Equipment Serial Number:</label>
+						<label for="cb">Equipment Serial Number:</label>
 					</div></div>
 					</td>
 				</tr>
@@ -110,100 +114,100 @@ if(isset($userdetails)){
 			<tr>
 					<p class="fw-semibold">Equipment Issue/s: </b><i>(Check all that apply)</i></p>
 				<td>
-					<input type="checkbox" name="issues[]" value="Application crash or OS blue screen">
-					<label>Application crash or OS blue screen</label>
+					<input type="checkbox" id="cb1" name="issues[]" value="Application crash or OS blue screen">
+					<label for="cb1">Application crash or OS blue screen</label>
 				</td>
 				<td>
-					<input type="checkbox" name="issues[]" value="Application crash or OS blue screen">
-					<label>Application crash or OS blue screen</label>
+					<input type="checkbox" id="cb2" name="issues[]" value="Application crash or OS blue screen">
+					<label for="cb2">Application crash or OS blue screen</label>
 				</td>
 				<td>
-					<input type="checkbox" name="issues[]" value="Damaged motherboard">
-					<label>Damaged motherboard</label>
+					<input type="checkbox" id="cb3" name="issues[]" value="Damaged motherboard">
+					<label for="cb3">Damaged motherboard</label>
 				</td>		
 			</tr>	 
 			<tr>
 				<td>
-					<input type="checkbox" name="issues[]" value="Application won't operate">
-					<label>Application won't operate</label>
+					<input type="checkbox" id="cb4" name="issues[]" value="Application won't operate">
+					<label for="cb4">Application won't operate</label>
 				</td>
 				<td>
-					<input type="checkbox" name="issues[]" value="No display">
-					<label>No display</label>
+					<input type="checkbox" id="cb5" name="issues[]" value="No display">
+					<label for="cb5">No display</label>
 				</td>
 				<td>
-					<input type="checkbox" name="issues[]" value="Damaged Hard drive">
-					<label>Damaged Hard drive</label>
+					<input type="checkbox" id="cb6" name="issues[]" value="Damaged Hard drive">
+					<label for="cb6">Damaged Hard drive</label>
 				</td>	
 			</tr>
 			<tr>
 				<td>
-					<input type="checkbox" name="issues[]" value="Unservicesable">
-					<label>Unservicesable</label>
+					<input type="checkbox" id="cb7" name="issues[]" value="Unservicesable">
+					<label for="cb7">Unservicesable</label>
 				</td>
 				<td>
-					<input type="checkbox" name="issues[]" value="Printer bunking">
-					<label>Printer bunking</label>
+					<input type="checkbox" id="cb8" name="issues[]" value="Printer bunking">
+					<label for="cb8">Printer bunking</label>
 				</td>
 				<td>
-					<input type="checkbox" name="issues[]" value="Damaged memory">
-					<label>Damaged memory</label>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<input type="checkbox" name="issues[]" value="Equipment won't boot or power up">
-					<label>Equipment won't boot or power up</label>
-				</td>
-				<td>
-					<input type="checkbox" name="issues[]" value="Equipment shuts down or reboots">
-					<label>Equipment shuts down or reboots</label>
-				</td>
-				<td>
-					<input type="checkbox" name="issues[]" value="Display issue">
-					<label>Display issue</label>
+							<input type="checkbox" id="cb9" name="issues[]"  value="Damaged memory">
+					<label for="cb9">Damaged memory</label>
 				</td>
 			</tr>
 			<tr>
 				<td>
-					<input type="checkbox" name="issues[]" value="Can't access the internet">
-					<label>Can't access the internet</label>
+					<input type="checkbox" id="cb10" name="issues[]" value="Equipment won't boot or power up">
+					<label for="cb10">Equipment won't boot or power up</label>
 				</td>
 				<td>
-					<input type="checkbox" name="issues[]" value="Virus or malware">
-					<label>Virus or malware</label>
+					<input type="checkbox" id="cb11" name="issues[]" value="Equipment shuts down or reboots">
+					<label for="cb11">Equipment shuts down or reboots</label>
 				</td>
 				<td>
-					<input type="checkbox" name="issues[]" value="Equipment is slow">
-					<label>Equipment is slow</label>
+					<input type="checkbox" id="cb12" name="issues[]" value="Display issue">
+					<label for="cb12">Display issue</label>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type="checkbox" id="cb13" name="issues[]" value="Can't access the internet">
+					<label for="cb13">Can't access the internet</label>
+				</td>
+				<td>
+					<input type="checkbox" id="cb14" name="issues[]" value="Virus or malware">
+					<label for="cb14">Virus or malware</label>
+				</td>
+				<td>
+					<input type="checkbox" id="cb15" name="issues[]" value="Equipment is slow">
+					<label for="cb15">Equipment is slow</label>
 				</td>
 			</tr>
 			<tr>
 					<td>
-					<input type="checkbox" name="issues[]" value="Won't print">
-					<label>Won't print</label>
+					<input type="checkbox" id="cb16" name="issues[]" value="Won't print">
+					<label for="cb16">Won't print</label>
 				</td>
 				<td>
-					<input type="checkbox" name="issues[]" value="No internet connection">
-					<label>No internet connection</label>
+					<input type="checkbox" id="cb17" name="issues[]" value="No internet connection">
+					<label for="cb17">No internet connection</label>
 				</td>
 				<td>
-					<input type="checkbox" name="issues[]" value="Handset no dial tone">
-					<label>Handset no dial tone</label>
+					<input type="checkbox" id="cb18" name="issues[]" value="Handset no dial tone">
+					<label for="cb18">Handset no dial tone</label>
 				</td>
 			</tr>
 			<tr>
 				<td>
-					<input type="checkbox" name="issues[]" value="Application won't open">
-					<label>Application won't open</label>
+					<input type="checkbox" id="cb19" name="issues[]" value="Application won't open">
+					<label for="cb19">Application won't open</label>
 				</td>
 				<td>
-					<input type="checkbox" name="issues[]" value="Installation">
-					<label>Installation(OS, Apps, Internet)</label>
+					<input type="checkbox" id="cb20" name="issues[]" value="Installation">
+					<label for="cb20">Installation(OS, Apps, Internet)</label>
 				</td>
 				<td>
-					<input type="checkbox" name="issues[]" value="Inspection">
-					<label>Inspection</label>
+					<input type="checkbox" id="cb21" name="issues[]" value="Inspection">
+					<label for="cb21">Inspection</label>
 				</td>
 			</tr>
 			<tr>
@@ -213,68 +217,69 @@ if(isset($userdetails)){
 				</td>
 
 				</tr> <tr> <td> <div class="container mt-4"> <p
-				class="fw-semibold">Required Services: <i>(Check all that
-				apply)</i></p> </div> </td> </tr> <tr> <td> <input
-				type="checkbox" name="services[]" value="Diagnostic">
-				<label>Diagnostic</label> </td> <td> <input
-				type="checkbox" name="services[]" value="Computer repair">
-				<label>Computer repair</label>
+				class="fw-semibold">Required Services: <i>(Check all that apply)</i></p> </div> </td> </tr> 
+				<tr> <td> 
+					<input type="checkbox" id="cb22" name="services[]" value="Diagnostic">
+				<label for="cb22">Diagnostic</label> </td> <td> 
+
+					<input type="checkbox" id="cb23" name="services[]" value="Computer repair">
+				<label for="cb23">Computer repair</label>
 					
 				</td>
 				<td>
-					<input type="checkbox" name="services[]" value="Printer setup">
-					<label>Printer setup</label>
+					<input type="checkbox" id="cb24" name="services[]" value="Printer setup">
+					<label for="cb24">Printer setup</label>
 					
 				</td>
 			</tr>
 			<tr>
 				<td>
-					<input type="checkbox" name="services[]" value="Computer Format">
-					<label>Computer Format</label>
+					<input type="checkbox" id="cb25" name="services[]" value="Computer Format">
+					<label for="cb25">Computer Format</label>
 					
 				</td>
 				<td>
-					<input type="checkbox" name="services[]" value="Change hardware">
-					<label>Change hardware</label>
+					<input type="checkbox" id="cb26" name="services[]" value="Change hardware">
+					<label for="cb26">Change hardware</label>
 					
 				</td>
 				<td>
-					<input type="checkbox" name="services[]" value="Printer reset">
-					<label>Printer reset</label>
+					<input type="checkbox" id="cb27" name="services[]" value="Printer reset">
+					<label for="cb27">Printer reset</label>
 					
 				</td>
 			</tr>
 			<tr>
 			<td>
 					
-					<input type="checkbox" name="services[]" value="Data recovery">
-					<label>Data recovery</label>
+					<input type="checkbox" id="cb28" name="services[]" value="Data recovery">
+					<label for="cb28">Data recovery</label>
 				</td>
 				<td>
-					<input type="checkbox" name="services[]" value="Computer upgrade">
-					<label>Computer upgrade</label>
+					<input type="checkbox" id="cb29" name="services[]" value="Computer upgrade">
+					<label for="cb29">Computer upgrade</label>
 					
 				</td>
 				<td>
-					<input type="checkbox" name="services[]" value="Router setup">
-					<label>Router setup</label>
+					<input type="checkbox" id="cb30" name="services[]" value="Router setup">
+					<label for="cb30">Router setup</label>
 					
 				</td>
 			</tr>
 			<tr>
 				<td>
-					<input type="checkbox" name="services[]" value="Virus/ Malware removal">
-					<label>Virus/ Malware removal</label>
+					<input type="checkbox" id="cb31" name="services[]" value="Virus/ Malware removal">
+					<label for="cb31">Virus/ Malware removal</label>
 					
 				</td>
 				<td>
-					<input type="checkbox" name="services[]" value="Printer repair">
-					<label>Printer repair</label>
+					<input type="checkbox" id="cb32" name="services[]" value="Printer repair">
+					<label for="cb32">Printer repair</label>
 					
 				</td>
 				<td>
-					<input type="checkbox" name="services[]" value="Router reset">
-					<label>Router reset</label>
+					<input type="checkbox" id="cb33" name="services[]" value="Router reset">
+					<label for="cb33">Router reset</label>
 					
 				</td>
 			</tr>

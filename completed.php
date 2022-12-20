@@ -3,9 +3,9 @@
 require_once('formclass.php');
 $userdetails = $class->get_userdata();
 $session = $class->sessionAdmin();
-$approved = $class->getApproved();
-$status = $class->updateStatus();
-$remarks = $class->remarks();
+$completed = $class->getCompleted();
+
+
 if(isset($userdetails)){
 ?>
 
@@ -18,24 +18,23 @@ if(isset($userdetails)){
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 </head>
 <body>
-	<h1>APPROVED REQUESTS</h1>
+	<h1>Completed REQUESTS</h1>
 <button onclick="history.back()">Go Back</button>
 <?php 
-switch($approved){
+switch($completed){
 	case null:
-	echo "no approved records yet";
+	echo "no completed records yet";
 	break;
 	default:
-
-foreach ($approved as $row) {
+foreach ($completed as $row) {
 ?>
-
 
 <div class="container">
 <div class="card" style="width: 20rem; padding: 10px; background-color: gray;">
   <div class="card-header">
 
   	<?php echo $row['req_name']; ?>
+    
     
   </div>
   <ul class="list-group list-group-flush">
@@ -50,17 +49,10 @@ foreach ($approved as $row) {
     <li class="list-group-item"><?php echo $row['equip_issues']; ?></li>
     <li class="list-group-item"><?php echo $row['required_services']; ?></li>
     <li class="list-group-item"><?php echo $row['date_added']; ?></li>
-    <form method="post">
-      <li class="list-group-item">Reason for Denial</li>
-        <input type="hidden" name="id" value="<?php echo $row['id'];?>">
-        <input type="hidden" name="form_status" value="<?php echo $row['form_status'];?>">
-         <li class="list-group-item"><textarea name="reason" rows="6" cols="30" placeholder=""></textarea></li>
-         <input type="submit" name="comment" value="Comment">
-</form>
 
   </ul>
 </div>
-		
+	
 
 <?php
 }

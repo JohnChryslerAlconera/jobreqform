@@ -18,20 +18,14 @@ if(isset($userdetails)){
 </head>
 <body>
 	<h1>PENDING REQUESTS</h1>
-
+<button onclick="history.back()">Go Back</button>
 <?php 
 switch($pendings){
 	case null:
 	echo "no pending records yet";
 	break;
 	default:
-
-
-
-
 foreach ($pendings as $pending) {
-
-
 ?>
 
 <div class="container">
