@@ -1,13 +1,10 @@
 <?php
 
+
 require_once('formclass.php');
 $userdetails = $class->get_userdata();
-$session = $class->sessionAdmin();
-$approved = $class->getApproved();
-$remarks = $class->remarks();
-if(isset($userdetails)){
+$submitted = $class->getSubmitted();
 ?>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,16 +14,17 @@ if(isset($userdetails)){
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 </head>
 <body>
-	<h1>APPROVED REQUESTS</h1>
-<a href="adminpanel.php"><button>Go Back to home</button></a>
+	<h1>Submitted REQUESTS</h1>
+<a href="userpanel.php"><button>Go Back to home</button></a>
+<a href="reqform.php"><button>Create Request</button></a>
 <?php 
-switch($approved){
+switch($submitted){
 	case null:
-	echo "no approved records yet";
+	echo "no submitted requests yet";
 	break;
 	default:
 
-foreach ($approved as $row) {
+foreach ($submitted as $row) {
 ?>
 
 
@@ -64,11 +62,11 @@ foreach ($approved as $row) {
 }
 break;
 } 
- }else{
- 	echo "You do not belong here!";
 
- }
+ 
  ?>
 
 </body>
 </html>
+
+
