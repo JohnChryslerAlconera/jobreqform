@@ -3,23 +3,17 @@
 require_once('formclass.php');
 $userdetails = $class->get_userdata();
 $gettoken = $class->get_token();
-
 if(!isset($gettoken)){
 	$token = md5(uniqid(rand(), true));
 		$_SESSION['csrf_token'] = $token;
 		$_SESSION['csrf_token_time'] = time();
 }
-
-
 if(isset($userdetails)){
-	$dataid = $class->getinsertedID();
-	if(isset($dataid)){
-		echo $dataid['euser_fullname']; 
-	}
+
 ?>
 
 
-
+<a href="logout.php">LOGOUT</a>
 <!DOCTYPE html>
 <html>
 <head>
@@ -46,7 +40,7 @@ if(isset($userdetails)){
 	<table>
 		<div class="border border-5">
 		<tr>
-			<form role="form" method="post">
+			<form role="form" method="post" onsubmit="submit(event);">
 					<input type="hidden" name="csrf_token" value="<?php echo $token;?>">
 				<input type="hidden" name="fullname" value="<?php echo $userdetails['fullname'];?>">
 				<input type="hidden" name="req_dept" value="<?php echo $userdetails['department'];?>">
@@ -55,12 +49,7 @@ if(isset($userdetails)){
 				<input type="hidden" name="dept_head_fullname" value="<?php echo $userdetails['dept_head_fullname'];?>">
 				<input type="hidden" name="position" value="<?php echo $userdetails['position'];?>">
 
-			<?php
-				 }else{
-				 	header("Location: login.php");	
-				 }
-
-			?>
+		
 		</tr>
 		
 		<tr>
@@ -297,11 +286,10 @@ if(isset($userdetails)){
 					<td> 
 						
 						<!-- Button trigger modal -->
-<button type="submit" class="btn btn-primary" name="options" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-  Submit
-</button>
-
-<!-- Modal -->
+		
+				<input type="submit" name="submit" class="btn btn-success" value="ADD">
+		</form>
+	
 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
     <div class="modal-content">
@@ -311,29 +299,36 @@ if(isset($userdetails)){
       </div>
       <div class="modal-body">
        					
-				<input type="text" name="fullname" value="<?php echo $userdetails['fullname'];?>">
-				<input type="text" name="req_dept" value="<?php echo $userdetails['department'];?>">
-				<input type="text" name="account_id" value="<?php echo $userdetails['account_id'];?>">
-				<input type="text" name="contact" value="<?php echo $userdetails['contact'];?>">
-				<input type="text" name="dept_head_fullname" value="<?php echo $userdetails['dept_head_fullname'];?>">
-				<input type="text" name="position" value="<?php echo $userdetails['position'];?>">
-				
+				 <input type="text" name="fullname" value="<?php echo $userdetails['fullname'];?>">
+				 <input type="text" name="req_dept" value="<?php echo $userdetails['department'];?>">
+				 <input type="text" name="account_id" value="<?php echo $userdetails['account_id'];?>">
+				 <input type="text" name="contact" value="<?php echo $userdetails['contact'];?>">
+				 <input type="text" name="dept_head_fullname" value="<?php echo $userdetails['dept_head_fullname'];?>">
+				 <input type="text" name="position" value="<?php echo $userdetails['position'];?>">
+			
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Understood</button>
+        <button type="submit" class="btn btn-primary" name="printpdf" formaction="make_fpdf.php">Print form as PDF</button>
       </div>
     </div>
   </div>
 </div>
 
-
-		</form>
+	
 					</td>
 			</tr>
 		</div></div>
 	</table>
 </div>
+	<?php
+		
+	
+				 }else{
+				 	header("Location: login.php");	
+				 }
+
+			?>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.6.2.min.js" integrity="sha256-2krYZKh//PcchRtd+H+VyyQoZ/e3EcrkxhM8ycwASPA="crossorigin="anonymous"></script>
 </body>

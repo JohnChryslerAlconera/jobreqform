@@ -37,7 +37,7 @@ class RequestForm {
 					$this->set_userdata($user);
 				
 				}else{
-					echo "not correct";
+					header("Location: login.php");
 				}
 			}
 		}
@@ -121,6 +121,7 @@ class RequestForm {
 						$token_time = $_SESSION['csrf_token_time'];
 						if(($token_time + $max_time) >= time()){
 							$this->userInsertData();
+							header("Location: reqform.php");
 							}else{
 								unset($_SESSION['csrf_token']);
 								unset($_SESSION['csrf_token_time']);
@@ -132,8 +133,7 @@ class RequestForm {
 					 }
 
 			} 
-			}else{
-				echo "Youre not fully filled up yet!";
+			
 			}
 		
 		}
@@ -169,17 +169,10 @@ class RequestForm {
 				$stmt = $conn->prepare("INSERT INTO requests(req_name, req_dept, dept_acc_id, contact, dept_head_fullname, euser_fullname, position, equip_type, equip_num, equip_issues, required_services,date_added)
 					VALUES(?,?,?,?,?,?,?,?,?,?,?,?)");
 				$stmt->execute([$fullname, $req_dept, $account_id, $contact, $dept_head_fullname, $euser_fullname, $position, $equip_type, $equip_num, $equip_issues, $required_services, $date_sub]);
+					// $insertid = $conn->lastInsertId();
 				$count = $stmt->rowCount();
 				if($count > 0){
-
-				?>
-				<script>
-					alert("Your request is added");
-					window.location.href = "reqform.php";
-
-				</script>
-				<?php
-				}else{
+					}else{
 					echo "not added";
 				}
 			
@@ -187,14 +180,30 @@ class RequestForm {
 				}
 	}
 }
-	public function getinsertedID(){
-		$insert = $this->userInsertData();
-		if($insert == TRUE){
-			$id = $insert->lastInsertId();
-			$id->fetchAll();
-			return $id;
-		}
+	public function formId(){
+		if(!empty($this->userInsertData())){
+			$id = $conn->lastInsertId();
+			$conn = $this->openConnection();
+			$stmt = $conn->prepare("SELECT * FROM requests WHERE id = ?");
+			$stmt->execute([$id]);
+			$user = $stmt->fetch();
+			$this->setformId($user);
+			}
 	}
+
+	public function setformId($a){
+		$_SESSION['form_id'] = array("euser_fullname" => $a['euser_fullname'], "equip_type" => $a['equip_type'], "equip_num" => $a['equip_num'], "equip_issues" => $a['equip_issues'], "required_services" => $a['required_services']);
+		return $_SESSION['form_id'];
+			
+		}
+		public function getinsertedID(){
+			if(isset($_SESSION['form_id'])){
+				return $_SESSION['form_id'];
+			}else{
+				return null;
+			}
+		}
+	
 	public function addAdmin(){
 		if(isset($_POST['add'])){
 
