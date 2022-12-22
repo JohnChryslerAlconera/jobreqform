@@ -70,7 +70,7 @@ class RequestForm {
 			$count = $stmt->rowCount();
 			if($count > 0){
 				echo "Added";
-				header("Location: userpanel.php");
+				header("Location: login.php");
 			}else{
 				echo "something is wrong";
 				}

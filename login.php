@@ -24,7 +24,7 @@ $direct = $class->redirect();
 		<h1>-LOGIN-</h1>
 	<form role="form" method="post">
 	
-	<label>Employee ID:</label>
+	<label>AccountID:</label>
 	<input type="text" name="employee_id">
 	<p></p>
 	<p></p>
