@@ -11,8 +11,7 @@ if(!isset($gettoken)){
 if(isset($userdetails)){
 
 ?>
-<a href="logout.php"><button>LOGOUT</button></a>
-<a href="submitted.php"><button>View Submitted</button></a>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,15 +23,11 @@ if(isset($userdetails)){
 	</style>
 	<title>Services Request Form</title>
 </head>
+<?php include "userpanel.php"?>
+
 <body class="m-5 p-5">
 <div class="container">
 <div class="fw-semibold">
-
-
-
-
-	
-
 	<p class="fs-5">Request for <span class="fs-3">IT SERVICES</span></p>
 	<p>Use this form to request for IT equipment and other related services. Completing a request form is not a guarantee service will be granted.</p>
 </div>

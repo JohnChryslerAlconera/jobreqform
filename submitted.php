@@ -12,12 +12,11 @@ $submitted = $class->getSubmitted();
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title></title>
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+	<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous"> -->
 </head>
 <body>
+	<?php include 'userpanel.php';?>
 	<h1>Submitted REQUESTS</h1>
-<a href="userpanel.php"><button>Go Back to home</button></a>
-<a href="reqform.php"><button>Create Request</button></a>
 <?php 
 switch($submitted){
 	case null:
@@ -33,8 +32,7 @@ foreach ($submitted as $row) {
 <div class="card" style="width: 25rem; padding: 5px; background-color: gray;">
   <div class="card-header">
 
-  	<?php echo $row['form_status']; ?>
-    
+  	<?php echo $row['form_status']?>
   </div>
   <ul class="list-group list-group-flush">
   	
@@ -48,6 +46,11 @@ foreach ($submitted as $row) {
     <li class="list-group-item"><?php echo $row['equip_issues']; ?></li>
     <li class="list-group-item"><?php echo $row['required_services']; ?></li>
     <li class="list-group-item"><?php echo $row['date_added']; ?></li>
+
+<form method="post" action="make_fpdf.php">
+	<input type="hidden" name="id" value="<?php echo $row['id']?>">
+	<button type="submit" class="btn btn-success" name="printpdf">Make a Pdf</button>
+</form>
     <?php
     if($row['form_status'] != "pending"){
     	?>
@@ -55,10 +58,6 @@ foreach ($submitted as $row) {
     <?php
 }
 ?>
-<form method="post" action="make_fpdf.php">
-	<input type="hidden" name="id" value="<?php echo $row['id']?>">
-	<button type="submit" class="btn btn-success" name="printpdf">Make a Pdf</button>
-</form>
 <?php
 }
 break;
