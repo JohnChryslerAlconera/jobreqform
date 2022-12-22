@@ -1,3 +1,11 @@
+<?php
+
+require_once('formclass.php');
+$userdetails = $class->get_userdata();
+
+
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,6 +23,7 @@
 
 <a href="reqform.php">Make a Request form</a>
 <a href="submitted.php">Submitted Forms</a>
+<a href="logout.php">LOGOUT</a>
 
 </div>
 </nav>

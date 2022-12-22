@@ -27,8 +27,7 @@ $session = $class->sessionAdmin();
 	<input type="text" name="adminname">
 	<p></p>
 	<label>Account ID:</label>
-	<input type="text" name="account_id"
-	><p></p>
+	<input type="text" name="employee_id"><p></p>
 	<label>Password:</label>
 	<input type="password" name="password">
 	<p></p>	

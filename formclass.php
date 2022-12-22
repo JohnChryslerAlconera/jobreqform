@@ -141,7 +141,7 @@ class RequestForm {
 			$userdetails = $this->get_userdata();
 			$employeeid = $userdetails['employee_id'];
 			$conn = $this->openConnection();
-		$stmt = $conn->prepare("SELECT * FROM requests WHERE dept_acc_id = ?");
+		$stmt = $conn->prepare("SELECT * FROM requests WHERE employee_id = ?");
 		$stmt->execute([$employeeid]);
 		$form = $stmt->fetchAll();
 		$count = $stmt->rowCount();
