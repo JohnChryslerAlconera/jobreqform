@@ -29,16 +29,25 @@ class RequestForm {
 			$stmt->execute([$employee_id]);
 			$user = $stmt->fetch();
 			if($stmt->rowCount() > 0){
-				$this->set_userdata($user);
+					
 			if(password_verify($password, $user['password'])){
-				// echo "theres one existed";
-				// if(password_verify($_POST['password'], $user['password'])) {
-					header("Location: reqform.php");
 					$this->set_userdata($user);
 				
 				}else{
-					header("Location: login.php");
+					?>
+					<script>
+						alert("Password and Employee ID do not match");
+						window.location.href = "login.php";
+					</script>
+					<?php
 				}
+			}else{
+				?>
+					<script>
+						alert("Employee do not exist, Please be sure to sign up first");
+						window.location.href = "login.php";
+					</script>
+					<?php
 			}
 		}
 	}
@@ -46,7 +55,6 @@ class RequestForm {
 		
 				public function register(){
 		if(isset($_POST['register'])){
-
 			$firstname = $_POST['firstname'];
 			$lastname = $_POST['lastname'];
 			$employee_id = $_POST['employee_id'];
@@ -121,7 +129,12 @@ class RequestForm {
 						$token_time = $_SESSION['csrf_token_time'];
 						if(($token_time + $max_time) >= time()){
 							$this->userInsertData();
-							header("Location: reqform.php");
+							?>
+					<script>
+						alert("Added");
+						window.location.href = "submitted.php";
+					</script>
+					<?php
 							}else{
 								unset($_SESSION['csrf_token']);
 								unset($_SESSION['csrf_token_time']);
@@ -183,7 +196,7 @@ class RequestForm {
 					echo "check one or more services";
 				}else{
 				$conn = $this->openConnection();
-				$stmt = $conn->prepare("INSERT INTO requests(req_name, req_dept, dept_acc_id, contact, dept_head_fullname, euser_fullname, position, equip_type, equip_num, equip_issues, required_services,date_added)
+				$stmt = $conn->prepare("INSERT INTO requests(req_name, req_dept, employee_id, contact, dept_head_fullname, euser_fullname, position, equip_type, equip_num, equip_issues, required_services,date_added)
 					VALUES(?,?,?,?,?,?,?,?,?,?,?,?)");
 				$stmt->execute([$fullname, $req_dept, $employee_id, $contact, $dept_head_fullname, $euser_fullname, $position, $equip_type, $equip_num, $equip_issues, $required_services, $date_sub]);
 					// $insertid = $conn->lastInsertId();
@@ -362,10 +375,12 @@ class RequestForm {
 			if(isset($userdetails)){
 				if($userdetails['access'] == 'administrator'){
 					header("Location: adminpanel.php");
+				
 			}
-			if($userdetails['access'] == 'user'){
-					header("Location: reqform.php");
+				if($userdetails['access'] == 'user'){
+					header("Location: submitted.php");
 			}
+			
 		}
 	}
 	public function sessionAdmin(){
@@ -395,11 +410,18 @@ class RequestForm {
 
 		}
 	}
-
+	public function getprint(){
+	if(isset($_POST['printpdf'])){
+		$id = $_POST['id'];
+		$conn = $this->openConnection();
+		$stmt = $conn->prepare("SELECT * FROM requests WHERE id = ?");
+		$stmt->execute([$id]);
+		$data = $stmt->fetchAll();
+		return $data;
 }
 
-
-
+}
+}
 
 $class = new RequestForm();
 ?>

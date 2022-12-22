@@ -6,8 +6,6 @@ $userdetails = $class->get_userdata();
 
 ?>
 
-<!DOCTYPE html>
-<html>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -15,17 +13,16 @@ $userdetails = $class->get_userdata();
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title></title>
 </head>
-<body>
-<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #111;">
+<header class="header">
+  <
+<div class="navbar navbar-expand-lg navbar-dark" style="background-color: #111;">
   <div class="container-fluid">
 
 <a href="reqform.php">Make a Request form</a>
 <a href="submitted.php">Submitted Forms</a>
 <a href="logout.php">LOGOUT</a>
-
+/div>
 </div>
-</nav>
-</body>
-</html>
+</header>
+
