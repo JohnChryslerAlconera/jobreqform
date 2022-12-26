@@ -353,7 +353,18 @@ class RequestForm {
 	// }
 
 	public function updateStatus(){
-		if(isset($_POST['update'])){
+		// if(isset($_POST["approve"])){
+		// 	$id = $_POST['id'];
+		// 	$changed_status_by = $_POST['changed_status_by']; 
+		// 	$stmt = $conn->prepare("UPDATE requests SET changed_status_by = :changed_status_by, form_status = :form_status WHERE id = :id");
+ 	// 		$stmt->execute(["changed_status_by" => $changed_status_by, "form_status" => "approved", "id" => $id]);
+ 	// 		echo "Status approved!";
+ 	// 	}
+ 	// 		if(isset($_POST["denied"])){
+ 	// 			$stmt = $conn->prepare("UPDATE requests SET changed_status_by = :changed_status_by, form_status = :form_status WHERE id = :id");
+ 	// 		$stmt->execute(["changed_status_by" => $changed_status_by, "form_status" => "denied", "id" => $id]);
+		
+		if(isset($_POST['submit'])){
 			$id =  $_POST['id'];
 			$form_status = $_POST['form_status'];
 			$changed_status_by = $_POST['changed_status_by'];
@@ -416,11 +427,11 @@ class RequestForm {
 		$conn = $this->openConnection();
 		$stmt = $conn->prepare("SELECT * FROM requests WHERE id = ?");
 		$stmt->execute([$id]);
-		$data = $stmt->fetchAll();
+		$data = $stmt->fetch();
 		return $data;
-}
-
-}
+		}
+	}
+	   
 }
 
 $class = new RequestForm();
