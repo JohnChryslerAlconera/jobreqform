@@ -1,5 +1,4 @@
 <?php
-
 require_once('formclass.php');
 $userdetails = $class->get_userdata();
 $session = $class->sessionAdmin();
@@ -58,65 +57,58 @@ foreach ($pendings as $pending) {
 		
 
 
-
-																			
+																		
 	
-	<form method="post">
-		<input type="hidden" name="id" value="<?php echo $pending['id']?>">
 	<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
- Update Status
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+ Approved
 </button>
-
-<!-- Modal -->
+<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal2">
+ Denied
+</button>
+<!--Modal for Approved-->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-        <button type="submit" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-
-        	<button name="approve" type="button" class="btn btn-primary">Approve</button>
-
-					<button type="button" class="btn btn-primary" data-bs-toggle="modal" 
-					data-bs-target="#exampleModal2">Denied</button>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-	<input type="hidden" name="changed_status_by" value="<?php echo $userdetails['fullname'];?>">
-<!-- 	<select name="form_status">
-		<option selected disabled>---</option>
-		<option value="approved">APPROVED</option>
-		<option value="denied">DENIED</option>
-	</select>
-	<input type="submit" name="update" value="UPDATE"> -->
-
-	   </div>
-    </div>
-  </div>
-</div>
-
-<!--Second Modal-->
-<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
+  <div class="modal-dialog modal-dialog-centered">  
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <textarea cols="60" rows="10"></textarea>
+      <h5>Confirm Approval</h5>
       </div>
       <div class="modal-footer">
-
+        <form method="post">
+    <input type="hidden" name="changed_by" value="<?php echo $userdetails['fullname']?>">
+    <input type="hidden" name="id" value="<?php echo $pending['id']?>">
+        <button name="action" type="submit" value="approved" class="btn btn-primary">Confirm</button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button name="denied" type="button" class="btn btn-primary">Denied</button>
       </div>
     </div>
   </div>
 </div>
+
+
+
+<!--Modal for Denied-->
+<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">  
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <textarea name="reason" cols="60" rows="10" required></textarea>
+      </div>
+      <div class="modal-footer">
+         <button name="action" type="submit" value="denied" class="btn btn-primary">Confirm</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 	</form>
 	</div>

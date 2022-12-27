@@ -26,7 +26,7 @@ class RequestForm {
 				$password = $_POST['password'];
 			$conn = $this->openConnection();
 			$stmt = $conn->prepare("SELECT * FROM users WHERE employee_id = ?");
-			$stmt->execute([$employee_id]);
+			$stmt->execute([$employee_id]);	
 			$user = $stmt->fetch();
 			if($stmt->rowCount() > 0){
 					
@@ -210,7 +210,7 @@ class RequestForm {
 				}
 	}
 }
-<<<<<<< Updated upstream
+
 	public function formId(){
 		if(!empty($this->userInsertData())){
 			$id = $conn->lastInsertId();
@@ -220,7 +220,7 @@ class RequestForm {
 			$user = $stmt->fetch();
 			$this->setformId($user);
 			}
-=======
+		}
 	public function getinsertedID(){
 		$insert = $this->userInsertData();
 		if(!empty($insert)){
@@ -228,21 +228,21 @@ class RequestForm {
 			$id->fetchAll();
 			return $id;
 		}
->>>>>>> Stashed changes
 	}
 
-	public function setformId($a){
-		$_SESSION['form_id'] = array("euser_fullname" => $a['euser_fullname'], "equip_type" => $a['equip_type'], "equip_num" => $a['equip_num'], "equip_issues" => $a['equip_issues'], "required_services" => $a['required_services']);
-		return $_SESSION['form_id'];
+	// public function setformId($a){
+	// 	$_SESSION['form_id'] = array("euser_fullname" => $a['euser_fullname'], "equip_type" => $a['equip_type'], "equip_num" => $a['equip_num'], "equip_issues" => $a['equip_issues'], "required_services" => $a['required_services']);
+	// 	return $_SESSION['form_id'];
 			
-		}
-		public function getinsertedID(){
-			if(isset($_SESSION['form_id'])){
-				return $_SESSION['form_id'];
-			}else{
-				return null;
-			}
-		}
+	// 	}
+
+		// public function getinsertedID(){
+		// 	if(isset($_SESSION['form_id'])){
+		// 		return $_SESSION['form_id'];
+		// 	}else{
+		// 		return null;
+		// 	}
+		// }
 	
 	public function addAdmin(){
 		if(isset($_POST['add'])){
@@ -363,33 +363,32 @@ class RequestForm {
 	// }
 
 	public function updateStatus(){
-		// if(isset($_POST["approve"])){
-		// 	$id = $_POST['id'];
-		// 	$changed_status_by = $_POST['changed_status_by']; 
-		// 	$stmt = $conn->prepare("UPDATE requests SET changed_status_by = :changed_status_by, form_status = :form_status WHERE id = :id");
- 	// 		$stmt->execute(["changed_status_by" => $changed_status_by, "form_status" => "approved", "id" => $id]);
- 	// 		echo "Status approved!";
- 	// 	}
- 	// 		if(isset($_POST["denied"])){
- 	// 			$stmt = $conn->prepare("UPDATE requests SET changed_status_by = :changed_status_by, form_status = :form_status WHERE id = :id");
- 	// 		$stmt->execute(["changed_status_by" => $changed_status_by, "form_status" => "denied", "id" => $id]);
-		
-		if(isset($_POST['submit'])){
-			$id =  $_POST['id'];
-			$form_status = $_POST['form_status'];
-			$changed_status_by = $_POST['changed_status_by'];
+		if(isset($_POST['action'])){
+		if($_POST["action"] == 'approved'){
+			$id = $_POST['id'];
+			$changed_status_by = $_POST['changed_by']; 
 			$conn = $this->openConnection();
 			$stmt = $conn->prepare("UPDATE requests SET changed_status_by = :changed_status_by, form_status = :form_status WHERE id = :id");
- 			$stmt->execute(["changed_status_by" => $changed_status_by, "form_status" => $form_status, "id" => $id]);
-			$count = $stmt->rowCount();
-			if($count > 0){
-				"successfully updated";
-			}else{
-				"error";
-				}
-			}else{
-				echo "select a table to update";
-			}
+ 			$stmt->execute(["changed_status_by" => $changed_status_by, "form_status" => "approved", "id" => $id]);
+ 			$row = $stmt->rowCount();
+ 			if($row > 0){
+ 			echo "Status approved!";
+ 		}
+ 		}
+ 			if($_POST["action"] == 'denied'){
+ 					$id = $_POST['id'];
+			$changed_status_by = $_POST['changed_by']; 
+			$reason = $_POST['reason'];
+ 					$conn = $this->openConnection();
+ 				$stmt = $conn->prepare("UPDATE requests SET changed_status_by = :changed_status_by, form_status = :form_status,reason = :reason WHERE id = :id");
+ 			$stmt->execute(["changed_status_by" => $changed_status_by, "form_status" => "denied", "reason" => $reason,
+ 			 "id" => $id]);
+ 			$row = $stmt->rowCount();
+ 			if($row > 0){
+ 			echo "Status denied";
+		}
+	}
+	}
 		}
 	public function redirect(){	
 	 	$userdetails = $this->get_userdata();
