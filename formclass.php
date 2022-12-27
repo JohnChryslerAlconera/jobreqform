@@ -210,6 +210,7 @@ class RequestForm {
 				}
 	}
 }
+<<<<<<< Updated upstream
 	public function formId(){
 		if(!empty($this->userInsertData())){
 			$id = $conn->lastInsertId();
@@ -219,6 +220,15 @@ class RequestForm {
 			$user = $stmt->fetch();
 			$this->setformId($user);
 			}
+=======
+	public function getinsertedID(){
+		$insert = $this->userInsertData();
+		if(!empty($insert)){
+			$id = $insert->lastInsertId();
+			$id->fetchAll();
+			return $id;
+		}
+>>>>>>> Stashed changes
 	}
 
 	public function setformId($a){
