@@ -3,7 +3,13 @@
 
 require_once('formclass.php');
 $userdetails = $class->get_userdata();
+$gettoken = $class->get_token();
 $submitted = $class->getSubmitted();
+if(!isset($gettoken)){
+  $token = md5(uniqid(rand(), true));
+    $_SESSION['csrf_token'] = $token;
+    $_SESSION['csrf_token_time'] = time();
+}
 
 ?>
 <!DOCTYPE html>
@@ -55,6 +61,8 @@ foreach ($submitted as $row) {
 }
 ?>
 <form method="post" action="make_fpdf.php">
+            <input type="hidden" name="csrf_token" value="<?php echo $token;?>">
+
 	<input type="hidden" name="id" value="<?php echo $row['id']?>">
 	<button type="submit" class="btn btn-success" name="printpdf">Make a Pdf</button>
 </form>

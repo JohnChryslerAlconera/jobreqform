@@ -3,9 +3,13 @@
 
 require_once('formclass.php');
 $userdetails = $class->get_userdata();
-$class->addAdmin();
 $session = $class->sessionAdmin();
-
+$gettoken = $class->get_token();
+if(!isset($gettoken)){
+	$token = md5(uniqid(rand(), true));
+		$_SESSION['csrf_token'] = $token;
+		$_SESSION['csrf_token_time'] = time();
+}
 
 
 
@@ -23,6 +27,8 @@ $session = $class->sessionAdmin();
 <body>
 	<h1>Add Admin</h1>
 		<form action="" method="post">
+		<input type="hidden" name="csrf_token" value="<?php echo $token;?>">
+
 	<label>Admin Name:</label>
 	<input type="text" name="adminname">
 	<p></p>

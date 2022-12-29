@@ -1,7 +1,12 @@
 <?php
 include('formclass.php');
 $user = $class->getUser();
-$direct = $class->redirect();
+$gettoken = $class->get_token();
+if(!isset($gettoken)){
+	$token = md5(uniqid(rand(), true));
+		$_SESSION['csrf_token'] = $token;
+		$_SESSION['csrf_token_time'] = time();
+}
 
 
 
@@ -38,8 +43,9 @@ $direct = $class->redirect();
 	<div class="card-header m-5 p-5" style="text-align:center" >
 		<a href="register.php">Not yet Registered? Click this</a>
 		<h1>-LOGIN-</h1>
-	<form role="form" method="post">
-	
+	<form method="post">
+	<input type="hidden" name="csrf_token" value="<?php echo $token;?>">
+
 	<label>AccountID:</label>
 	<input type="text" name="employee_id">
 	<p></p>

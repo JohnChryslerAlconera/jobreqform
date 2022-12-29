@@ -3,8 +3,16 @@ require_once('formclass.php');
 $userdetails = $class->get_userdata();
 $session = $class->sessionAdmin();
 $pendings = $class->getPendings();
-$status = $class->updateStatus();
 if(isset($userdetails)){
+  $gettoken = $class->get_token();
+if(!isset($gettoken)){
+  $token = md5(uniqid(rand(), true));
+    $_SESSION['csrf_token'] = $token;
+    $_SESSION['csrf_token_time'] = time();
+}
+if($class->updateStatus()){
+  header("Location: pendings.php");
+}
 ?>
 
 <!DOCTYPE html>
@@ -66,21 +74,28 @@ foreach ($pendings as $pending) {
 <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal2">
  Denied
 </button>
+
+
 <!--Modal for Approved-->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <form method="post">
+      <input type="hidden" name="csrf_token" value="<?php echo $token;?>">
+
+    <input type="hidden" name="changed_by" value="<?php echo $userdetails['fullname']?>">
+    <input type="hidden" name="id" value="<?php echo $pending['id']?>">
+
+<div class="modal fade" id="exampleModal" tabindex="-5" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">  
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Confirm Approval of Form</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
+
       <div class="modal-body">
-      <h5>Confirm Approval</h5>
+      <h5>Are You Sure To Approve This Form?</h5>
       </div>
+
       <div class="modal-footer">
-        <form method="post">
-    <input type="hidden" name="changed_by" value="<?php echo $userdetails['fullname']?>">
-    <input type="hidden" name="id" value="<?php echo $pending['id']?>">
         <button name="action" type="submit" value="approved" class="btn btn-primary">Confirm</button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
       </div>
@@ -89,18 +104,19 @@ foreach ($pendings as $pending) {
 </div>
 
 
-
 <!--Modal for Denied-->
-<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">  
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Confirm Denial of Form</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
+
       <div class="modal-body">
-        <textarea name="reason" cols="60" rows="10" required></textarea>
+        <textarea name="reason" cols="57" rows="10" required></textarea>
       </div>
+
       <div class="modal-footer">
          <button name="action" type="submit" value="denied" class="btn btn-primary">Confirm</button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
