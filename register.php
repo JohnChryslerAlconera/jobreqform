@@ -18,21 +18,29 @@ $register = $class->register();
     body {
       background-image: url("https://www.iloilotoday.com/wp-content/uploads/2022/03/1-735x400.jpg");
       background-size: 100rem 80rem;
+      
       background-image:no-repeat;
-    }
-
-    .cascading-right {
-      margin-right: -50px;
-    }
-
-    @media (max-width: 991.98px) {
-      .cascading-right {
-        margin-right: 0;
-      }
     }
   </style>
 <body>
-	<a href="login.php"><button class="btn btn-primary">Login</button></a>
+<!-- <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+  <a href="login.php"><button class="btn btn-success">Back to Login</button></a>
+  </div>
+  </nav> -->
+  <section class="text-center text-lg-start">
+  <style>
+    body {
+      background-image: url("https://www.iloilotoday.com/wp-content/uploads/2022/03/1-735x400.jpg");
+      background-size: 100rem 80rem;
+      background-image:no-repeat;
+    }
+
+  </style>
+<body>
+	<a href="login.php"><button class="btn btn-primary">Back to Login</button></a>
+  
+	
    <div class="container py-4">
     <div class="row g-0 align-items-center">
     	<div class="col-lg-10 mb-10 mb-lg-0">
@@ -132,5 +140,6 @@ $register = $class->register();
 
            
             </form>
+
 </body>
 </html>
