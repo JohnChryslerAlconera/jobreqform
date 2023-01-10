@@ -77,7 +77,7 @@ foreach ($pendings as $pending) {
 
 
 <!--Modal for Approved-->
-      <form method="post">
+      <form method="get">
       <input type="hidden" name="csrf_token" value="<?php echo $token;?>">
 
     <input type="hidden" name="changed_by" value="<?php echo $userdetails['fullname']?>">

@@ -1,13 +1,32 @@
 <?php
-include('formclass.php');
-$user = $class->getUser();
-$gettoken = $class->get_token();
-if(!isset($gettoken)){
-	$token = md5(uniqid(rand(), true));
+require_once('formclass.php');
+session_start();
+if(isset($_POST) & !empty($_POST)){
+			if(isset($_POST['csrf_token'])){
+				if($_POST['csrf_token'] == $_SESSION['csrf_token']){
+				}
+			}
+		}
+					$max_time = 5;
+					if(isset($_SESSION['csrf_token_time'])){
+						$token_time = $_SESSION['csrf_token_time'];
+						if(($token_time + $max_time) >= time()){
+							$class->getUser();			
+						$class->redirect();
+					}else{
+						unset($_SESSION['csrf_token']);
+						unset($_SESSION['csrf_token_time']);
+						?><script type="text/javascript">
+							alert("Token Expired, Please fill up again");
+							window.location.href = "login.php";
+						</script><?php
+					}
+				}
+
+
+		$token = md5(uniqid(rand(), true));
 		$_SESSION['csrf_token'] = $token;
 		$_SESSION['csrf_token_time'] = time();
-}
-
 
 
 ?>
@@ -43,16 +62,16 @@ if(!isset($gettoken)){
 	<div class="card-header m-5 p-5" style="text-align:center" >
 		<a href="register.php">Not yet Registered? Click this</a>
 		<h1>-LOGIN-</h1>
-	<form method="post">
+	<form method="post" role="form">
 	<input type="hidden" name="csrf_token" value="<?php echo $token;?>">
 
 	<label>AccountID:</label>
-	<input type="text" name="employee_id">
+	<input type="text" name="employee_id" required>
 	<p></p>
 	<p></p>
 	<label>Password:</label>
-	<input type="password" name="password"><p></p>
-	<input type="submit" name="submit" value="Enter">
+	<input type="password" name="password" required><p></p>
+	<input type="submit" name="login"value="Enter">
 	</form>
 	</div>
 </body>

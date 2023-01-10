@@ -37,7 +37,7 @@ if(!isset($gettoken)){
 	<label>Password:</label>
 	<input type="password" name="password">
 	<p></p>	
-	<input type="submit" name="submit" value="Add">
+	<input type="submit" name="addadmin" value="Add">
 	</form>
 	
 </body>

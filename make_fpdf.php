@@ -1,15 +1,9 @@
 <?php
 	require_once('formclass.php');
 	require('fpdf.php');
-	if(isset($_POST['printpdf'])){
-		$id = $_POST['id'];
-		$conn = $class->openConnection();
-		$stmt = $conn->prepare("SELECT * FROM requests WHERE id = ?");
-		$stmt->execute([$id]);
-		$data = $stmt->fetchAll();
-		
-}
-	if(isset($data)){
+	$data = $class->pdf();
+
+	
 
 foreach($data as $row){
 //Cell(width,height, "text", border,newline,'text align')
@@ -62,5 +56,4 @@ foreach($data as $row){
 
 	$pdf->Output();
 	}
-}
 ?>
