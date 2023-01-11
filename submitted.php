@@ -3,6 +3,7 @@ require_once('formclass.php');
 $userdetails = $class->get_userdata();
 $submitted = $class->getSubmitted();
 $class->pdf();
+if(isset($userdetails)){
 ?>
 <!DOCTYPE html>
 <html>
@@ -67,7 +68,11 @@ break;
   </ul>
 </div>
 		
-
+<?php
+    }else{
+      header("Location: login.php");
+    }
+?>
 
  
 

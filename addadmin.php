@@ -11,12 +11,7 @@ if(!isset($gettoken)){
 		$_SESSION['csrf_token_time'] = time();
 }
 
-
-
-
 ?>
-
-
 <!DOCTYPE html>
 <html>
 <head>

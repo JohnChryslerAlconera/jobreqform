@@ -1,7 +1,31 @@
 <?php
 require_once('formclass.php');
+session_start();
+if(isset($_POST) & !empty($_POST)){
+      if(isset($_POST['csrf_token'])){
+        if($_POST['csrf_token'] == $_SESSION['csrf_token']){
+        }
+      }
+    }
+          $max_time = 5;
+          if(isset($_SESSION['csrf_token_time'])){
+            $token_time = $_SESSION['csrf_token_time'];
+            if(($token_time + $max_time) >= time()){
+              $class->getUser();      
+            $class->redirect();
+          }else{
+            unset($_SESSION['csrf_token']);
+            unset($_SESSION['csrf_token_time']);
+            ?><script type="text/javascript">
+              alert("Token Expired, Please fill up again");
+              window.location.href = "register.php";
+            </script><?php
+          }
+        }
 
-
+  $token = md5(uniqid(rand(), true));
+    $_SESSION['csrf_token'] = $token;
+    $_SESSION['csrf_token_time'] = time();
 
 if(isset($_POST) & !empty($_POST)){
   if(empty($_POST['firstname'])){
@@ -88,6 +112,7 @@ if(empty($errors)){
           }
             ?>
             <form method="post">
+                        <input type="hidden" name="csrf_token" value="<?php echo $token;?>">
               <!-- 2 column grid layout with text inputs for the first and last names -->
               <div class="row">
                 <div class="col-md-6 mb-4">

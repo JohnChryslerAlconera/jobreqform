@@ -1,28 +1,39 @@
 
 <?php 
-  require_once('formclass.php');
+  require('formclass.php');
+  if(isset($_POST['department'])){
   $dept_name = $_POST['department'];
-   $conn = $class->openConnection();
-      $query = "SELECT MONTHNAME(date_added) as monthnames, COUNT(form_status) as denials FROM requests WHERE form_status = 'denied', COUNT(form_status) as approvals FROM requests WHERE form_status = 'approved', count(form_status) as completed FROM requests WHERE form_status = 'completed' GROUP BY monthnames";
-    $stmt = $conn->prepare($query);
-    $stmt->execute(['req_dept' => $dept_name]); 
-    $data = $stmt->fetchAll();
-  
-  foreach($data as $row)
-  {
-    $month[] = $row['monthnames'];
-    $denials[] = $row['denials'];
-    $approvals[] = $row['approvals'];
-    $completed[] = $row['completed'];
-  }                        
-
+}
+  $form1 = 'denied';
+  $form2 = 'approved';
+//   AND req_dept = :req_dept MONTHNAME(date_added) as monthnames GROUP BY monthnames
+      $conn = $class->openConnection();
+      $stmt = $conn->prepare("SELECT COUNT(*) FROM requests WHERE 
+        form_status = :form_status");
+      $stmt->bindValue(':form_status', $form1, PDO::PARAM_STR);
+      $stmt->execute();
+      $denied = $stmt->fetchColumn();
+      $stmt->bindValue(':form_status', $form2, PDO::PARAM_STR);
+      $stmt->execute();
+      $approved = $stmt->fetchColumn();
+      // $stmt->bindValue(':req_dept', $dept_name, PDO::PARAM_STR);
+      // $stmt->execute();
+      // $department = $stmt->fetch();
+  //     $data = array($denials, $approvals, $department);
+  // foreach($data as $row)
+  // {
+  //   $month[] = $row['monthnames'];
+  // //   $denials[] = $row['denials'];
+  // //   $approvals[] = $row['approvals'];
+  //   // $completed[] = $row['completed'];
+  // }                        
 ?>
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Getting Started with Chart JS with www.chartjs3.com</title>
+    <title>Job Request Form Statistics</title>
     <style>
       * {
         margin: 0;
@@ -70,12 +81,12 @@
         <option value="IT Department">IT Department</option>
         <option value="DSWD Department">DSWD Department</option>
       </select>
-      <select name="form_status" onchange="this.form.submit()">
+<!--       <select name="form_status" onchange="this.form.submit()">
         <option value="denied">Denied</option>
         <option value="approved">Approved</option>
         <option value="completed">Completed</option>
 
-      </select>
+      </select> -->
       </form>
     </div>
       </div>
@@ -84,12 +95,12 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
       const label = <?php echo json_encode($dept_name)?>;
-  const labels = <?php echo json_encode($month) ?>;
+  const labels = ;
     const data = {
-      labels: labels,
+      labels: "MONTHS",
       datasets: [{
         label: label,
-        data: <?php echo json_encode($denials) ?>,
+        data: <?php echo json_encode($denied) ?>;,
         backgroundColor: [
           'rgba(255, 26, 104, 0.2)',
           'rgba(54, 162, 235, 0.2)',
@@ -99,18 +110,21 @@
           'rgba(255, 159, 64, 0.2)',
           'rgba(0, 0, 0, 0.2)'
         ],
-        borderColor: [
-          'rgba(255, 26, 104, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)',
-          'rgba(75, 192, 192, 1)',
-          'rgba(153, 102, 255, 1)',
-          'rgba(255, 159, 64, 1)',
-          'rgba(0, 0, 0, 1)'
+        borderWidth: 1
+      },{
+        label: label,
+        data: <?php echo json_encode($approved) ?>;,
+        backgroundColor: [
+          'rgba(255, 26, 104, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)',
+          'rgba(0, 0, 0, 0.2)'
         ],
         borderWidth: 1
-      },
-      ]
+      }]
     };
 
     // config 
