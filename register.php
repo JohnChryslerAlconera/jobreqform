@@ -18,6 +18,7 @@ $register = $class->register();
     body {
       background-image: url("https://www.iloilotoday.com/wp-content/uploads/2022/03/1-735x400.jpg");
       background-size: 100rem 80rem;
+<<<<<<< Updated upstream
       
       background-image:no-repeat;
     }
@@ -39,6 +40,22 @@ $register = $class->register();
   </style>
 <body>
 	<a href="login.php"><button class="btn btn-primary">Back to Login</button></a>
+=======
+      background-size: contain;
+      background-image:no-repeat;
+    }
+    .login{
+      text
+
+    }
+  </style>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+  <a href="login.php"><button class="btn btn-success">Back to Login</button></a>
+  </div>
+  </nav>
+>>>>>>> Stashed changes
   
 	
    <div class="container py-4">

@@ -1,18 +1,39 @@
-
 <?php
-
 require_once('formclass.php');
 $userdetails = $class->get_userdata();
 $class->addAdmin();
 $session = $class->sessionAdmin();
+if(isset($_POST) & !empty($_POST)){
+      if(isset($_POST['csrf_token'])){
+        if($_POST['csrf_token'] == $_SESSION['csrf_token']){
+      } 
+      }
+          $max_time = 60*30;
+          if(isset($_SESSION['csrf_token_time'])){
+            $token_time = $_SESSION['csrf_token_time'];
+            if(($token_time + $max_time) >= time()){
+              $this->userInsertData();
+              ?>
+          <script>
+            alert("Added");
+            window.location.href = "submitted.php";
+          </script>
+          <?php
+              }else{
+                unset($_SESSION['csrf_token']);
+                unset($_SESSION['csrf_token_time']);
+                echo "CSRF Expired";
+              }
+              }
+        }else{
+          echo "Token expired! ,Please fill up again!";
+           }
 
 
-
-
-
+  $token = md5(uniqid(rand(), true));
+    $_SESSION['csrf_token'] = $token;
+    $_SESSION['csrf_token_time'] = time();
 ?>
-
-
 <!DOCTYPE html>
 <html>
 <head>

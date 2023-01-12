@@ -31,6 +31,7 @@ class RequestForm {
 			if($stmt->rowCount() > 0){
 					
 			if(password_verify($password, $user['password'])){
+					header("Location: userpanel.php");
 					$this->set_userdata($user);
 				
 				}else{
@@ -113,17 +114,15 @@ class RequestForm {
 		return null;
 	}
 }
-	// public function set_token($token){
-			
-	// 	return $_SESSION['csrf_token'];
-	// 		return $_SESSION['csrf_token_time'];
-		
-	// } 
 	public function get_token(){
 
 		if(isset($_POST) & !empty($_POST)){
 			if(isset($_POST['csrf_token'])){
 				if($_POST['csrf_token'] == $_SESSION['csrf_token']){
+					
+			} 
+			
+			}
 					$max_time = 60*30;
 					if(isset($_SESSION['csrf_token_time'])){
 						$token_time = $_SESSION['csrf_token_time'];
@@ -145,9 +144,6 @@ class RequestForm {
 					echo "Token expired! ,Please fill up again!";
 					 }
 
-			} 
-			
-			}
 		
 		}
 		public function getSubmitted(){
@@ -163,8 +159,6 @@ class RequestForm {
 
 		}
 	}
-
-
 
 
 		public function userInsertData(){
@@ -184,10 +178,9 @@ class RequestForm {
 				$euser_lname = $_POST['euserlname'];
 				$euser_suffix = $_POST['eusersuffix'];
 				$euser_fullname = $euser_fname. " ". $euser_midname. " ". $euser_lname. " ". $euser_suffix;
-				// $form_date = $_POST['form_date'];
 				$equip_type = $_POST['equip_type'];
 				$equip_num = $_POST['equip_number'];
-				$equip_issues= implode(',', $_POST['issues']);
+				$equip_issues= implode("<br>", $_POST['issues']);
 				if(strlen($equip_issues) == 0){
 					echo "need to check or write issue";
 				}else{	
@@ -198,10 +191,12 @@ class RequestForm {
 				$conn = $this->openConnection();
 				$stmt = $conn->prepare("INSERT INTO requests(req_name, req_dept, employee_id, contact, dept_head_fullname, euser_fullname, position, equip_type, equip_num, equip_issues, required_services,date_added)
 					VALUES(?,?,?,?,?,?,?,?,?,?,?,?)");
-				$stmt->execute([$fullname, $req_dept, $employee_id, $contact, $dept_head_fullname, $euser_fullname, $position, $equip_type, $equip_num, $equip_issues, $required_services, $date_sub]);
-					// $insertid = $conn->lastInsertId();
+				$stmt->execute([$fullname, $req_dept, $employee_id, $contact, $dept_head_fullname,
+				 $euser_fullname, $position, $equip_type, $equip_num, $equip_issues, $required_services,
+				  $date_sub]);
 				$count = $stmt->rowCount();
 				if($count > 0){
+					
 					}else{
 					echo "not added";
 				}
@@ -394,7 +389,7 @@ class RequestForm {
 	 	$userdetails = $this->get_userdata();
 			if(isset($userdetails)){
 				if($userdetails['access'] == 'administrator'){
-					header("Location: adminpanel.php");
+					header("Location: pendings.php");
 				
 			}
 				if($userdetails['access'] == 'user'){

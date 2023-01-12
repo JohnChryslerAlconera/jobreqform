@@ -8,9 +8,12 @@
 	<title>Main page</title>
 </head>
 <body>
+<<<<<<< Updated upstream
 
 
 	<h1></h1>
+=======
+>>>>>>> Stashed changes
 	<div class="container">
 		<div style="text-align: center; padding-top: 10rem;">
 	<a href="login.php"><button style="width: 20rem; height: 20rem;">Go to Admin</button></a><br>

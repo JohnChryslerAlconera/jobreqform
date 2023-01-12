@@ -25,9 +25,9 @@ if(isset($userdetails)){
 	</style>
 	<title>Services Request Form</title>
 </head>
-<?php include "navbar.php"?>
 
-<body class="m-5 p-5">
+<body>
+	<?php include "navbar.php"?>
 <div class="container">
 <div class="fw-semibold">
 	<p class="fs-5">Request for <span class="fs-3">IT SERVICES</span></p>

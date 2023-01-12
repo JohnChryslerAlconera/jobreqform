@@ -44,7 +44,7 @@ $session = $class->sessionAdmin();
       </ul>
       <form class="d-flex">
       <!-- <a id="logout" href="logout.php"> <button>LOGOUT</button></a> -->
-        <a class="btn btn-primary" id="logout" href="logout.php"">Logout</a>
+        <a class="btn btn-primary" id="logout" href="logout.php">Logout</a>
       </form>
     </div>
   </div>
