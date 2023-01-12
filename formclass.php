@@ -52,9 +52,7 @@ class RequestForm {
 			}
 		}
 	}
-
-		
-				public function register(){
+	public function register(){
 		if(isset($_POST['register'])){
 			$firstname = $_POST['firstname'];
 			$lastname = $_POST['lastname'];
@@ -67,10 +65,6 @@ class RequestForm {
 			$position = $_POST['position'];
 			$password = $_POST['password'];
 			$cpassword = $_POST['cpassword'];
-			if($this->check_user_exist($employee_id) == 0){
-			if($password != $cpassword){
-				echo "Passwords do not match";
-			}else{
 			$hashed_password = password_hash($password, PASSWORD_DEFAULT);
 			$conn = $this->openConnection();
 			$stmt = $conn->prepare("INSERT INTO `users`(`firstname`, `lastname`, `employee_id`, `contact`, `department`, `dept_head_fullname`, `position`, `password`) 
@@ -79,18 +73,12 @@ class RequestForm {
 			$count = $stmt->rowCount();
 			if($count > 0){
 				echo "Added";
-				header("Location: login.php");
 			}else{
 				echo "something is wrong";
 				}
 			}
-			
-		}else{
-			echo "this employee_id is already registered";
 		}
-	}
-
-}	
+	
 	public function set_userdata($array){
 		if(!isset($_SESSION)){
 			session_start();
@@ -115,7 +103,8 @@ class RequestForm {
 	}
 }
 	public function get_token(){
-
+		if(!isset($_SESSION)){
+			session_start();
 		if(isset($_POST) & !empty($_POST)){
 			if(isset($_POST['csrf_token'])){
 				if($_POST['csrf_token'] == $_SESSION['csrf_token']){
@@ -128,30 +117,22 @@ class RequestForm {
 						$token_time = $_SESSION['csrf_token_time'];
 						if(($token_time + $max_time) >= time()){
 							$this->userInsertData();
-							?>
-					<script>
-						alert("Added");
-						window.location.href = "submitted.php";
-					</script>
-					<?php
 							}else{
 								unset($_SESSION['csrf_token']);
 								unset($_SESSION['csrf_token_time']);
-								echo "CSRF Expired";
-							}
-							}
-				}else{
-					echo "Token expired! ,Please fill up again!";
-					 }
-
-		
+								echo "CSRF token expired!, Please fill up again";
+										}
 		}
+							}
+							}
+					 }
 		public function getSubmitted(){
-			$userdetails = $this->get_userdata();
-			$employeeid = $userdetails['employee_id'];
+			if(!empty($this->get_userdata())){
+				$employee_id = $this->get_userdata();
+				$id = $employee_id['employee_id'];
 			$conn = $this->openConnection();
 		$stmt = $conn->prepare("SELECT * FROM requests WHERE employee_id = ?");
-		$stmt->execute([$employeeid]);
+		$stmt->execute([$id]);
 		$form = $stmt->fetchAll();
 		$count = $stmt->rowCount();
 		if($count > 0 ){
@@ -159,10 +140,11 @@ class RequestForm {
 
 		}
 	}
+}
 
 
 		public function userInsertData(){
-			if (isset($_POST['submit'])) {
+			if (isset($_POST['reqform'])) {
 					date_default_timezone_set('Asia/Manila');
 					$fullname = $_POST['fullname'];
 					$req_dept = $_POST['req_dept'];
@@ -196,15 +178,21 @@ class RequestForm {
 				  $date_sub]);
 				$count = $stmt->rowCount();
 				if($count > 0){
-					
+				$stmt->execute([$fullname, $req_dept, $employee_id, $contact, $dept_head_fullname, $euser_fullname, $position, $equip_type, $equip_num, $equip_issues, $required_services, $date_sub]);
+				$count = $stmt->rowCount();
+				if($count > 0){
+					echo "added";
+					header('Location: submitted.php');
+
 					}else{
 					echo "not added";
+						}	
+					}
 				}
-			
+			}
 		}
-				}
 	}
-}
+
 
 	public function formId(){
 		if(!empty($this->userInsertData())){
@@ -223,21 +211,7 @@ class RequestForm {
 			$id->fetchAll();
 			return $id;
 		}
-	}
-
-	// public function setformId($a){
-	// 	$_SESSION['form_id'] = array("euser_fullname" => $a['euser_fullname'], "equip_type" => $a['equip_type'], "equip_num" => $a['equip_num'], "equip_issues" => $a['equip_issues'], "required_services" => $a['required_services']);
-	// 	return $_SESSION['form_id'];
-			
-	// 	}
-
-		// public function getinsertedID(){
-		// 	if(isset($_SESSION['form_id'])){
-		// 		return $_SESSION['form_id'];
-		// 	}else{
-		// 		return null;
-		// 	}
-		// }
+}
 	
 	public function addAdmin(){
 		if(isset($_POST['add'])){
@@ -263,7 +237,7 @@ class RequestForm {
 	
 	
 	public function check_admin_exist(){
-		if(isset($_POST['add'])){
+		if(isset($_POST['register'])){
 			$employee_id = $_POST['employee_id'];
 		$conn = $this->openConnection();
 		$stmt = $conn->prepare("SELECT * FROM users WHERE employee_id = ?");
@@ -299,7 +273,7 @@ class RequestForm {
 		$now = date('Y-m-d H:i:s');
 		$lastweek = date('Y-m-d H:i:s', strtotime("-7 days"));
 		$conn = $this->openConnection();
-		$stmt = $conn->prepare("SELECT * FROM requests WHERE form_status = :form_status ORDER BY date_added DESC");
+		$stmt = $conn->prepare("SELECT * FROM requests WHERE form_status = :form_status AND reason IS NULL ORDER BY date_added DESC");
 		$stmt->execute(['form_status' => 'pending']);
 		$pendings = $stmt->fetchAll();
 		$count = $stmt->rowCount();
@@ -322,7 +296,7 @@ class RequestForm {
 	}
 	public function getDenied(){
 		$conn = $this->openConnection();
-		$stmt = $conn->prepare("SELECT * FROM requests WHERE form_status = :form_status AND reason IS NULL");
+		$stmt = $conn->prepare("SELECT * FROM requests WHERE form_status = :form_status");
 		$stmt->execute(['form_status' => 'denied']);
 		$denied = $stmt->fetchAll();
 		$count = $stmt->rowCount();
@@ -333,8 +307,8 @@ class RequestForm {
 	}
 	public function getCompleted(){
 		$conn = $this->openConnection();
-		$stmt = $conn->prepare("SELECT * FROM requests WHERE changed_status_by IS NOT NULL AND reason IS NOT NULL");
-		$stmt->execute();
+		$stmt = $conn->prepare("SELECT * FROM requests WHERE changed_status_by IS NOT NULL AND form_status = :form_status");
+		$stmt->execute(["form_status" => 'completed']);
 		$completed = $stmt->fetchAll();
 		$count = $stmt->rowCount();
 		if($count > 0 ){
@@ -358,35 +332,63 @@ class RequestForm {
 	// }
 
 	public function updateStatus(){
-		if(isset($_POST['action'])){
-		if($_POST["action"] == 'approved'){
-			$id = $_POST['id'];
-			$changed_status_by = $_POST['changed_by']; 
-			$conn = $this->openConnection();
-			$stmt = $conn->prepare("UPDATE requests SET changed_status_by = :changed_status_by, form_status = :form_status WHERE id = :id");
- 			$stmt->execute(["changed_status_by" => $changed_status_by, "form_status" => "approved", "id" => $id]);
- 			$row = $stmt->rowCount();
- 			if($row > 0){
- 			echo "Status approved!";
+			if(isset($_GET['action'])){
+
+				if($_GET["action"] == 'approved'){
+					$id = $_GET['id'];
+					$changed_status_by = $_GET['changed_by']; 
+					$conn = $this->openConnection();
+					$stmt = $conn->prepare("UPDATE requests SET changed_status_by = :changed_status_by,
+					 form_status = :form_status WHERE id = :id");
+		 			$stmt->execute(["changed_status_by" => $changed_status_by, "form_status" => "approved", "id" => $id]);
+		 			$row = $stmt->rowCount();
+		 			if($row > 0){
+		 				header("Location: pendings.php");
+ 				}
  		}
- 		}
- 			if($_POST["action"] == 'denied'){
- 					$id = $_POST['id'];
-			$changed_status_by = $_POST['changed_by']; 
-			$reason = $_POST['reason'];
- 					$conn = $this->openConnection();
- 				$stmt = $conn->prepare("UPDATE requests SET changed_status_by = :changed_status_by, form_status = :form_status,reason = :reason WHERE id = :id");
- 			$stmt->execute(["changed_status_by" => $changed_status_by, "form_status" => "denied", "reason" => $reason,
- 			 "id" => $id]);
+	 			if($_GET["action"] == 'denied'){
+		 			$id = $_GET['id'];
+					$changed_status_by = $_GET['changed_by']; 
+					$reason = $_GET['reason'];
+		 			$conn = $this->openConnection();
+		 			$stmt = $conn->prepare("UPDATE requests SET changed_status_by = :changed_status_by, form_status = :form_status,reason = :reason WHERE id = :id");
+		 			$stmt->execute(["changed_status_by" => $changed_status_by, "form_status" => "denied", "reason" => $reason,
+		 				 "id" => $id]);
+		 			$row = $stmt->rowCount();
+			 		if($row > 0){
+			 		echo "Status denied";
+			
+								}
+					}
+			}
+	}
+	public function pdf(){
+		if(isset($_POST['printpdf'])){
+		$id = $_POST['id'];
+		$conn = $this->openConnection();
+		$stmt = $conn->prepare("SELECT * FROM requests WHERE id = ?");
+		$stmt->execute([$id]);
+		$data = $stmt->fetchAll();
+		return $data;
+	}	
+}
+		public function toComplete(){
+			if(isset($_POST['comment'])){
+				$id = $_POST['id'];
+				$reason = $_POST['reason'];
+
+				$conn = $this->openConnection();
+ 				$stmt = $conn->prepare("UPDATE requests SET form_status = :form_status ,reason = :reason WHERE id = :id");
+ 			$stmt->execute(["form_status" => "completed" , "reason" => $reason, "id" => $id]);
  			$row = $stmt->rowCount();
- 			if($row > 0){
- 			echo "Status denied";
-		}
-	}
-	}
+ 			if ($row > 0) {
+ 				header("Location: approved.php");
+ 			}
+			}
 		}
 	public function redirect(){	
 	 	$userdetails = $this->get_userdata();
+
 			if(isset($userdetails)){
 				if($userdetails['access'] == 'administrator'){
 					header("Location: pendings.php");
@@ -408,23 +410,7 @@ class RequestForm {
 			header("Location: login.php");
 		} 
 	}
-	public function remarks(){
-		if(isset($_POST['comment'])){
-			$id = $_POST['id'];
-			$reason = $_POST['reason'];
-			$form_status = $_POST['form_status'];
-			$conn = $this->openConnection();
-			$stmt = $conn->prepare("UPDATE requests SET reason = :reason WHERE id = :id");
-			$stmt->execute(['reason' => $reason, 'id' => $id]);
-		$count = $stmt->rowCount();
-		if ($count > 0) {
-			echo "commented";
-		}
-		$fetch = $stmt->fetch();
-		return $fetch;
 
-		}
-	}
 	public function getprint(){
 	if(isset($_POST['printpdf'])){
 		$id = $_POST['id'];

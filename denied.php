@@ -4,7 +4,6 @@ require_once('formclass.php');
 $userdetails = $class->get_userdata();
 $session = $class->sessionAdmin();
 $denied = $class->getDenied();
-$remarks = $class->remarks();
 
 if(isset($userdetails)){
 ?>
@@ -32,16 +31,17 @@ switch($denied){
   <table class="table">
   <thead>
     <tr>
-      <th scope="col">req_dept</th>
-      <th scope="col">contact</th>
-      <th scope="col">dept_head_fullname</th>
-      <th scope="col">euser_fullname</th>
-      <th scope="col">position</th>
-      <th scope="col">equip_type</th>
-      <th scope="col">equip_num</th>
-      <th scope="col">equip_issues</th>
-      <th scope="col">required_services</th>
-      <th scope="col">date_added</th>
+      <th scope="col">Requesting Department:</th>
+      <th scope="col">Contact Info:</th>
+      <th scope="col">Department Head Name:</th>
+      <th scope="col">End User Name:</th>
+      <th scope="col">Position:</th>
+      <th scope="col">Equipment Type:</th>
+      <th scope="col">Equipment Number:</th>
+      <th scope="col">Equipment Issue:</th>
+      <th scope="col">Required Service:</th>
+      <th scope="col">Date Submitted:</th>
+      <th scope="col">Reason:</th>
     </tr>
   </thead>
 <?php
@@ -59,13 +59,18 @@ foreach ($denied as $row) {
       <td><?php echo $row['equip_issues']; ?></td>
       <td><?php echo $row['required_services']; ?></td>
       <td><?php echo $row['date_added']; ?></td>
+      <td><?php echo $row['reason']; ?></td>
     </tr>
-  </tbody>
-</table>
+ 
 
 
 <?php
 }
+
+?>
+ </tbody>
+</table>
+<?php
 break;
 } 
  }else{

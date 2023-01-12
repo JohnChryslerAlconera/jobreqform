@@ -10,6 +10,7 @@
 		
 }
 	if(isset($data))
+	$data = $class->pdf();
 
 foreach($data as $row){
 	$issues = explode(',', $row['equip_issues']);

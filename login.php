@@ -1,4 +1,5 @@
 <?php
+
 include('formclass.php');
 $user = $class->getUser();
 $direct = $class->redirect();
@@ -7,26 +8,29 @@ if(isset($_POST) & !empty($_POST)){
 				if($_POST['csrf_token'] == $_SESSION['csrf_token']){
 				}
 			}
-					$max_time = 60*30;
+
+		}
+					$max_time = 5;
 					if(isset($_SESSION['csrf_token_time'])){
 						$token_time = $_SESSION['csrf_token_time'];
 						if(($token_time + $max_time) >= time()){
-							$this->userInsertData();
-							?>
-					<script>
-						alert("Added");
-						window.location.href = "submitted.php";
-					</script>
-					<?php
-							}else{
-								unset($_SESSION['csrf_token']);
-								unset($_SESSION['csrf_token_time']);
-								echo "CSRF Expired";
-							}
-							}
-				}else{
-					echo "Token expired! ,Please fill up again!";
-					 }
+							$class->getUser();			
+						$class->redirect();
+					}else{
+						unset($_SESSION['csrf_token']);
+						unset($_SESSION['csrf_token_time']);
+						?><script type="text/javascript">
+							alert("Token Expired, Please fill up again");
+							window.location.href = "login.php";
+						</script><?php
+					}
+				}
+
+
+		$token = md5(uniqid(rand(), true));
+		$_SESSION['csrf_token'] = $token;
+		$_SESSION['csrf_token_time'] = time();
+
 
 ?>
 <!DOCTYPE html>
@@ -57,15 +61,16 @@ if(isset($_POST) & !empty($_POST)){
 	<div class="card-header m-5 p-5" style="text-align:center" >
 		<a href="register.php">Not yet Registered? Click this</a>
 		<h1>-LOGIN-</h1>
-	<form role="form" method="post">
-	
+	<form method="post" role="form">
+	<input type="hidden" name="csrf_token" value="<?php echo $token;?>">
+
 	<label>AccountID:</label>
-	<input type="text" name="employee_id">
+	<input type="text" name="employee_id" required>
 	<p></p>
 	<p></p>
 	<label>Password:</label>
-	<input type="password" name="password"><p></p>
-	<input type="submit" name="submit" value="Enter">
+	<input type="password" name="password" required><p></p>
+	<input type="submit" name="login"value="Enter">
 	</form>
 	</div>
 	</div>

@@ -2,7 +2,8 @@
 require_once('formclass.php');
 $userdetails = $class->get_userdata();
 $submitted = $class->getSubmitted();
-
+$class->pdf();
+if(isset($userdetails)){
 ?>
 <!DOCTYPE html>
 <html>
@@ -33,15 +34,13 @@ switch($submitted){
       <th scope="col">Equipment Issue:</th>
       <th scope="col">Required Service:</th>
       <th scope="col">Date Submitted:</th>
-      <th scope="col">reason</th>
-      <th scope="col">form_status</th>
+      <th scope="col">Status</th>
       <th scope="col">Print</th>
     </tr>
   </thead>
 <?php
 foreach ($submitted as $row) {
 ?>
-
   <tbody>
     <tr>
       <td><?php echo $row['euser_fullname']; ?></td>
@@ -55,6 +54,7 @@ foreach ($submitted as $row) {
       <td><form method="post" action="make_fpdf.php">
   <input type="hidden" name="id" value="<?php echo $row['id']?>">
   <button type="submit" class="btn btn-success" name="printpdf">Convert to Pdf</button>
+
 </form>
 </td>
 <?php
@@ -65,6 +65,14 @@ break;
     </tr>
   </tbody>
 </table>  
+		
+<?php
+    }else{
+      header("Location: login.php");
+    }
+?>
+
+
 </body>
 </html>
 

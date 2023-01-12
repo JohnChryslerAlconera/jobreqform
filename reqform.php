@@ -3,12 +3,11 @@
 require_once('formclass.php');
 $userdetails = $class->get_userdata();
 $gettoken = $class->get_token();
-if(!isset($gettoken)){
 	$token = md5(uniqid(rand(), true));
 		$_SESSION['csrf_token'] = $token;
 		$_SESSION['csrf_token_time'] = time();
-}
 if(isset($userdetails)){
+	if($userdetails['access'] == 'user'){
 
 ?>
 
@@ -36,7 +35,7 @@ if(isset($userdetails)){
 	<table>
 		<div class="border border-5">
 		<tr>
-			<form role="form" method="post">
+			<form role="form" method="post" name="reqform">
 					<input type="hidden" name="csrf_token" value="<?php echo $token;?>">
 				<input type="hidden" name="fullname" value="<?php echo $userdetails['fullname'];?>">
 				<input type="hidden" name="req_dept" value="<?php echo $userdetails['department'];?>">
@@ -278,48 +277,14 @@ if(isset($userdetails)){
 			<tr></tr>
 			<tr></tr>
 			<tr>
-
-					<td> 
-						
-						<!-- Button trigger modal -->
-		
-				<input type="submit" name="submit" class="btn btn-success" value="ADD">
+				<td> 	
+				<input type="submit" name="reqform" class="btn btn-success" value="ADD">
+				</td>
 		</form>
-	
-<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
- <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-       					
-				 <input type="text" name="fullname" value="<?php echo $userdetails['fullname'];?>">
-				 <input type="text" name="req_dept" value="<?php echo $userdetails['department'];?>">
-				 <input type="text" name="employee_id" value="<?php echo $userdetails['employee_id'];?>">
-				 <input type="text" name="contact" value="<?php echo $userdetails['contact'];?>">
-				 <input type="text" name="dept_head_fullname" value="<?php echo $userdetails['dept_head_fullname'];?>">
-				 <input type="text" name="position" value="<?php echo $userdetails['position'];?>">
-			
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary" name="printpdf" formaction="make_fpdf.php">Print form as PDF</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-	
-					</td>
-			</tr>
-		</div></div>
 	</table>
 </div>
 	<?php
-		
-	
+			}
 				 }else{
 				 	header("Location: login.php");	
 				 }
