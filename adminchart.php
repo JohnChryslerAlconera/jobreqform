@@ -26,7 +26,6 @@
   // //   $denials[] = $row['denials'];
   // //   $approvals[] = $row['approvals'];
   //   // $completed[] = $row['completed'];
-  // }                        
 ?>
 <!doctype html>
 <html lang="en">
