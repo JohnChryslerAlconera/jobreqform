@@ -12,10 +12,12 @@ if(isset($userdetails)){
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title></title>
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+<meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+
 </head>
 <body>
 
@@ -33,11 +35,12 @@ switch($completed){
 ?>
     
     
-  </div>
-  <table class="table">
-  <thead>
+  <div class="container-fluid">
+  <table class="table table-bordered table-striped">
+  <thead class="table-dark">
     <tr>
-         <th scope="col">Requesting Department:</th>
+      <th scope="col">Form ID:</th>
+      <th scope="col">Requesting Department:</th>
       <th scope="col">Contact Info:</th>
       <th scope="col">Department Head Name:</th>
       <th scope="col">End User Name:</th>
@@ -51,8 +54,9 @@ switch($completed){
     </tr>
   </thead>
  <?php foreach ($completed as $row) {?>
-  <tbody>
+  <tbody class="table-striped">
     <tr>
+      <td><?php echo $row['form_id']; ?></td>
       <td><?php echo $row['req_dept']; ?></td>
       <td><?php echo $row['contact']; ?></td>
       <td><?php echo $row['dept_head_fullname']; ?></td>
@@ -71,6 +75,7 @@ switch($completed){
 ?>
   </tbody>
 </table>
+</div>
 <?php
 break;
 } 

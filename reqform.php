@@ -2,7 +2,10 @@
 
 require_once('formclass.php');
 $userdetails = $class->get_userdata();
+$class->userInsertData();
 $gettoken = $class->get_token();
+
+
 	$token = md5(uniqid(rand(), true));
 		$_SESSION['csrf_token'] = $token;
 		$_SESSION['csrf_token_time'] = time();

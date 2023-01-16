@@ -10,12 +10,10 @@ if(isset($_POST) & !empty($_POST)){
 			}
 
 		}
-					$max_time = 5;
+					$max_time = 60*30;
 					if(isset($_SESSION['csrf_token_time'])){
 						$token_time = $_SESSION['csrf_token_time'];
 						if(($token_time + $max_time) >= time()){
-							$class->getUser();			
-						$class->redirect();
 					}else{
 						unset($_SESSION['csrf_token']);
 						unset($_SESSION['csrf_token_time']);

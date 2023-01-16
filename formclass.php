@@ -7,33 +7,31 @@ class RequestForm {
 	protected $con;
 
 //make a public function for openConnection with try and catch/this loop/function
-		public function openConnection(){
-			try{
-				$this->con = new PDO($this->server, $this->root, $this->password, $this->options);
-				return $this->con;
+	public function openConnection(){
+		try{
+			$this->con = new PDO($this->server, $this->root, $this->password, $this->options);
+			return $this->con;
 				
-				}catch (PDOException $e) {
+			}catch (PDOException $e) {
 
-					echo "There is something wrong". $e->getMessage();
-					}
-		}
-		public function closeConnection(){	
-			$this->con = null;
-		}
-		public function getUser(){
-			if(isset($_POST['employee_id'])){
-				$employee_id = $_POST['employee_id'];
-				$password = $_POST['password'];
+				echo "There is something wrong". $e->getMessage();
+			}
+	}
+	public function closeConnection(){	
+		$this->con = null;
+	}
+	public function getUser(){
+		if(isset($_POST['employee_id'])){
+			$employee_id = $_POST['employee_id'];
+			$password = $_POST['password'];
 			$conn = $this->openConnection();
 			$stmt = $conn->prepare("SELECT * FROM users WHERE employee_id = ?");
 			$stmt->execute([$employee_id]);	
 			$user = $stmt->fetch();
-			if($stmt->rowCount() > 0){
-					
-			if(password_verify($password, $user['password'])){
+			if($stmt->rowCount() > 0){		
+				if(password_verify($password, $user['password'])){
 					header("Location: userpanel.php");
 					$this->set_userdata($user);
-				
 				}else{
 					?>
 					<script>
@@ -55,13 +53,16 @@ class RequestForm {
 	public function register(){
 		if(isset($_POST['register'])){
 			$firstname = $_POST['firstname'];
+			$firstname = ucwords(strtolower($firstname));
 			$lastname = $_POST['lastname'];
+			$lastname = ucwords(strtolower($lastname));
 			$employee_id = $_POST['employee_id'];
 			$contact = $_POST['contact'];
 			$department = $_POST['department'];
 			$dept_head_firstname = $_POST['dept_head_firstname'];
 			$dept_head_lastname = $_POST['dept_head_lastname'];
 			$dept_head_fullname = $dept_head_firstname. " ". $dept_head_lastname;
+			$dept_head_fullname = ucwords(strtolower($dept_head_fullname));
 			$position = $_POST['position'];
 			$password = $_POST['password'];
 			$cpassword = $_POST['cpassword'];
@@ -85,7 +86,8 @@ class RequestForm {
 		}
 		$_SESSION['userdata'] = array("fullname" => $array['firstname']. " ". $array['lastname'], 
 			"employee_id" => $array['employee_id'], "contact" => $array['contact'],
-			 "department" => $array['department'], "dept_head_fullname" => $array['dept_head_fullname'], 
+			 "department" => $array['department'], 
+			 "dept_head_fullname" => $array['dept_head_fullname'], 
 			 "position" => $array['position'], "access" => $array['access']);
 		return $_SESSION['userdata'];
 	}
@@ -116,7 +118,6 @@ class RequestForm {
 					if(isset($_SESSION['csrf_token_time'])){
 						$token_time = $_SESSION['csrf_token_time'];
 						if(($token_time + $max_time) >= time()){
-							$this->userInsertData();
 							}else{
 								unset($_SESSION['csrf_token']);
 								unset($_SESSION['csrf_token_time']);
@@ -141,8 +142,6 @@ class RequestForm {
 		}
 	}
 }
-
-
 		public function userInsertData(){
 			if (isset($_POST['reqform'])) {
 					date_default_timezone_set('Asia/Manila');
@@ -152,7 +151,7 @@ class RequestForm {
 					$contact = $_POST['contact'];
 					$date_sub = date('Y-m-d H:i:s');
 					$token = $_POST['csrf_token'];
-
+					$formid = $this->randomId();
 					$dept_head_fullname = $_POST['dept_head_fullname'];
 					$position = $_POST['position'];
 				$euser_fname = $_POST['euserfname'];
@@ -160,9 +159,10 @@ class RequestForm {
 				$euser_lname = $_POST['euserlname'];
 				$euser_suffix = $_POST['eusersuffix'];
 				$euser_fullname = $euser_fname. " ". $euser_midname. " ". $euser_lname. " ". $euser_suffix;
+				$euser_fullname = ucwords(strtolower($euser_fullname));
 				$equip_type = $_POST['equip_type'];
 				$equip_num = $_POST['equip_number'];
-				$equip_issues= implode("<br>", $_POST['issues']);
+				$equip_issues= implode(", ", $_POST['issues']);
 				if(strlen($equip_issues) == 0){
 					echo "need to check or write issue";
 				}else{	
@@ -171,14 +171,11 @@ class RequestForm {
 					echo "check one or more services";
 				}else{
 				$conn = $this->openConnection();
-				$stmt = $conn->prepare("INSERT INTO requests(req_name, req_dept, employee_id, contact, dept_head_fullname, euser_fullname, position, equip_type, equip_num, equip_issues, required_services,date_added)
-					VALUES(?,?,?,?,?,?,?,?,?,?,?,?)");
+				$stmt = $conn->prepare("INSERT INTO requests(req_name, req_dept, employee_id, contact, dept_head_fullname, euser_fullname, position, equip_type, equip_num, equip_issues, required_services,date_added,form_id)
+					VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)");
 				$stmt->execute([$fullname, $req_dept, $employee_id, $contact, $dept_head_fullname,
-				 $euser_fullname, $position, $equip_type, $equip_num, $equip_issues, $required_services,
-				  $date_sub]);
-				$count = $stmt->rowCount();
-				if($count > 0){
-				$stmt->execute([$fullname, $req_dept, $employee_id, $contact, $dept_head_fullname, $euser_fullname, $position, $equip_type, $equip_num, $equip_issues, $required_services, $date_sub]);
+				 $euser_fullname, $position, $equip_type, $equip_num, $equip_issues, 
+				 $required_services,$date_sub, $formid]);
 				$count = $stmt->rowCount();
 				if($count > 0){
 					echo "added";
@@ -191,6 +188,15 @@ class RequestForm {
 				}
 			}
 		}
+	public function randomId(){
+		$number = uniqid();
+    $varray = str_split($number);
+    $len = sizeof($varray);
+    $formid = array_slice($varray, $len-7, $len);
+    $formid = implode(",", $formid);
+    $formid = str_replace(',', '', $formid);
+    $formid = strtoupper($formid);	
+    return $formid;
 	}
 
 
@@ -215,29 +221,26 @@ class RequestForm {
 	
 	public function addAdmin(){
 		if(isset($_POST['add'])){
-
 			$employee_id = $_POST['employee_id'];
 			$password = $_POST['password'];
-
 			if($this->check_admin_exist($employee_id) == 0){
-
+			$password_hash = password_hash($password, PASSWORD_DEFAULT);
 			$conn = $this->openConnection();
-			$stmt = $conn->prepare("INSERT INTO users(employee_id, password) VALUES(?,?)");
-			$stmt->execute([$employee_id,$password]);
-
-
-			echo "added";
-			
-			
+			$stmt = $conn->prepare("INSERT INTO users(employee_id, password, access) VALUES(?,?,?)");
+			$stmt->execute([$employee_id,$password_hash, "administrator"]);
+			$count = $stmt->rowCount();
+			if($count > 0){
+			header("Location: adminpanel.php");
+		}
 			}else{
-				echo 'user already exist';
-			}
+			echo "ID already exist";
 		}
 	}
+}
 	
 	
 	public function check_admin_exist(){
-		if(isset($_POST['register'])){
+		if(isset($_POST['add'])){
 			$employee_id = $_POST['employee_id'];
 		$conn = $this->openConnection();
 		$stmt = $conn->prepare("SELECT * FROM users WHERE employee_id = ?");
@@ -279,13 +282,11 @@ class RequestForm {
 		$count = $stmt->rowCount();
 		if($count > 0 ){
 			return $pendings;
-		}else{
-			echo "theres no pending request/s yet";
 		}
 	}
 	public function getApproved(){
 		$conn = $this->openConnection();
-		$stmt = $conn->prepare("SELECT * FROM requests WHERE form_status = :form_status AND reason IS NULL");
+		$stmt = $conn->prepare("SELECT * FROM requests WHERE form_status = :form_status");
 		$stmt->execute(['form_status' => 'approved']);
 		$approved = $stmt->fetchAll();
 		$count = $stmt->rowCount();
@@ -332,11 +333,10 @@ class RequestForm {
 	// }
 
 	public function updateStatus(){
-			if(isset($_GET['action'])){
-
-				if($_GET["action"] == 'approved'){
-					$id = $_GET['id'];
-					$changed_status_by = $_GET['changed_by']; 
+			if(isset($_GET)){
+				if(isset($_GET['approved'])){
+					$id = intval($_GET['id']);
+					$changed_status_by = $_GET['admin']; 
 					$conn = $this->openConnection();
 					$stmt = $conn->prepare("UPDATE requests SET changed_status_by = :changed_status_by,
 					 form_status = :form_status WHERE id = :id");
@@ -346,9 +346,9 @@ class RequestForm {
 		 				header("Location: pendings.php");
  				}
  		}
-	 			if($_GET["action"] == 'denied'){
-		 			$id = $_GET['id'];
-					$changed_status_by = $_GET['changed_by']; 
+	 			if(isset($_GET['denied'])){
+		 			$id = intval($_GET['id']);
+					$changed_status_by = $_GET['admin']; 
 					$reason = $_GET['reason'];
 		 			$conn = $this->openConnection();
 		 			$stmt = $conn->prepare("UPDATE requests SET changed_status_by = :changed_status_by, form_status = :form_status,reason = :reason WHERE id = :id");
@@ -373,15 +373,16 @@ class RequestForm {
 	}	
 }
 		public function toComplete(){
-			if(isset($_POST['comment'])){
-				$id = $_POST['id'];
-				$reason = $_POST['reason'];
-
+			if(isset($_GET['comment'])){
+				$id = $_GET['id'];
+				$remarks = $_GET['remarks'];
+				$admin = $_GET['admin'];
 				$conn = $this->openConnection();
  				$stmt = $conn->prepare("UPDATE requests SET form_status = :form_status ,reason = :reason WHERE id = :id");
- 			$stmt->execute(["form_status" => "completed" , "reason" => $reason, "id" => $id]);
+ 			$stmt->execute(["form_status" => "completed" , "reason" => $remarks, "id" => $id]);
  			$row = $stmt->rowCount();
  			if ($row > 0) {
+ 				echo "Form updated to completed";
  				header("Location: approved.php");
  			}
 			}
@@ -421,6 +422,18 @@ class RequestForm {
 		return $data;
 		}
 	}
+	public function exportData($form){
+		$conn = $this->openConnection();
+		$stmt = $conn->prepare("SELECT *, MONTHNAME(date_added) as month FROM requests WHERE form_status = :form_status");
+		$stmt->execute(["form_status" => $form]);
+	}
+	// public function deniedData($form, $department){
+	// 	$conn = $this->openConnection();
+	// 	$stmt = $conn->prepare("SELECT *, MONTHNAME(date_added) as month FROM requests WHERE form_status = :form_status AND req_dept = :req_dept");
+	// 	$stmt->execute(["form_status" => $form, "req_dept" => $department]);
+	// 	$data = $stmt->fetchAll();
+	// 	return $data;
+	// }
 	   
 }
 

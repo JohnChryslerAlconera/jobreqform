@@ -2,10 +2,6 @@
 require_once("formclass.php");
 $userdetails = $class->get_userdata();
 $session = $class->sessionAdmin();
-
-
-
-  
 ?>
 <!DOCTYPE html>
 <html>
@@ -21,7 +17,8 @@ $session = $class->sessionAdmin();
 <body>
 <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
   <div class="container-fluid">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/e/e8/Seal_of_Iloilo_City.png" style="width:80px; height:70px;">
+    <a href="adminchart.php">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/e/e8/Seal_of_Iloilo_City.png" style="width:80px; height:70px;"></a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -40,39 +37,31 @@ $session = $class->sessionAdmin();
         </li>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="denied.php"> Denied</a>
+          <a class="nav-link" href="denied.php">Denied</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="completed.php">Completed</a>
         </li>
+         <li class="nav-item">
+          <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+          Export
+          </button>
+         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+             <li><a class="dropdown-item" href="exportPendings.php"><b>Pendings Forms</b></a></li>
+             <li><a class="dropdown-item" href="exportApproved.php"><b>Approved Forms</b></a></li>
+             <li><a class="dropdown-item" href="exportDenied.php"><b>Denied Forms</b></a></li>
+             <li><a class="dropdown-item" href="exportCompleted.php"><b>Completed Forms</b></a></li>
+             <li><a class="dropdown-item" href="exportData.php"><b>All Forms</b></a></li>
+         </ul>
+        </div>
+        </li>
       </ul>
       <form class="d-flex">
-      <!-- <a id="logout" href="logout.php"> <button>LOGOUT</button></a> -->
-        <a class="btn btn-primary" id="logout" href="logout.php"  >Logout</a>
+        <a class="btn btn-primary" id="logout" href="logout.php">Logout</a>
       </form>
     </div>
   </div>
-
-
-<!-- <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
-  <div class="container-fluid">
-      <ul class="navbar-nav me-auto">
-        <li class="nav-item">
-        <img src="https://iloilocity.gov.ph/main/wp-content/uploads/2018/07/cropped-iloilo-city-seal-300x300.png" height="60" alt="CoolBrand">
-        </li>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-                <div class="navbar-nav">
-                    <a href="addadmin.php" class="nav-item nav-link active"> Add admin</a>
-                    <a href="pendings.php" class="nav-item nav-link active">Pendings</a>
-                    <a href="approved.php" class="nav-item nav-link active">Approved<d/a>
-                    <a href="denied.php" class="nav-item nav-link active">Denied</a>
-                    <a href="completed.php" class="nav-item nav-link">Completed</a>
-                </div>
-        </div>
-      </ul>
-      <a id="logout" href="logout.php"> <button>LOGOUT</button></a>
-      </div>
->>>>>>> Stashed changes -->
 </nav>
 </body>
 </html>

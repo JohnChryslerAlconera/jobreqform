@@ -1,5 +1,4 @@
 <?php
-
 require_once('formclass.php');
 $userdetails = $class->get_userdata();
 $session = $class->sessionAdmin();
@@ -12,25 +11,27 @@ if(isset($userdetails)){
 <html>
 <head>
 	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title></title>
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
   
 <?php include "adminpanel.php";?>
   <h2>DENIED REQUESTS</h2>
-<?php
-switch($denied){
-  case null:
-  echo "no denied records yet";
-  break;
-  default:
-  ?>
-
-  <table class="table">
-  <thead>
+  <?php
+   switch($denied){
+        case null:
+        echo "no denied records yet";
+        break;
+        default:
+?>
+   <div class="container-fluid">
+   <table class="table table-striped table-bordered">
+  <thead class="table-dark">
     <tr>
+      <th scope="col">Form ID:</th>
       <th scope="col">Requesting Department:</th>
       <th scope="col">Contact Info:</th>
       <th scope="col">Department Head Name:</th>
@@ -44,11 +45,13 @@ switch($denied){
       <th scope="col">Reason:</th>
     </tr>
   </thead>
-<?php
-foreach ($denied as $row) {
-?>
+      <?php
+     
+      foreach ($denied as $row) {
+      ?>
   <tbody>
     <tr>
+      <td><?php echo $row['form_id']; ?></td>      
       <td><?php echo $row['req_dept']; ?></td>
       <td><?php echo $row['contact']; ?></td>
       <td><?php echo $row['dept_head_fullname']; ?></td>
@@ -61,7 +64,7 @@ foreach ($denied as $row) {
       <td><?php echo $row['date_added']; ?></td>
       <td><?php echo $row['reason']; ?></td>
     </tr>
- 
+
 
 
 <?php
@@ -70,6 +73,7 @@ foreach ($denied as $row) {
 ?>
  </tbody>
 </table>
+</div>
 <?php
 break;
 } 

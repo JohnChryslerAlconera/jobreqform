@@ -2,19 +2,11 @@
   require('formclass.php');
   if(isset($_POST['department'])){
   $dept_name = $_POST['department'];
-}
-  $form1 = 'denied';
-  $form2 = 'approved';
-//   AND req_dept = :req_dept MONTHNAME(date_added) as monthnames GROUP BY monthnames
-      $conn = $class->openConnection();
-      $stmt = $conn->prepare("SELECT COUNT(*) FROM requests WHERE 
-        form_status = :form_status");
-      $stmt->bindValue(':form_status', $form1, PDO::PARAM_STR);
-      $stmt->execute();
-      $denied = $stmt->fetchColumn();
-      $stmt->bindValue(':form_status', $form2, PDO::PARAM_STR);
-      $stmt->execute();
-      $approved = $stmt->fetchColumn();
+
+$form1 = "denied";
+$form2 = "approved";
+$form3 = "completed";
+  $data1 = $class->deniedData($form1, $dept_name);
       // $stmt->bindValue(':req_dept', $dept_name, PDO::PARAM_STR);
       // $stmt->execute();
       // $department = $stmt->fetch();
@@ -24,12 +16,27 @@
   //   $month[] = $row['monthnames'];
   // //   $denials[] = $row['denials'];
   // //   $approvals[] = $row['approvals'];
-  //   // $completed[] = $row['completed'];
+   //   // $completed[] = $row['completed']
+ }
+ $conn = $class->openConnection();
+ $query = $conn->prepare("SELECT MONTHNAME(date_added) as month FROM requests");
+ $query->execute();
+ $data = $query->fetchAll();
+ foreach ($data as $row) {
+   $month = $row['month'];
+ }
+
+
+;
 ?>
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Job Request Form Statistics</title>
     <style>
@@ -66,8 +73,7 @@
     </style>
   </head>
   <body>
-    <div class="chartMenu">
-    </div>
+    <?php include "adminpanel.php"?>
     <div class="chartCard">
       <div class="chartBox">
         <canvas id="myChart"></canvas>
@@ -95,23 +101,10 @@
       const label = <?php echo json_encode($dept_name)?>;
   const labels = ;
     const data = {
-      labels: "MONTHS",
+      labels: <?php echo json_encode($month);?>,
       datasets: [{
         label: label,
-        data: <?php echo json_encode($denied) ?>;,
-        backgroundColor: [
-          'rgba(255, 26, 104, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(255, 206, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-          'rgba(153, 102, 255, 0.2)',
-          'rgba(255, 159, 64, 0.2)',
-          'rgba(0, 0, 0, 0.2)'
-        ],
-        borderWidth: 1
-      },{
-        label: label,
-        data: <?php echo json_encode($approved) ?>;,
+        data: <?php echo json_encode($data1) ?>;,
         backgroundColor: [
           'rgba(255, 26, 104, 0.2)',
           'rgba(54, 162, 235, 0.2)',

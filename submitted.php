@@ -4,6 +4,7 @@ $userdetails = $class->get_userdata();
 $submitted = $class->getSubmitted();
 $class->pdf();
 if(isset($userdetails)){
+  if($userdetails['access'] == 'user'){
 ?>
 <!DOCTYPE html>
 <html>
@@ -17,17 +18,12 @@ if(isset($userdetails)){
 <body>
 	<?php include 'navbar.php';?>
 	<h1>Submitted REQUESTS</h1>
-<?php 
-switch($submitted){
-	case null:
-	echo "no submitted requests yet";
-	break;
-	default:
-?>
+
 <br> 
-  <table class="table">   
- <thead>
+   <table class="table table-striped table-bordered">
+  <thead class="thead-dark">
     <tr>
+      <th scope="col">Form ID:</th>
       <th scope="col">End User Name:</th>
       <th scope="col">Equipment Type:</th>
       <th scope="col">Equipment Number:</th>
@@ -35,26 +31,33 @@ switch($submitted){
       <th scope="col">Required Service:</th>
       <th scope="col">Date Submitted:</th>
       <th scope="col">Status</th>
+      <th scope="col">Remarks:</th>
       <th scope="col">Print</th>
     </tr>
   </thead>
-<?php
+<?php 
+switch($submitted){
+  case null:
+  echo "no submitted requests yet";
+  break;
+  default:
+  
 foreach ($submitted as $row) {
 ?>
   <tbody>
     <tr>
+      <td><?php echo $row['form_id']; ?></td>
       <td><?php echo $row['euser_fullname']; ?></td>
       <td><?php echo $row['equip_type']; ?></td>
       <td><?php echo $row['equip_num']; ?></td>
       <td><?php echo $row['equip_issues']; ?></td>
       <td><?php echo $row['required_services']; ?></td>
       <td><?php echo $row['date_added']; ?></td>
-      <td><?php echo $row['reason']; ?></td>
       <td><?php echo $row['form_status']; ?></td>
+      <td><?php echo $row['reason']; ?></td>
       <td><form method="post" action="make_fpdf.php">
   <input type="hidden" name="id" value="<?php echo $row['id']?>">
   <button type="submit" class="btn btn-success" name="printpdf">Convert to Pdf</button>
-
 </form>
 </td>
 <?php
@@ -67,6 +70,7 @@ break;
 </table>  
 		
 <?php
+  }
     }else{
       header("Location: login.php");
     }

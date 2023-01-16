@@ -34,7 +34,13 @@ if(isset($_POST) & !empty($_POST)){
       }
        if(empty($_POST['contact'])){
         $errors[] = "Contact Number is required<br>";
-      }
+      } 
+      //  if(strlen($_POST['contact'] != 11))  {
+      //   $errors[] = "Contact Number should 11 digits<br>";
+      // }
+      // if(is_int($_POST['contact'] != 1))  {
+      //   $errors[] = "Contact Number should only have numerical numbers<br>";
+      // }
        if(empty($_POST['dept_head_firstname'] | $_POST['dept_head_lastname'])){
         $errors[] = "Department Head Name is required<br>";
       }
@@ -58,6 +64,7 @@ if(isset($_POST) & !empty($_POST)){
       }
     if(empty($errors)){
       $register = $class->register();
+      header("Location: login.php");
     }
 }
 ?>
@@ -120,7 +127,7 @@ if(isset($_POST) & !empty($_POST)){
                 </div>
                 <div class="col-md-6 mb-4">
                   <div class="form-outline">
-                  		<input type="text" name="contact" placeholder="Contact Number" id="form3Example3" class="form-control">
+                  		<input type="text" name="contact" placeholder="Contact Number: 09*********" id="form3Example3" class="form-control">
                  
                   </div>
                 </div>
