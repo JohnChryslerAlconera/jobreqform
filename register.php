@@ -2,6 +2,7 @@
 require_once('formclass.php');
 $check = $class->check_user_exist();
 session_start();
+include "script.php";
 if(isset($_POST) & !empty($_POST)){
       if(isset($_POST['csrf_token'])){
         if($_POST['csrf_token'] == $_SESSION['csrf_token']){
@@ -64,7 +65,6 @@ if(isset($_POST) & !empty($_POST)){
       }
     if(empty($errors)){
       $register = $class->register();
-      header("Location: login.php");
     }
 }
 ?>
@@ -75,7 +75,7 @@ if(isset($_POST) & !empty($_POST)){
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title></title>
+	<title>Register | Job Request Form</title>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 </head>
 <section class="text-center text-lg-start">A
@@ -185,6 +185,5 @@ if(isset($_POST) & !empty($_POST)){
 
            
             </form>
-
 </body>
 </html>

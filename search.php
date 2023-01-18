@@ -1,42 +1,29 @@
 <?php
-
-require_once('formclass.php');
+require_once "formclass.php";
 $userdetails = $class->get_userdata();
 $session = $class->sessionAdmin();
-$completed = $class->getCompleted();
-
+$searched = $class->searchForm();
 if(isset($userdetails)){
+		
 ?>
-
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Completed | Forms</title>
-<meta charset="utf-8">
+	<meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-
+	<title>Form | Searched</title>
 </head>
 <body>
-
-	
-<?php 
-include "adminpanel.php";?>
-<h2 class="ms-3">COMPLETED REQUESTS</h2>
-<?php
-switch($completed){
-	case null:
-	echo "no completed records yet";
-	break;
-	default:
-
+	<?php include "adminpanel.php";?>
+  <h2>Results</h2>
+  <?php
+   if(!empty($searched)){
 ?>
-    
-    
-  <div class="container-fluid">
-  <table class="table table-bordered table-striped">
+	<div class="container-fluid">
+   <table class="table table-striped table-bordered">
   <thead class="table-dark">
     <tr>
       <th scope="col">Form ID:</th>
@@ -50,13 +37,17 @@ switch($completed){
       <th scope="col">Equipment Issue:</th>
       <th scope="col">Required Service:</th>
       <th scope="col">Date Submitted:</th>
-      <th scope="col">Reason:</th>
+      <th scope="col">Date Submitted:</th> 
+      <th scope="col">Remarks/Reason:</th>
     </tr>
   </thead>
- <?php foreach ($completed as $row) {?>
-  <tbody class="table-striped">
+      <?php
+     
+      foreach ($searched as $row) {
+      ?>
+  <tbody>
     <tr>
-      <td><?php echo $row['form_id']; ?></td>
+      <td><?php echo $row['form_id']; ?></td>      
       <td><?php echo $row['req_dept']; ?></td>
       <td><?php echo $row['contact']; ?></td>
       <td><?php echo $row['dept_head_fullname']; ?></td>
@@ -67,22 +58,27 @@ switch($completed){
       <td><?php echo $row['equip_issues']; ?></td>
       <td><?php echo $row['required_services']; ?></td>
       <td><?php echo $row['date_added']; ?></td>
+      <td><?php echo $row['form_status']; ?></td>
       <td><?php echo $row['reason']; ?></td>
     </tr>
 
-<?php
-}
-?>
-  </tbody>
-</table>
-</div>
-<?php
-break;
-} 
- }else{
- 	echo "You do not belong here!";
 
- }
+
+<?php
+	}
+
+?>
+	 </tbody>
+	</table>
+	</div>
+<?php
+}else{
+	echo "Searched no results found";
+}
+	 }else{
+	 	echo "You do not belong here!";
+
+	 }
  ?>
 
 </body>

@@ -1,9 +1,8 @@
 <?php
 require_once("formclass.php");
-
-$conn = $class->openConnection();
-$query = $conn->prepare("SELECT *, MONTHNAME(date_added) as months FROM requests WHERE form_status = ? GROUP BY months ASC"); 
- $query->execute(["completed"]);
+$form = "completed";
+$query = $class->exportData($form);
+if(!empty($query)){
 if($query->rowCount() > 0){
     $delimiter = ","; 
     $filename = "approved-data_" . date('Y-m-d') . ".csv"; 

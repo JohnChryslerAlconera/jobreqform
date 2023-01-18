@@ -13,7 +13,7 @@ if(isset($userdetails)){
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title></title>
+	<title>Pendings | Forms</title>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 </head>
@@ -22,7 +22,7 @@ if(isset($userdetails)){
 
 <?php 
 include "adminpanel.php";?>
-  <h2>PENDING REQUESTS</h2>
+  <h2 class="ms-3">PENDING REQUESTS</h2>
   <div class="container-fluid">
   <table class="table table-striped">
   <thead class="table-dark">
@@ -68,20 +68,20 @@ include "adminpanel.php";?>
 </button>
 <!-- Modal -->
 <div class="modal fade" id="update" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Update Form Status</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body mx-auto">
          <form method="get">
           <input type="hidden" name="id" value="<?php echo $pending['id']?>">
            <input type="hidden" name="admin" value="<?php echo $userdetails['fullname'];?>">
           <button type="submit" name="approved" class="btn btn-primary">
             Approved
           </button>
-          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#denied">
+          <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#denied">
             Denied
           </button>
       </div>
@@ -93,14 +93,14 @@ include "adminpanel.php";?>
 </div>
 <!--Modal for Denied-->
 <div class="modal fade" id="denied" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Update Form Status</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Reason of Denial</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <textarea name="reason" cols="60" rows="10"></textarea>
+        <textarea name="reason" cols="60" rows="10" placeholder="Enter reason"></textarea>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

@@ -1,11 +1,8 @@
 <?php
 require_once("formclass.php");
-
-$conn = $class->openConnection();
-$query = $conn->prepare("SELECT *, MONTHNAME(date_added) as months FROM requests 
-WHERE form_status = ? GROUP BY months ASC"); 
- $query->execute(["denied"]);
-if($query->rowCount() > 0){
+$form = "denied";
+$query = $class->exportData($form);
+if(!empty($query)){
     $delimiter = ","; 
     $filename = "denied-data_" . date('Y-m-d') . ".csv"; 
  // Create a file pointer 

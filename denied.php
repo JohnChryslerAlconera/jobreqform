@@ -3,7 +3,6 @@ require_once('formclass.php');
 $userdetails = $class->get_userdata();
 $session = $class->sessionAdmin();
 $denied = $class->getDenied();
-
 if(isset($userdetails)){
 ?>
 
@@ -15,11 +14,12 @@ if(isset($userdetails)){
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+  <title>Denied | Forms</title>
 </head>
 <body>
   
 <?php include "adminpanel.php";?>
-  <h2>DENIED REQUESTS</h2>
+  <h2 class="ms-3">DENIED REQUESTS</h2>
   <?php
    switch($denied){
         case null:

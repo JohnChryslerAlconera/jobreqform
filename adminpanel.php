@@ -51,17 +51,27 @@ $session = $class->sessionAdmin();
              <li><a class="dropdown-item" href="exportPendings.php"><b>Pendings Forms</b></a></li>
              <li><a class="dropdown-item" href="exportApproved.php"><b>Approved Forms</b></a></li>
              <li><a class="dropdown-item" href="exportDenied.php"><b>Denied Forms</b></a></li>
-             <li><a class="dropdown-item" href="exportCompleted.php"><b>Completed Forms</b></a></li>
+             <li><a class="dropdown-item" href="exportCompleted.php"><b>Completed Forms</b></a>
+             </li>
              <li><a class="dropdown-item" href="exportData.php"><b>All Forms</b></a></li>
          </ul>
         </div>
         </li>
       </ul>
+      <form method="get" action="search.php" class="d-flex">
+        <div class="input-group me-md-3">
+          <input type="text" class="form-control" name="search" placeholder="Search Form" aria-label="Recipient's username" aria-describedby="button-addon2" required>
+          <button class="btn btn-outline-secondary" type="submit" name="submit" id="button-addon2">Search
+          </button>
+          </div>
+         </form>
+
       <form class="d-flex">
         <a class="btn btn-primary" id="logout" href="logout.php">Logout</a>
       </form>
     </div>
   </div>
 </nav>
+
 </body>
 </html>

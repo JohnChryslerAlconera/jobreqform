@@ -51,20 +51,21 @@ if(!isset($gettoken)){
 
 <body>
 <?php include "adminpanel.php"?>
-	<h2>Add Admin</h1>
-		<form action="" method="post">
-		<input type="hidden" name="csrf_token" value="<?php echo $token;?>">
-
-	<label>Admin Name:</label>
-	<input type="text" name="adminname">
-	<p></p>
-	<label>Account ID:</label>
-	<input type="text" name="employee_id"><p></p>
-	<label>Password:</label>
-	<input type="password" name="password">
-	<p></p>	
-	<input type="submit" name="add" value="Add">
-	</form>
-	
+<div class="container-fluid">
+<div class="card text-center mx-auto mt-5" style="width: 18rem ;">
+  <h2>Add Admin</h1>
+  <i class="fa-thin fa-user-plus"></i>
+  <div class="card-body">
+    <form action="" method="post">
+    <input type="hidden" name="csrf_token" value="<?php echo $token;?>">
+  <label>Account ID:</label>
+  <input type="text" name="employee_id"><p></p>
+  <label>Password:</label>
+  <input type="password" name="password">
+  <p></p> 
+  <button class="btn btn-primary" type="submit" name="add">Add</button>
+  </form>
+  </div>
+</div>
 </body>
 </html>

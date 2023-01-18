@@ -30,7 +30,6 @@ class RequestForm {
 			$user = $stmt->fetch();
 			if($stmt->rowCount() > 0){		
 				if(password_verify($password, $user['password'])){
-					header("Location: userpanel.php");
 					$this->set_userdata($user);
 				}else{
 					?>
@@ -73,10 +72,14 @@ class RequestForm {
 			$stmt->execute([$firstname, $lastname, $employee_id, $contact, $department, $dept_head_fullname, $position, $hashed_password]);
 			$count = $stmt->rowCount();
 			if($count > 0){
-				echo "Added";
+				// echo "Added";
+				$_SESSION['status'] = "You successfully registered, Log in to enter";
+				$_SESSION['status_code'] = "success";
+				header("location: login.php");
 			}else{
-				echo "something is wrong";
-				}
+				$_SESSION['status'] = "There's something wrong";
+				$_SESSION['status_code'] = "error";
+				header("location: register.php");				}
 			}
 		}
 	
@@ -132,7 +135,7 @@ class RequestForm {
 				$employee_id = $this->get_userdata();
 				$id = $employee_id['employee_id'];
 			$conn = $this->openConnection();
-		$stmt = $conn->prepare("SELECT * FROM requests WHERE employee_id = ?");
+		$stmt = $conn->prepare("SELECT * FROM requests WHERE employee_id = ? ORDER BY date_added DESC");
 		$stmt->execute([$id]);
 		$form = $stmt->fetchAll();
 		$count = $stmt->rowCount();
@@ -178,11 +181,15 @@ class RequestForm {
 				 $required_services,$date_sub, $formid]);
 				$count = $stmt->rowCount();
 				if($count > 0){
-					echo "added";
+					$_SESSION['status'] = "Form added";
+					$_SESSION['status_code'] = "success";
 					header('Location: submitted.php');
+					// echo "added";
+					// header('Location: submitted.php');
 
 					}else{
-					echo "not added";
+						$_SESSION['status'] = "There's something wrong, form is not submitted";
+						$_SESSION['status_code'] = "error";
 						}	
 					}
 				}
@@ -422,20 +429,39 @@ class RequestForm {
 		return $data;
 		}
 	}
-	public function exportData($form){
+	public function exportData($form){	
 		$conn = $this->openConnection();
-		$stmt = $conn->prepare("SELECT *, MONTHNAME(date_added) as month FROM requests WHERE form_status = :form_status");
-		$stmt->execute(["form_status" => $form]);
+		$stmt = $conn->prepare("SELECT * FROM requests WHERE form_status = ?");
+		$stmt->execute([$form]);
+		return $stmt;
 	}
-	// public function deniedData($form, $department){
-	// 	$conn = $this->openConnection();
-	// 	$stmt = $conn->prepare("SELECT *, MONTHNAME(date_added) as month FROM requests WHERE form_status = :form_status AND req_dept = :req_dept");
-	// 	$stmt->execute(["form_status" => $form, "req_dept" => $department]);
-	// 	$data = $stmt->fetchAll();
-	// 	return $data;
-	// }
-	   
+	public function chartData($department){
+		$conn = $this->openConnection();
+		$stmt = $conn->prepare("
+		SELECT MONTHNAME(date_added) as month,
+			(SELECT COUNT(*) FROM requests WHERE form_status = :approved) AS approved, 
+			(SELECT COUNT(*) FROM requests WHERE form_status = :denied) AS denied, 
+			(SELECT COUNT(*) FROM requests WHERE form_status = :completed) AS completed 
+			FROM requests WHERE req_dept = :req_dept GROUP BY month ORDER BY date_added ASC");
+		$stmt->execute(["req_dept" => $department, "approved" => "approved", "denied" => "denied", "completed" => "completed"]);
+		$fetch = $stmt->fetchAll();
+		return $fetch;
+	}
+	public function searchForm(){
+		if(isset($_GET['submit']) & !empty($_GET['submit'])){
+		$search = $_GET['search'];
+		$conn = $this->openConnection();
+		$stmt = $conn->prepare("SELECT * FROM requests WHERE form_id LIKE :search OR req_name LIKE :search OR req_dept LIKE :search OR employee_id LIKE :search ORDER BY req_dept");
+		$stmt->bindValue(':search', "%".$search.'%', PDO::PARAM_STR);
+		$stmt->execute();
+		$searched = $stmt->fetchAll();
+		return $searched;
+		}
+	}
+
 }
 
 $class = new RequestForm();
+// , "search2" => $search, "search3" => $search, "search4" => $search
+//  OR req_name LIKE '%:search2%' OR req_dept LIKE '%:search3%' OR employee_id LIKE '%:search4%'
 ?>

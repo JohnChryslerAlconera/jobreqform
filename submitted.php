@@ -17,11 +17,10 @@ if(isset($userdetails)){
 </head>
 <body>
 	<?php include 'navbar.php';?>
-	<h1>Submitted REQUESTS</h1>
-
-<br> 
+  <div class="container-fluid">
+	<h2 class="ms-3">Submitted REQUESTS</h2>
    <table class="table table-striped table-bordered">
-  <thead class="thead-dark">
+  <thead class="table-dark">
     <tr>
       <th scope="col">Form ID:</th>
       <th scope="col">End User Name:</th>
@@ -75,6 +74,7 @@ break;
       header("Location: login.php");
     }
 ?>
+</div>
 
 
 </body>

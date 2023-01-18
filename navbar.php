@@ -3,7 +3,6 @@
 require_once('formclass.php');
 $userdetails = $class->get_userdata();
 
-
 ?>
 <head>
   <meta charset="utf-8">
@@ -27,12 +26,12 @@ $userdetails = $class->get_userdata();
           <a class="nav-link" href="submitted.php">Submitted Forms</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="Reqform.php"> Form Request</a>
+          <a class="nav-link" href="Reqform.php">Request Form</a>
         </li>
       </ul>
       <form class="d-flex">
       <!-- <a id="logout" href="logout.php"> <button>LOGOUT</button></a> -->
-        <a class="btn btn-primary" id="logout" href="logout.php"">Logout</a>
+        <a class="btn btn-primary" id="logout" href="logout.php">Logout</a>
       </form>
     </div>
   </div>

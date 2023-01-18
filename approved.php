@@ -15,10 +15,11 @@ if(isset($userdetails)){
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+  <title>Approved | Forms</title>
 </head>
 <body>
     <?php include "adminpanel.php";?>
-    <h2>APPROVED REQUESTS</h2>
+    <h2 class="ms-3">APPROVED REQUESTS</h2>
       
     <div class="container-fluid">   
         <table class="table table-striped table-bordered">
@@ -77,7 +78,7 @@ if(isset($userdetails)){
         <form method="get">
               <input type="hidden" name="id" value="<?php echo $row['id'];?>">
               <input type="hidden" name="admin" value="<?php $userdetails['fullname']?>">
-              <textarea name="remarks" rows="6" cols="30" placeholder="Add remarks"></textarea>
+              <textarea name="remarks" rows="10" cols="60" placeholder="Add remarks" required=""></textarea>
        </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
