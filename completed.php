@@ -3,7 +3,7 @@
 require_once('formclass.php');
 $userdetails = $class->get_userdata();
 $session = $class->sessionAdmin();
-$completed = $class->getCompleted();
+$completed = $class->getData("completed");
 
 if(isset($userdetails)){
 ?>
@@ -14,9 +14,8 @@ if(isset($userdetails)){
   <title>Completed | Forms</title>
 <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 
 </head>
 <body>
@@ -66,8 +65,8 @@ switch($completed){
       <td><?php echo $row['equip_num']; ?></td>
       <td><?php echo $row['equip_issues']; ?></td>
       <td><?php echo $row['required_services']; ?></td>
-      <td><?php echo $row['date_added']; ?></td>
-      <td><?php echo $row['reason']; ?></td>
+      <td><?php echo date("M d, Y",strtotime($row['date_added'])); ?></td>
+      <td><?php echo ucfirst($row['reason']); ?></td>
     </tr>
 
 <?php
@@ -83,6 +82,7 @@ break;
  	echo "You do not belong here!";
 
  }
+  include "script.php";
  ?>
 
 </body>

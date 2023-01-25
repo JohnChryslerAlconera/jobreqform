@@ -11,11 +11,11 @@ if(!empty($query)){
 
 
 
-    $fields = array('Form ID', 'Requesting Department', 'Contact Info', 'Department Head Name', 'End User Name', 'Position', 'Equipment Type', 'Equipment Issue', 'Required Service', 'Date Submitted');
+    $fields = array('Form ID', 'Requesting Department', 'Requesting Name','Contact Info', 'Department Head Name', 'End User Name', 'Position', 'Employee ID','Equipment Type', 'Equipment Issue', 'Required Service', 'Date Submitted', 'Form Status');
         fputcsv($f, $fields, $delimiter); 
             while($row = $query->fetch()){ 
 
-        $lineData = array($row['form_id'],  $row['req_dept'],  $row['contact'], $row['contact'], $row['employee_id'], $row['dept_head_fullname'], $row['position'], $row['equip_type'], $row['equip_issues'], $row['required_services'], $row['date_added'], $row['form_status'],); 
+        $lineData = array($row['form_id'],  $row['req_dept'], $row['req_name'],  $row['contact'], $row['dept_head_fullname'], $row['euser_fullname'], $row['position'], $row['employee_id'],  $row['equip_type'], $row['equip_issues'], $row['required_services'], date("M d, Y",strtotime($row['date_added'])), $row['form_status'],);
         fputcsv($f, $lineData, $delimiter);
          fseek($f, 0); 
      

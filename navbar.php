@@ -1,5 +1,4 @@
 <?php
-
 require_once('formclass.php');
 $userdetails = $class->get_userdata();
 
@@ -31,7 +30,7 @@ $userdetails = $class->get_userdata();
       </ul>
       <form class="d-flex">
       <!-- <a id="logout" href="logout.php"> <button>LOGOUT</button></a> -->
-        <a class="btn btn-primary" id="logout" href="logout.php">Logout</a>
+        <a class="btn btn-secondary" id="logout" href="logout.php"><i class="fa-solid fa-right-from-bracket"></i></a>
       </form>
     </div>
   </div>

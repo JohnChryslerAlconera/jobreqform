@@ -11,15 +11,16 @@ if(isset($userdetails)){
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+
 	<title>Submitted Forms</title>
 </head>
 <body>
 	<?php include 'navbar.php';?>
   <div class="container-fluid">
 	<h2 class="ms-3">Submitted REQUESTS</h2>
-   <table class="table table-striped table-bordered">
+   <table class="table table-striped  ">
   <thead class="table-dark">
     <tr>
       <th scope="col">Form ID:</th>
@@ -51,12 +52,12 @@ foreach ($submitted as $row) {
       <td><?php echo $row['equip_num']; ?></td>
       <td><?php echo $row['equip_issues']; ?></td>
       <td><?php echo $row['required_services']; ?></td>
-      <td><?php echo $row['date_added']; ?></td>
+      <td><?php echo date("M d, Y",strtotime($row['date_added'])); ?></td>
       <td><?php echo $row['form_status']; ?></td>
-      <td><?php echo $row['reason']; ?></td>
+      <td><?php echo $row['reason']?></td>
       <td><form method="post" action="make_fpdf.php">
   <input type="hidden" name="id" value="<?php echo $row['id']?>">
-  <button type="submit" class="btn btn-success" name="printpdf">Convert to Pdf</button>
+  <button type="submit" class="btn btn-success" name="printpdf"><i class="fas fa-print"></i></button>
 </form>
 </td>
 <?php
@@ -73,6 +74,7 @@ break;
     }else{
       header("Location: login.php");
     }
+    include 'script.php';
 ?>
 </div>
 

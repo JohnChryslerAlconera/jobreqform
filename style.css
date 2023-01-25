@@ -1,13 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
 
-* {
+/** {
 	box-sizing: border-box;
 	margin: 0;
 	padding: 0;
 	background-color: white;
-}
-
+}*/
+/*
 li, a, button{
 	font-family: 'Roboto', sans-serif ;
 	font-weight: 600;
@@ -52,4 +52,13 @@ button:hover{
 }
 img{
 	width: 10rem;
+}*/
+.multi_select_box{
+	width: 400px;
+	margin: auto;
+
+}
+.multi_select_box select{
+	width: 100%;
+	
 }

@@ -2,7 +2,7 @@
 require_once('formclass.php');
 $userdetails = $class->get_userdata();
 $session = $class->sessionAdmin();
-$approved = $class->getApproved();
+$approved = $class->getData("approved");
 $class->toComplete();
 if(isset($userdetails)){
 
@@ -12,9 +12,9 @@ if(isset($userdetails)){
 <head>
 <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+
   <title>Approved | Forms</title>
 </head>
 <body>
@@ -49,7 +49,7 @@ if(isset($userdetails)){
             ?>
         <tbody>
           <tr>
-            <td><?php echo $row['form_id']; ?></td>
+            <td><b><?php echo $row['form_id']; ?></b></td>
             <td><?php echo $row['req_dept']; ?></td>
             <td><?php echo $row['contact']; ?></td>
             <td><?php echo $row['dept_head_fullname']; ?></td>
@@ -59,11 +59,11 @@ if(isset($userdetails)){
             <td><?php echo $row['equip_num']; ?></td>
             <td><?php echo $row['equip_issues']; ?></td>
             <td><?php echo $row['required_services']; ?></td>
-            <td><?php echo $row['date_added']; ?></td>
+            <td><?php echo date("M d, Y",strtotime($row['date_added'])); ?></td>
             <td>              
               <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#remarks">
-  Add
+<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#remarks">
+  <i class="fa-solid fa-comment"></i>
 </button>
 
 <!-- Modal -->
@@ -105,5 +105,6 @@ if(isset($userdetails)){
 
        }
        ?>
+       <?php include "script.php";?>
 </body>
 </html> 

@@ -21,9 +21,9 @@ class RequestForm {
 		$this->con = null;
 	}
 	public function getUser(){
-		if(isset($_POST['employee_id'])){
-			$employee_id = $_POST['employee_id'];
-			$password = $_POST['password'];
+		if(isset($_POST['account'])){
+			$employee_id = $_POST['account'];
+			$password = $_POST['logpass'];
 			$conn = $this->openConnection();
 			$stmt = $conn->prepare("SELECT * FROM users WHERE employee_id = ?");
 			$stmt->execute([$employee_id]);	
@@ -35,7 +35,7 @@ class RequestForm {
 					?>
 					<script>
 						alert("Password and Employee ID do not match");
-						window.location.href = "login.php";
+						window.location.href = "index.php";
 					</script>
 					<?php
 				}
@@ -43,7 +43,7 @@ class RequestForm {
 				?>
 					<script>
 						alert("Employee do not exist, Please be sure to sign up first");
-						window.location.href = "login.php";
+						window.location.href = "index.php";
 					</script>
 					<?php
 			}
@@ -73,13 +73,13 @@ class RequestForm {
 			$count = $stmt->rowCount();
 			if($count > 0){
 				// echo "Added";
-				$_SESSION['status'] = "You successfully registered, Log in to enter";
+				$_SESSION['status'] = "You successfully indexed, Log in to enter";
 				$_SESSION['status_code'] = "success";
-				header("location: login.php");
+				header("location: index.php");
 			}else{
 				$_SESSION['status'] = "There's something wrong";
 				$_SESSION['status_code'] = "error";
-				header("location: register.php");				}
+				header("location: index.php");				}
 			}
 		}
 	
@@ -108,16 +108,14 @@ class RequestForm {
 	}
 }
 	public function get_token(){
-		if(!isset($_SESSION)){
-			session_start();
 		if(isset($_POST) & !empty($_POST)){
 			if(isset($_POST['csrf_token'])){
 				if($_POST['csrf_token'] == $_SESSION['csrf_token']){
-					
-			} 
+
+				}
 			
 			}
-					$max_time = 60*30;
+					$max_time = 5;
 					if(isset($_SESSION['csrf_token_time'])){
 						$token_time = $_SESSION['csrf_token_time'];
 						if(($token_time + $max_time) >= time()){
@@ -125,11 +123,11 @@ class RequestForm {
 								unset($_SESSION['csrf_token']);
 								unset($_SESSION['csrf_token_time']);
 								echo "CSRF token expired!, Please fill up again";
-										}
-		}
-							}
-							}
-					 }
+				}
+			}
+							
+		 }
+	}
 		public function getSubmitted(){
 			if(!empty($this->get_userdata())){
 				$employee_id = $this->get_userdata();
@@ -154,7 +152,8 @@ class RequestForm {
 					$contact = $_POST['contact'];
 					$date_sub = date('Y-m-d H:i:s');
 					$token = $_POST['csrf_token'];
-					$formid = $this->randomId();
+					$i = 1;
+					$formid = ++$i.$this->randomId();
 					$dept_head_fullname = $_POST['dept_head_fullname'];
 					$position = $_POST['position'];
 				$euser_fname = $_POST['euserfname'];
@@ -206,17 +205,6 @@ class RequestForm {
     return $formid;
 	}
 
-
-	public function formId(){
-		if(!empty($this->userInsertData())){
-			$id = $conn->lastInsertId();
-			$conn = $this->openConnection();
-			$stmt = $conn->prepare("SELECT * FROM requests WHERE id = ?");
-			$stmt->execute([$id]);
-			$user = $stmt->fetch();
-			$this->setformId($user);
-			}
-		}
 	public function getinsertedID(){
 		$insert = $this->userInsertData();
 		if(!empty($insert)){
@@ -257,7 +245,7 @@ class RequestForm {
 	}
 }
 	public function check_user_exist(){
-		if(isset($_POST['register'])){
+		if(isset($_POST['index'])){
 			$employee_id = $_POST['employee_id'];
 		$conn = $this->openConnection();
 		$stmt = $conn->prepare("SELECT * FROM users WHERE employee_id = ?");
@@ -278,53 +266,20 @@ class RequestForm {
 
 
 
-	public function getPendings(){
+	public function getData($form){
 			date_default_timezone_set('Asia/Manila');
 		$now = date('Y-m-d H:i:s');
 		$lastweek = date('Y-m-d H:i:s', strtotime("-7 days"));
 		$conn = $this->openConnection();
-		$stmt = $conn->prepare("SELECT * FROM requests WHERE form_status = :form_status AND reason IS NULL ORDER BY date_added DESC");
-		$stmt->execute(['form_status' => 'pending']);
-		$pendings = $stmt->fetchAll();
+		$stmt = $conn->prepare("SELECT * FROM requests WHERE form_status = :form ORDER BY date_added DESC");
+		$stmt->execute(['form' => $form]);
+		$data = $stmt->fetchAll();
 		$count = $stmt->rowCount();
 		if($count > 0 ){
-			return $pendings;
+			return $data;
 		}
 	}
-	public function getApproved(){
-		$conn = $this->openConnection();
-		$stmt = $conn->prepare("SELECT * FROM requests WHERE form_status = :form_status");
-		$stmt->execute(['form_status' => 'approved']);
-		$approved = $stmt->fetchAll();
-		$count = $stmt->rowCount();
-		if($count > 0 ){
-			return $approved;
-
-		}
-	}
-	public function getDenied(){
-		$conn = $this->openConnection();
-		$stmt = $conn->prepare("SELECT * FROM requests WHERE form_status = :form_status");
-		$stmt->execute(['form_status' => 'denied']);
-		$denied = $stmt->fetchAll();
-		$count = $stmt->rowCount();
-		if($count > 0 ){
-			return $denied;
-		
-		}
-	}
-	public function getCompleted(){
-		$conn = $this->openConnection();
-		$stmt = $conn->prepare("SELECT * FROM requests WHERE changed_status_by IS NOT NULL AND form_status = :form_status");
-		$stmt->execute(["form_status" => 'completed']);
-		$completed = $stmt->fetchAll();
-		$count = $stmt->rowCount();
-		if($count > 0 ){
-			return $completed;	
-		
-		}
-	}
-	// public function getnew_requests(){
+		// public function getnew_requests(){
 	// 	date_default_timezone_set('Asia/Manila');
 	// 	$now = date('Y-m-d H:i:s');
 	// 	$lastweek = date('Y-m-d H:i:s', strtotime("-7 days"));
@@ -350,7 +305,19 @@ class RequestForm {
 		 			$stmt->execute(["changed_status_by" => $changed_status_by, "form_status" => "approved", "id" => $id]);
 		 			$row = $stmt->rowCount();
 		 			if($row > 0){
-		 				header("Location: pendings.php");
+		 				?>
+		 				<script>
+		 					alert("Form approved!");
+		 					window.location.href = "pendings.php";
+		 				</script>
+		 				<?php
+ 				}else{
+ 					?>
+		 				<script>
+		 					alert("There is something wrong");
+		 					window.location.href = "pendings.php";
+		 				</script>
+		 				<?php
  				}
  		}
 	 			if(isset($_GET['denied'])){
@@ -363,11 +330,23 @@ class RequestForm {
 		 				 "id" => $id]);
 		 			$row = $stmt->rowCount();
 			 		if($row > 0){
-			 		echo "Status denied";
+			 			?>
+		 				<script>
+		 					alert("Form denied!");
+		 					window.location.href = "pendings.php";
+		 				</script>
+		 				<?php
 			
-								}
+					}else{
+						?>
+		 				<script>
+		 					alert("something is wrong");
+		 					window.location.href = "pendings.php";
+		 				</script>
+		 				<?php
 					}
 			}
+		}
 	}
 	public function pdf(){
 		if(isset($_POST['printpdf'])){
@@ -399,7 +378,7 @@ class RequestForm {
 
 			if(isset($userdetails)){
 				if($userdetails['access'] == 'administrator'){
-					header("Location: pendings.php");
+					header("Location: adminchart.php");
 				
 			}
 				if($userdetails['access'] == 'user'){
@@ -412,10 +391,10 @@ class RequestForm {
 		$session = $this->get_userdata();
 		if(isset($session)){
 			if($session['access'] != 'administrator'){
-				header("Location: login.php");
+				header("Location: index.php");
 			}
 		}else{
-			header("Location: login.php");
+			header("Location: index.php");
 		} 
 	}
 
@@ -435,33 +414,43 @@ class RequestForm {
 		$stmt->execute([$form]);
 		return $stmt;
 	}
+	public function exportCustom(){
+		if(isset($_GET['export'])){
+			$issues = $_GET['issues'];
+			$conn = $this->openConnection();
+		$stmt = $conn->prepare("SELECT * FROM requests WHERE equip_issues LIKE :issues ORDER BY date_added DESC");
+		$stmt->execute(['issues' => "%".$issues."%"]);
+		return $stmt;
+		}
+	}
+
 	public function chartData($department){
 		$conn = $this->openConnection();
-		$stmt = $conn->prepare("
-		SELECT MONTHNAME(date_added) as month,
+		$stmt = $conn->prepare("SELECT MONTHNAME(date_added) as month,
 			(SELECT COUNT(*) FROM requests WHERE form_status = :approved) AS approved, 
 			(SELECT COUNT(*) FROM requests WHERE form_status = :denied) AS denied, 
 			(SELECT COUNT(*) FROM requests WHERE form_status = :completed) AS completed 
 			FROM requests WHERE req_dept = :req_dept GROUP BY month ORDER BY date_added ASC");
 		$stmt->execute(["req_dept" => $department, "approved" => "approved", "denied" => "denied", "completed" => "completed"]);
-		$fetch = $stmt->fetchAll();
-		return $fetch;
 	}
 	public function searchForm(){
-		if(isset($_GET['submit']) & !empty($_GET['submit'])){
-		$search = $_GET['search'];
+		if(isset($_GET['load'])){
+     	$search = $_GET['search'];
 		$conn = $this->openConnection();
-		$stmt = $conn->prepare("SELECT * FROM requests WHERE form_id LIKE :search OR req_name LIKE :search OR req_dept LIKE :search OR employee_id LIKE :search ORDER BY req_dept");
-		$stmt->bindValue(':search', "%".$search.'%', PDO::PARAM_STR);
+		$stmt = $conn->prepare("SELECT * FROM requests WHERE form_id LIKE :search OR req_name LIKE :search OR req_dept LIKE :search OR employee_id LIKE :search OR equip_issues LIKE :search GROUP BY form_status");
+		$stmt->bindValue(':search', "%".$search."%", PDO::PARAM_STR);
 		$stmt->execute();
 		$searched = $stmt->fetchAll();
 		return $searched;
+			}
 		}
-	}
-
-}
-
+		public function departments(){
+			$conn = $this->openConnection();
+		$stmt = $conn->prepare("SELECT DISTINCT req_dept FROM requests");
+		$stmt->execute();
+		return $stmt;
+		}
+}	
+	
 $class = new RequestForm();
-// , "search2" => $search, "search3" => $search, "search4" => $search
-//  OR req_name LIKE '%:search2%' OR req_dept LIKE '%:search3%' OR employee_id LIKE '%:search4%'
 ?>

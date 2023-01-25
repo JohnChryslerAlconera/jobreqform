@@ -2,7 +2,7 @@
 require_once('formclass.php');
 $userdetails = $class->get_userdata();
 $session = $class->sessionAdmin();
-$pendings = $class->getPendings();
+$pendings = $class->getData("pending");
 $class->updateStatus();
 if(isset($userdetails)){
 
@@ -13,9 +13,9 @@ if(isset($userdetails)){
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 	<title>Pendings | Forms</title>
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -24,7 +24,7 @@ if(isset($userdetails)){
 include "adminpanel.php";?>
   <h2 class="ms-3">PENDING REQUESTS</h2>
   <div class="container-fluid">
-  <table class="table table-striped">
+  <table class="table table-striped table-bordered">
   <thead class="table-dark">
     <tr>
       <th scope="col">Form ID:</th>      
@@ -35,9 +35,10 @@ include "adminpanel.php";?>
       <th scope="col">Position:</th>
       <th scope="col">Equipment Type:</th>
       <th scope="col">Equipment Number:</th>
-      <th scope="col">Equipment Issue:</th>
-      <th scope="col">Required Service:</th>
+      <th scope="col" colspan="3">Equipment Issue:</th>
+      <th scope="col" colspan="3">Required Service:</th>
       <th scope="col">Date Submitted:</th>
+      <th scope="col">To Update:</th>
     </tr>
   </thead>
   <?php 
@@ -57,14 +58,12 @@ include "adminpanel.php";?>
       <td><?php echo $pending['position']; ?></td>
       <td><?php echo $pending['equip_type']; ?></td>
       <td><?php echo $pending['equip_num']; ?></td>
-      <td><?php echo $pending['equip_issues']; ?></td>
-      <td><?php echo $pending['required_services']; ?></td>
-      <td><?php echo $pending['date_added']; ?></td>
-      <td><?php echo $pending['reason']; ?></td>
-      <td>
+      <td colspan="3"><?php echo $pending['equip_issues']; ?></td>
+      <td colspan="3"><?php echo $pending['required_services']; ?></td>
+      <td><?php echo date("M d, Y",strtotime($pending['date_added'])); ?></td>
+      <td colspan="3">
         <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#update">
-  Update
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#update"><i class="fa-regular fa-pen-to-square"></i>
 </button>
 <!-- Modal -->
 <div class="modal fade" id="update" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -126,6 +125,7 @@ break;
  	echo "You do not belong here!";
 
  }
+  include 'script.php';
  ?>
 
 
