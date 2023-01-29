@@ -24,7 +24,7 @@ if(isset($userdetails)){
 include "adminpanel.php";?>
   <h2 class="ms-3">PENDING REQUESTS</h2>
   <div class="container-fluid">
-  <table class="table table-striped table-bordered">
+   <table class="table table-striped table-bordered">
   <thead class="table-dark">
     <tr>
       <th scope="col">Form ID:</th>      
@@ -41,16 +41,14 @@ include "adminpanel.php";?>
       <th scope="col">To Update:</th>
     </tr>
   </thead>
-  <?php 
-  switch($pendings){
-  case null:
-  echo "No pending records yet";
-  break;
-  default:
-  foreach ($pendings as $pending) {?>
+  <?php
+            if($pendings->rowCount() != 0 ){
+           while ($pending = $pendings->fetch()) {
+             $id = $pending['id'];
+            ?>
   <tbody>
     <tr>
-      <td><?php echo $pending['form_id']; ?></td>
+      <td><b><?php echo $pending['form_id']; ?></b></td>
       <td><?php echo $pending['req_dept']; ?></td>
       <td><?php echo $pending['contact']; ?></td>
       <td><?php echo $pending['dept_head_fullname']; ?></td>
@@ -63,10 +61,10 @@ include "adminpanel.php";?>
       <td><?php echo date("M d, Y",strtotime($pending['date_added'])); ?></td>
       <td colspan="3">
         <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#update"><i class="fa-regular fa-pen-to-square"></i>
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#update<?php echo $id;?>"><i class="fa-regular fa-pen-to-square"></i>
 </button>
 <!-- Modal -->
-<div class="modal fade" id="update" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="update<?php echo $id;?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
@@ -75,12 +73,12 @@ include "adminpanel.php";?>
       </div>
       <div class="modal-body mx-auto">
          <form method="get">
-          <input type="hidden" name="id" value="<?php echo $pending['id']?>">
+          <input type="hidden" name="id" value="<?php echo $id?>">
            <input type="hidden" name="admin" value="<?php echo $userdetails['fullname'];?>">
           <button type="submit" name="approved" class="btn btn-primary">
             Approved
           </button>
-          <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#denied">
+          <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#denied<?php echo $id;?>">
             Denied
           </button>
       </div>
@@ -91,7 +89,7 @@ include "adminpanel.php";?>
   </div>
 </div>
 <!--Modal for Denied-->
-<div class="modal fade" id="denied" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="denied<?php echo $id;?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
@@ -111,10 +109,11 @@ include "adminpanel.php";?>
 </form>
         </td>
       </tr>
-    <?php
-}
-break;
-} 
+  <?php
+    }
+    }else{
+      echo "No forms yet";
+    }
   ?>  
   
   </tbody>

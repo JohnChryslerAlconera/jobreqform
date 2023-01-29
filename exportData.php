@@ -14,10 +14,13 @@ if($query->rowCount() > 0){
 
 
     $fields = array('Form ID', 'Requesting Department', 'Requesting Name','Contact Info', 'Department Head Name', 'End User Name', 'Position', 'Employee ID','Equipment Type', 'Equipment Issue', 'Required Service', 'Date Submitted', 'Form Status'); 
+            fputcsv($f, $fields, $delimiter);
+
             while($row = $query->fetch()){ 
 
         $lineData = array($row['form_id'],  $row['req_dept'], $row['req_name'],  $row['contact'], $row['dept_head_fullname'], $row['euser_fullname'], $row['position'], $row['employee_id'],  $row['equip_type'], $row['equip_issues'], $row['required_services'], date("M d, Y",strtotime($row['date_added'])), $row['form_status'],);
         fputcsv($f, $lineData, $delimiter);
+    }
          fseek($f, 0); 
      
     // Set headers to download file rather than displayed 
@@ -28,8 +31,6 @@ if($query->rowCount() > 0){
     fpassthru($f); 
 } 
 exit;
-
-}
 
 // $query->bindParam('form_status', $forms[0], PDO::PARAM_STR);
 // $query->execute();
@@ -48,7 +49,7 @@ exit;
  
 // <!-- if($query->num_rows > 0){ 
 
-     
+        
 
 //    
      

@@ -38,7 +38,7 @@ if(isset($userdetails)){
       <th scope="col">Equipment Issue:</th>
       <th scope="col">Required Service:</th>
       <th scope="col">Date Submitted:</th>
-      <th scope="col">Date Submitted:</th> 
+      <th scope="col">Form Status:</th> 
       <th scope="col">Remarks/Reason:</th>
     </tr>
   </thead>
@@ -61,8 +61,8 @@ if(isset($userdetails)){
       <td><?php echo $row['equip_issues']; ?></td>
       <td><?php echo $row['required_services']; ?></td>
       <td><?php echo $row['date_added']; ?></td>
-      <td><?php echo $row['form_status']; ?></td>
-      <td><?php echo $row['reason']; ?></td>
+      <td><?php echo ucwords($row['form_status']); ?></td>
+      <td><?php echo ucfirst($row['reason']); ?></td>
     </tr>
 
 

@@ -36,16 +36,21 @@ if(isset($userdetails)){
     </tr>
   </thead>
 <?php 
-switch($submitted){
-  case null:
-  echo "no submitted requests yet";
-  break;
-  default:
-  
-foreach ($submitted as $row) {
+  if($submitted->rowCount() != 0){
+  while ($row = $submitted->fetch()) {
 ?>
   <tbody>
-    <tr>
+    <?php
+       if (!empty(($row['form_status'] == "approved"))){
+      ?>
+    <tr class="bg-success">
+<?php
+}if ($row['form_status'] == "denied") {
+
+?>
+  <tr class="bg-secondary">
+  <?php }
+  ?>
       <td><?php echo $row['form_id']; ?></td>
       <td><?php echo $row['euser_fullname']; ?></td>
       <td><?php echo $row['equip_type']; ?></td>
@@ -61,19 +66,21 @@ foreach ($submitted as $row) {
 </form>
 </td>
 <?php
+
 }
-break;
-} 
  ?>
     </tr>
   </tbody>
 </table>  
 		
 <?php
-  }
+  }else{
+  echo "No submitted form/s yet";
+} 
     }else{
       header("Location: login.php");
     }
+  }
     include 'script.php';
 ?>
 </div>

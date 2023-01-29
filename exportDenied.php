@@ -17,6 +17,7 @@ if(!empty($query)){
 
         $lineData = array($row['form_id'],  $row['req_dept'], $row['req_name'],  $row['contact'], $row['dept_head_fullname'], $row['euser_fullname'], $row['position'], $row['employee_id'],  $row['equip_type'], $row['equip_issues'], $row['required_services'], date("M d, Y",strtotime($row['date_added'])), $row['form_status'],);
         fputcsv($f, $lineData, $delimiter);
+    }
          fseek($f, 0); 
      
     // Set headers to download file rather than displayed 
@@ -27,8 +28,6 @@ if(!empty($query)){
     fpassthru($f); 
 } 
 exit;
-
-}
 
 // $query->bindParam('form_status', $forms[0], PDO::PARAM_STR);
 // $query->execute();

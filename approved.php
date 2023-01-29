@@ -36,16 +36,14 @@ if(isset($userdetails)){
             <th scope="col">Equipment Issue:</th>
             <th scope="col">Required Service:</th>
             <th scope="col">Date Submitted:</th>
+            <th scope="col">Edited By:</th>
             <th scope="col">To Remarks:</th>
           </tr>
         </thead>
             <?php
-            switch($approved){
-            case null:
-            echo "no approved records yet";
-            break;
-            default:
-            foreach ($approved as $row) {
+            if($approved->rowCount() != 0 ){
+           while ($row = $approved->fetch()) {
+             $id = $row['id'];
             ?>
         <tbody>
           <tr>
@@ -59,15 +57,16 @@ if(isset($userdetails)){
             <td><?php echo $row['equip_num']; ?></td>
             <td><?php echo $row['equip_issues']; ?></td>
             <td><?php echo $row['required_services']; ?></td>
-            <td><?php echo date("M d, Y",strtotime($row['date_added'])); ?></td>
+            <td><?php echo $row['date_added']; ?></td>
+                  <td><?php echo $row['changed_status_by'];?></td>
             <td>              
               <!-- Button trigger modal -->
-<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#remarks">
+<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#remarks<?php echo $id;?>">
   <i class="fa-solid fa-comment"></i>
 </button>
 
 <!-- Modal -->
-<div class="modal fade" id="remarks" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="remarks<?php echo $id;?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -77,8 +76,8 @@ if(isset($userdetails)){
       <div class="modal-body">
         <form method="get">
               <input type="hidden" name="id" value="<?php echo $row['id'];?>">
-              <input type="hidden" name="admin" value="<?php $userdetails['fullname']?>">
-              <textarea name="remarks" rows="10" cols="60" placeholder="Add remarks" required=""></textarea>
+              <input type="hidden" name="admin" value="<?php echo $userdetails['fullname']?>">
+              <textarea name="remarks" rows="10" cols="60" placeholder="Add remarks" required></textarea>
        </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -91,8 +90,10 @@ if(isset($userdetails)){
       	   	</td>
                        <?php
                }
-              break;
-              } 
+
+              }else{
+                echo "No forms yet";
+              }
               ?>
               </tr>
         </tbody>
@@ -101,8 +102,7 @@ if(isset($userdetails)){
 
               <?php
        }else{
-       	echo "You do not belong here!";
-
+       	header("Location: index.php");
        }
        ?>
        <?php include "script.php";?>

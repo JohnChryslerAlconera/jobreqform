@@ -4,6 +4,7 @@ $userdetails = $class->get_userdata();
 $session = $class->sessionAdmin();
 $denied = $class->getData("denied");
 if(isset($userdetails)){
+
 ?>
 
 <!DOCTYPE html>
@@ -20,13 +21,6 @@ if(isset($userdetails)){
   
 <?php include "adminpanel.php";?>
   <h2 class="ms-3">DENIED REQUESTS</h2>
-  <?php
-   switch($denied){
-        case null:
-        echo "no denied records yet";
-        break;
-        default:
-?>
    <div class="container-fluid">
    <table class="table table-striped table-bordered">
   <thead class="table-dark">
@@ -43,15 +37,17 @@ if(isset($userdetails)){
       <th scope="col">Required Service:</th>
       <th scope="col">Date Submitted:</th>
       <th scope="col">Reason:</th>
+      <th scope="col">Edited By:</th>
     </tr>
   </thead>
-      <?php
-     
-      foreach ($denied as $row) {
-      ?>
   <tbody>
-    <tr>
-      <td><?php echo $row['form_id']; ?></td>      
+         <?php
+            if($denied->rowCount() != 0 ){
+           while ($row = $denied->fetch()) {
+             $id = $row['id'];
+            ?>
+     <tr>
+      <td><b><?php echo $row['form_id']; ?></b></td>      
       <td><?php echo $row['req_dept']; ?></td>
       <td><?php echo $row['contact']; ?></td>
       <td><?php echo $row['dept_head_fullname']; ?></td>
@@ -63,7 +59,9 @@ if(isset($userdetails)){
       <td><?php echo $row['required_services']; ?></td>
       <td><?php echo date("M d, Y",strtotime($row['date_added'])); ?></td>
       <td><?php echo ucwords($row['reason']); ?></td>
+            <td><?php echo $row['changed_status_by']?></td>
     </tr>
+  </a>
 
 
 
@@ -75,8 +73,10 @@ if(isset($userdetails)){
 </table>
 </div>
 <?php
-break;
-} 
+
+  }else{
+    echo "No records yet";
+  }
  }else{
  	echo "You do not belong here!";
 

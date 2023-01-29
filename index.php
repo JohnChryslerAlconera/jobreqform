@@ -21,12 +21,6 @@ if(isset($_POST) & !empty($_POST)){
        if(empty($_POST['contact'])){
         $errors[] = "Contact Number is required<br>";
       } 
-      //  if(strlen($_POST['contact'] != 11))  {
-      //   $errors[] = "Contact Number should 11 digits<br>";
-      // }
-      // if(is_int($_POST['contact'] != 1))  {
-      //   $errors[] = "Contact Number should only have numerical numbers<br>";
-      // }
        if(empty($_POST['dept_head_firstname'] | $_POST['dept_head_lastname'])){
         $errors[] = "Department Head Name is required<br>";
       }
@@ -176,7 +170,7 @@ if(isset($_POST) & !empty($_POST)){
             <div class="container-fluid">
               <div class="mx-auto">
                  <div class="position-absolute top-50 start-50 translate-top">
-                  <h1>Job Request Form</h1>
+                  <h1 class="text-center">Job Request Form</h1>
                     <a href="index.php">
   <img src="https://upload.wikimedia.org/wikipedia/commons/e/e8/Seal_of_Iloilo_City.png" class="ms-5 w-75"></a>
                  </div>
