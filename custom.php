@@ -8,30 +8,24 @@ date_default_timezone_set('Asia/Manila');
 <html>
 <head>
   <meta charset="utf-8">
+           <link rel="shortcut icon" type="x-icon" href="CH.jpg">
+
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-
+  <link rel="stylesheet" type="text/css" href="style.css">
   <title>Custom Export | Forms</title>
 </head>
 <body>
   <?php include "adminpanel.php";?>
-  <div class="card">
-    <div class="card-header text-center">
-      <h2 class="text-center">Customize export</h2>
-         <?php
-            if(!empty($errors)){
-              echo "<div class= 'alert alert-danger'>";
-            foreach($errors as $error){
-              echo $error;
-            }
-            echo "</div>";
-          }
-            ?>
-    </div>
-   <form method="get" action="exportCustom.php">
-      <div class="col-md-5">
-        <h3>You can Choose both</h3>
+  <div class="content">
+  <div class="card text-center">
+  <div class="card-header">
+     <h2>Customize Export</h2>
+  </div>
+  <div class="card-body text-center">
+     <form method="get" action="exportCustom.php">
+        <h3>You can choose both to filter data</h3>
         <label for="issues" class="form-label"><b>Select Issue/s</b></label>
         <select id="issues" name="issues[]" multiple>
           <option value="Application crash or OS blue screen">Application crash or OS blue screen</option>
@@ -55,22 +49,31 @@ date_default_timezone_set('Asia/Manila');
           <option value="Application won't open">Application won't open</option>
           <option value="Installation(OS, Apps, Internet)">Installation(OS, Apps, Internet)</option>
           <option value="Inspection">Inspection</option>
-        </select>    
-        <p>Select inclusive date:</p>
-        <div class="col-5">
+        </select> 
+        <br>
+        <p><i>or</i></p>   
+        <br>
+        <h5>Select inclusive date:</h5>
           <label for="exportfrom" class="form-label"><b>Export from:</b></label>
           <input type="date" name="fromdate" class="form-control" id="exportfrom">
-        </div>
-        <div class="col-md-5">
           <label for="exportto" class="form-label"><b>To:</b></label>
-          <input type="date" name="todate" class="form-control" id="exportto"> 
-        </div>
-    </div>
-    <div class="modal-footer">
-    <button type="submit" name="exportcustom" class="btn btn-success">
+          <input type="date" name="todate" class="form-control" id="exportto">
+           <button type="submit" name="exportcustom" class="btn btn-success">
       Export
     </button>
     </form>
+    </div>
+
+</div>
+</div>
+
+
+
+  <div class="card">
+    <div class="card-header text-center">
+     
+    </div>
+ 
   </div>
     <?php include "script.php";?>
   </body>
