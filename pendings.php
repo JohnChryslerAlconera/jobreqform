@@ -11,17 +11,19 @@ if(isset($userdetails)){
 <!DOCTYPE html>
 <html>
 <head>
+         <link rel="shortcut icon" type="x-icon" href="CH.jpg">
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 	<title>Pendings | Forms</title>
+ <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-
-
 <?php 
-include "adminpanel.php";?>
+include "adminpanel.php";
+?>
+<div class="content">
   <h2 class="ms-3">PENDING REQUESTS</h2>
   <div class="container-fluid">
    <table class="table table-striped table-bordered">
@@ -37,7 +39,7 @@ include "adminpanel.php";?>
       <th scope="col">Equipment Number:</th>
       <th scope="col" colspan="3">Equipment Issue:</th>
       <th scope="col" colspan="3">Required Service:</th>
-      <th scope="col">Date Submitted:</th>
+      <th scope="col">Date Requested:</th>
       <th scope="col">To Update:</th>
     </tr>
   </thead>
@@ -97,7 +99,7 @@ include "adminpanel.php";?>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <textarea name="reason" cols="60" rows="10" placeholder="Enter reason"></textarea>
+        <textarea name="reason" cols="55" rows="10" placeholder="Enter reason"></textarea>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -118,6 +120,7 @@ include "adminpanel.php";?>
   
   </tbody>
 </table>
+</div>
 </div>
 <?php
  }else{

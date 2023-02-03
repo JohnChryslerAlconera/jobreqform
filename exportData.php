@@ -2,7 +2,7 @@
 require_once("formclass.php");
 
 $conn = $class->openConnection();
-$query = $conn->prepare("SELECT *, MONTHNAME(date_added) as months FROM requests GROUP BY months ASC"); 
+$query = $conn->prepare("SELECT * FROM requests GROUP BY date_added ASC"); 
  $query->execute();
 if($query->rowCount() > 0){
     $delimiter = ","; 

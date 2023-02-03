@@ -53,15 +53,17 @@ if(isset($_POST) & !empty($_POST)){
 <html>
 <head>
 	<meta charset="utf-8">
+         <link rel="shortcut icon" type="x-icon" href="CH.jpg">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+   <link rel="stylesheet" type="text/css" href="style.css">
 	<title>Register | Job Request Form</title>
 </head>
 
 <body class="bg-light border">
   <section class="text-center text-lg-start">
-<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+<nav class="navbar fixed-top navbar-expand-sm navbar-dark bg-dark">
   <div class="container-fluid">
     <a href="index.php">
   <img src="https://upload.wikimedia.org/wikipedia/commons/e/e8/Seal_of_Iloilo_City.png" style="width:90px; height:80px;"></a>
@@ -76,6 +78,7 @@ if(isset($_POST) & !empty($_POST)){
     </div>
   </div>
 </nav>
+<div class="content">
    <div class="container-fluid py-5">
     <div class="row g-5">
     	<div class="col-lg-6 mb-10 mb-lg-0">
@@ -176,6 +179,7 @@ if(isset($_POST) & !empty($_POST)){
                  </div>
               </div>
             </div>
+          </div>
             <?php include "script.php"?>
 </body>
 </html>

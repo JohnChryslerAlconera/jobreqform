@@ -73,12 +73,8 @@ class RequestForm {
 			$count = $stmt->rowCount();
 			if($count > 0){
 				// echo "Added";
-				$_SESSION['status'] = "You successfully indexed, Log in to enter";
-				$_SESSION['status_code'] = "success";
-				header("location: index.php");
+				header("Location: reqform.php");
 			}else{
-				$_SESSION['status'] = "There's something wrong";
-				$_SESSION['status_code'] = "error";
 				header("location: index.php");				}
 			}
 		}
@@ -112,6 +108,8 @@ class RequestForm {
 				if(isset($_POST['csrf_token'])){
 					if($_POST['csrf_token'] == $_SESSION['csrf_token']){
 
+					}else{
+						return $error[] ="CSRF token expired!, Please fill up again";
 					}
 
 				}
@@ -122,7 +120,7 @@ class RequestForm {
 					}else{
 						unset($_SESSION['csrf_token']);
 						unset($_SESSION['csrf_token_time']);
-						echo "CSRF token expired!, Please fill up again";
+						return $error[] = "CSRF token expired!, Please fill up again";
 					}
 				}
 
@@ -223,10 +221,14 @@ class RequestForm {
 					$stmt->execute([$fname, $lname, $employee_id,$password_hash, "administrator"]);
 					$count = $stmt->rowCount();
 					if($count > 0){
-						header("Location: adminchart.php");
+						?><script>alert("ID successfully added");
+					window.location.href="addadmin.php";
+					</script><?php
 					}
 				}else{
-					echo "ID already exist";
+					?><script>alert("ID already registered");
+					window.location.href="addadmin.php";
+					</script><?php
 				}
 			}
 		}
@@ -410,14 +412,18 @@ class RequestForm {
 			return $stmt;
 		}
 
-		public function chartData($department){
+		public function chartForms(){
+			$year = date("Y");
 			$conn = $this->openConnection();
-			$stmt = $conn->prepare("SELECT MONTHNAME(date_added) as month,
-				(SELECT COUNT(*) FROM requests WHERE form_status = :approved AND in month) AS approved, 
-				(SELECT COUNT(*) FROM requests WHERE form_status = :denied AND in month) AS denied, 
-				(SELECT COUNT(*) FROM requests WHERE form_status = :completed And in month) AS completed 
-				FROM requests WHERE req_dept = :req_dept GROUP BY month ORDER BY date_added ASC");
-			$stmt->execute(["req_dept" => $department, "approved" => "approved", "denied" => "denied", "completed" => "completed"]);
+  $stmt = $conn->prepare("SELECT MONTHNAME(date_added) AS MONTH,
+        SUM(form_status = :approved) as APPROVED, 
+        SUM(form_status = :denied) as DENIED,
+        SUM(form_status = :pending) as PENDING,
+        SUM(form_status = :completed) as COMPLETED FROM requests 
+        WHERE YEAR(date_added) = :year GROUP BY MONTH ORDER BY date_added ASC");
+      $stmt->execute(["approved" => "approved", 
+      "denied" => "denied", "completed" => "completed", "pending" => "pending", "year" => $year]);
+      return $fetch = $stmt->fetchAll();
 		}
 		public function searchForm(){
 			if(isset($_GET['load'])){

@@ -12,17 +12,21 @@ if(isset($userdetails)){
 <html>
 <head>
   <meta charset="utf-8">
+           <link rel="shortcut icon" type="x-icon" href="CH.jpg">
+
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-
+   <link rel="stylesheet" type="text/css" href="style.css">
   <title>Form | Searched</title>
 </head>
 <body>
   <?php include "adminpanel.php";?>
-  <h2 class="ms-3">RESULTS</h2>
+  
   <?php
 ?>
+  <div class="content">
+    <h2 class="ms-3">RESULTS of <i><?php echo $search;?></i></h2>
   <div class="container-fluid">
    <table class="table table-striped table-bordered">
   <thead class="table-dark">
@@ -74,6 +78,7 @@ if(isset($userdetails)){
    </tbody>
   </table>
   </div>
+</div>
 <?php
    }else{
     echo "You do not belong here!";
