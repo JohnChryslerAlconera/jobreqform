@@ -1,17 +1,14 @@
 <?php
 require_once("formclass.php");
+$session = $class->sessionAdmin();
 $form = "completed";
 $query = $class->exportData($form);
-if(!empty($query)){
 if($query->rowCount() > 0){
     $delimiter = ","; 
     $filename = "completed-data_" . date('Y-m-d') . ".csv"; 
  // Create a file pointer 
     $f = fopen('php://memory', 'w'); 
     // Set column headers Equipment Number
-
-
-
     $fields = array('Form ID', 'Requesting Department', 'Requesting Name','Contact Info', 'Department Head Name', 'End User Name', 'Position', 'Employee ID','Equipment Type', 'Equipment Issue', 'Required Service', 'Date Submitted', 'Form Status');
             fputcsv($f, $fields, $delimiter);
             while($row = $query->fetch()){ 
@@ -27,6 +24,11 @@ if($query->rowCount() > 0){
      
     //output all remaining data on a file pointer 
     fpassthru($f); 
+}else{
+  echo '<script>
+            alert("No complete forms yet");
+            window.location.href="custom.php";
+        </script>';
 } 
 exit;
 // $query->bindParam('form_status', $forms[0], PDO::PARAM_STR);

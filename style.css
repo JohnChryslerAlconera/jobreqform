@@ -8,6 +8,11 @@
 .content{
 	margin-top: 100px;
 }
+/*.form-control {
+  border: none;
+  border-bottom: 5px solid black;
+  outline: none;
+}*/
 li, a, button{
 	font-family: 'Roboto', sans-serif ;
 	font-weight: 600;
@@ -20,8 +25,26 @@ th{
 	justify-content: flex-start;
 	align-items: center;
 	padding: 30px 10%;
-
+	text-align: center;
 }
+
+div#output{
+	padding: 10px;
+	width: 100px;
+	margin: 0 auto;
+	border: 1px solid silver;
+	display: none;
+}
+.nav-link.active {
+  border-bottom: 1px solid white;
+  border-width: 0.1em;
+  border-spacing: 1em; 
+}
+input[type="checkbox"]{
+	transform: scale(1);
+}
+
+
 /** {
 	box-sizing: border-box;
 	margin: 0;
@@ -70,4 +93,7 @@ img{
 .multi_select_box select{
 	width: 100%;
 	
+}
+div .wrapper{
+	margin-top: 50px;
 }

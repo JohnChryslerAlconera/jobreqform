@@ -1,20 +1,16 @@
 <?php
 	require_once('formclass.php');
 	require('fpdf.php');
-	if(isset($_POST['printpdf'])){
-		$id = $_POST['id'];
-		$conn = $class->openConnection();
-		$stmt = $conn->prepare("SELECT * FROM requests WHERE id = ?");
-		$stmt->execute([$id]);
-		$data = $stmt->fetchAll();
-		
-}
-	if(isset($data))
-	$data = $class->pdf();
+	if(isset($_GET['printpdf'])){
+				$id = $_GET['id'];
+				$conn = $class->openConnection();
+				$stmt = $conn->prepare("SELECT * FROM requests WHERE id = ?");
+				$stmt->execute([$id]);
+				$data = $stmt->fetchAll();
+	
 
-foreach($data as $row){
+	foreach($data as $row){
 	$issues = explode(',', $row['equip_issues']);
-
 
 
 //Cell(width,height, "text", border,newline,'text align (C L or R)')
@@ -45,7 +41,7 @@ foreach($data as $row){
 	$pdf->Cell(0, 10, "City Goverment of Iloilo", 0, 1, 'C');
 	$pdf->SetFont('Arial', "I", 12);
 	$pdf->Cell(0, 5, "Code: ILO-PPF-022-001 ", 0, 1, 'C');
-	$pdf->Image('CH.JPG', 170, 5, -250);
+	// $pdf->Image('CH.JPG', 170, 5, -250);
 	$pdf->Image('CH.JPG', 20, 5,-250);
 	$pdf->Ln(5);	
 	$pdf->SetFont('Arial', "I", 11);
@@ -60,7 +56,7 @@ foreach($data as $row){
 	$pdf->Cell(50,5, "", 0, 0, 'C',);
 	$pdf->Cell(80,5, "", 0, 0, 'C',);
 	$pdf->Cell(60,5,"Page No. Page 1 of 1", 1, 0, 'C',);
-	$pdf->Line(10,110,200,110);
+	// $pdf->Line(10,110,200,110);
 	$pdf->ln(10);
 	$pdf->SetFont('Arial', "I", 13);
 	$pdf->Cell(45,5, "Request for IT SERVICES", 0, 0,);
@@ -85,19 +81,19 @@ foreach($data as $row){
 	$pdf->Cell(45, 5, $row['contact'], 1, 0,);
 	$pdf->Ln(10);
 	$pdf->SetFont('Arial', "B", 13);
-	$pdf->Cell(190, 80, "", 1, 0,);
+	// $pdf->Cell(190, 80, "", 1, 0,);
 	$pdf->Ln(0);
-	$pdf->Cell(48, 5, "Equipment Issue/s:", 0, 0,);
-	$pdf->Ln(8);
-	$pdf->SetFont('Arial', "I", 12);
-	$pdf->Cell(60, 0, $row['equip_issues'], 0, 0);
-	$pdf->ln(30);
+	$pdf->Cell(190, 10, "Equipment Issue/s:", 0, 'L', 0,);
+	$pdf->Ln(0);
+	$pdf->SetFont('Arial', "I", 11);
+	$pdf->MultiCell(190,10, $row['equip_issues'], 1,'L',0);
+	$pdf->ln(4);
 	$pdf->SetFont('Arial', "B", 13);
 	$pdf->Cell(55, 0, "Required Service:", 0, 0);
 	$pdf->ln(4);
-	$pdf->SetFont('Arial', "I", 12);
-	$pdf->Cell(62, 0, $row['required_services'], 0, 0,);
-	$pdf->ln(40);
+	$pdf->SetFont('Arial', "I", 11);
+	$pdf->MultiCell(190, 10, $row['required_services'], 1, 'L', 0,);
+	$pdf->ln(4);
 	// $pdf->Line(10,75,200,75);
 	// $pdf->ln(20);
 	// $pdf->Line(160 ,85,190,85);
@@ -115,7 +111,7 @@ foreach($data as $row){
 	$pdf->SetFont('Arial', "I", 10);
 	$pdf->Cell(10, 5, "Date:", 0, 0,);
 	$pdf->Cell(5, 5, $row['date_added'], 0, 0,'L',);
-	$pdf->ln(40);
+	$pdf->ln(30);
 	$pdf->Cell(80, 30, "", 1, 0, );
 	$pdf->Cell(60, 30, "", 1, 0, );
 	$pdf->Cell(50, 30, "", 1, 0, );
@@ -145,5 +141,7 @@ foreach($data as $row){
 
 	$pdf->Output();
 
+
 	}
+}
 ?>

@@ -1,5 +1,6 @@
 <?php
 require_once("formclass.php");
+$session = $class->sessionAdmin();
 $form = "pending";
 $query = $class->exportData($form);
 if(!empty($query)){
@@ -24,7 +25,12 @@ if(!empty($query)){
      
     //output all remaining data on a file pointer 
     fpassthru($f); 
-} 
+}else{
+  echo '<script>
+            alert("No pending forms yet");
+            window.location.href="custom.php";
+        </script>';
+}  
 exit;
  
 ?>

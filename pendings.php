@@ -24,23 +24,22 @@ if(isset($userdetails)){
 include "adminpanel.php";
 ?>
 <div class="content">
-  <h2 class="ms-3">PENDING REQUESTS</h2>
+  
   <div class="container-fluid">
-   <table class="table table-striped table-bordered">
-  <thead class="table-dark">
+    <div class="card">
+  <div class="card-header">
+    <h2 class="fw-bold">PENDING REQUESTS</h2>
+  </div>
+  <div class="card-body">
+    <table class="table table-hover text-center">
+  <thead class="fs-5">
     <tr>
-      <th scope="col">Form ID:</th>      
+      <th>Form ID:</th>
       <th scope="col">Requesting Department:</th>
-      <th scope="col">Contact Info:</th>
-      <th scope="col">Department Head Name:</th>
-      <th scope="col">End User Name:</th>
-      <th scope="col">Position:</th>
-      <th scope="col">Equipment Type:</th>
-      <th scope="col">Equipment Number:</th>
-      <th scope="col" colspan="3">Equipment Issue:</th>
-      <th scope="col" colspan="3">Required Service:</th>
-      <th scope="col">Date Requested:</th>
-      <th scope="col">To Update:</th>
+      <th scope="col">Requesting Name:</th>
+      <th scope="col">View details:</th>
+      <th scope="col">Update:</th>
+  
     </tr>
   </thead>
   <?php
@@ -50,22 +49,19 @@ include "adminpanel.php";
             ?>
   <tbody>
     <tr>
+      
       <td><b><?php echo $pending['form_id']; ?></b></td>
       <td><?php echo $pending['req_dept']; ?></td>
-      <td><?php echo $pending['contact']; ?></td>
-      <td><?php echo $pending['dept_head_fullname']; ?></td>
-      <td><?php echo $pending['euser_fullname']; ?></td>
-      <td><?php echo $pending['position']; ?></td>
-      <td><?php echo $pending['equip_type']; ?></td>
-      <td><?php echo $pending['equip_num']; ?></td>
-      <td colspan="3"><?php echo $pending['equip_issues']; ?></td>
-      <td colspan="3"><?php echo $pending['required_services']; ?></td>
-      <td><?php echo date("M d, Y",strtotime($pending['date_added'])); ?></td>
+      <td><?php echo $pending['req_name']; ?></td>
+      <td><a href='view.php?id=<?php echo $id?>'><button class="btn btn-success">View</button></a></td>
       <td colspan="3">
         <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#update<?php echo $id;?>"><i class="fa-regular fa-pen-to-square"></i>
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#update<?php echo $id;?>"><i class="fa-regular fa-pen-to-square"></i> Update
 </button>
-<!-- Modal -->
+
+    </td>
+      </tr>
+  <!-- Modal -->
 <div class="modal fade" id="update<?php echo $id;?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
@@ -99,7 +95,7 @@ include "adminpanel.php";
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <textarea name="reason" cols="55" rows="10" placeholder="Enter reason"></textarea>
+        <textarea class="form-control" name="reason" cols="55" rows="10" placeholder="Enter reason"></textarea>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -108,23 +104,29 @@ include "adminpanel.php";
     </div>
   </div>
 </div>
-</form>
-        </td>
-      </tr>
+</form>    
   <?php
     }
     }else{
-      echo "No forms yet";
-    }
+ ?>
+                <tr>
+                  <td colspan="20" class="text-center text-danger">No pending requests yet</td>
+                </tr>
+                <?php
+                    }
   ?>  
   
   </tbody>
 </table>
+  </div>
+</div>
+   
 </div>
 </div>
+
 <?php
  }else{
- 	echo "You do not belong here!";
+          echo "You do not belong here";
 
  }
   include 'script.php';

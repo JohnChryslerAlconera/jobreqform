@@ -2,8 +2,10 @@
  
 // Load the database configuration file  
  require_once "formclass.php";
+ $session = $class->sessionAdmin();
+
    if(isset($_GET) && !empty($_GET)){
-        if(empty($_GET['issues']) && empty($_GET['todate']) && empty($_GET['fromdate'])){
+        if(empty($_GET['issues']) && empty($_GET['todate']) && empty($_GET['fromdate']) && empty($_GET['department']) && empty($_GET['form'])){
            $errors[]= "You need to fill up atleast one of the inputs";
 
         }
@@ -22,18 +24,30 @@
         }
         if(empty($_GET['issues']) && empty($_GET['todate']) && !empty($_GET['fromdate'])){
            $errors[] = "You also need to fill To: from export date if you want to filter by date";
-
         }
-      
       }
       if(empty($errors)){
         $query = $class->customExport();
-if(!empty($query)){ 
+if($query->rowCount() > 0){ 
     $delimiter = ",";
+    $title = array();
+    $filename =  " -data ". date('M d, Y'). ".csv";
     if(!empty($_GET['fromdate']) && !empty($_GET['todate'])){
-    $filename = date('M d, Y', strtotime($_GET['fromdate'])). "-". date('M d, Y', strtotime($_GET['todate'])). date('Y-m-d') . ".csv"; 
-     }if(!empty($_GET['issues']) && empty($_GET['fromdate']) && empty($_GET['todate'])){
-        $filename = "issues-data_". date('Y-m-d'). ".csv";
+        $title[] = date('M d, Y', strtotime($_GET['fromdate'])). "-". date('M d, Y', strtotime($_GET['todate'])); 
+     }
+     if(!empty($_GET['issues'])){
+        $title[] = implode(",", $_GET['issues']);
+     }
+     if (!empty($_GET['department'])){
+       $title[] = $_GET['department'];
+     }
+     if(!empty($_GET['form'])){
+        $title[] = ucfirst($_GET['form']);
+     }
+     if(!empty($title)){
+        $filename = implode(" ", $title). $filename;
+     }else{
+      $filename = "customExport". $filename;
      }
     // Create a file pointer 
     $f = fopen('php://memory', 'w'); 
@@ -49,7 +63,7 @@ if(!empty($query)){
     } 
      
     // Move back to beginning of file 
-    fseek($f, 0); 
+    fseek($f, 0);
      
     // Set headers to download file rather than displayed 
     header('Content-Type: text/csv'); 
@@ -57,6 +71,11 @@ if(!empty($query)){
      
     //output all remaining data on a file pointer 
     fpassthru($f); 
+}else{
+  echo '<script>
+            alert("No data found");
+            window.location.href="custom.php";
+        </script>';
 } 
 exit; 
  }else{
@@ -65,7 +84,6 @@ exit;
             alert("'.$error.'");
             window.location.href="custom.php";
         </script>';
-        // header("Location: custom.php");
     }
 }
 ?>

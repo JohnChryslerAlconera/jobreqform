@@ -26,46 +26,36 @@ if(isset($userdetails)){
     <?php 
     include "adminpanel.php";?>
     <div class="content">
-    <h2 class="ms-3">COMPLETED REQUESTS</h2>
     <div class="container-fluid">
-      <table class="table table-bordered table-striped">
-        <thead class="table-dark">
+      <div class="card">
+  <div class="card-header">
+    <h2 class="fw-bold">COMPLETED REQUESTS</h2>
+  </div>
+  <div class="card-body overflow-auto">
+      <div class="table-responsive">
+      <table class="table table-hover text-center">
+        <thead class="fs-5">
           <tr>
             <th scope="col">Form ID:</th>
             <th scope="col">Requesting Department:</th>
-            <th scope="col">Contact Info:</th>
-            <th scope="col">Department Head Name:</th>
-            <th scope="col">End User Name:</th>
-            <th scope="col">Position:</th>
-            <th scope="col">Equipment Type:</th>
-            <th scope="col">Equipment Number:</th>
-            <th scope="col">Equipment Issue:</th>
-            <th scope="col">Required Service:</th>
-            <th scope="col">Date Submitted:</th>
-            <th scope="col">Reason:</th>
+            <th scope="col">Requesting name:</th>
             <th scope="col">Edited By:</th>
+            <th scope="col">View details:</th>
           </tr>
         </thead>
-        <tbody class="table-striped">
+        <tbody>
           <tr>
             <?php
             if($completed->rowCount() != 0 ){
              while ($row = $completed->fetch()) {
                $id = $row['id'];
                ?>
+
                <td><b><?php echo $row['form_id']; ?></b></td>
                <td><?php echo $row['req_dept']; ?></td>
-               <td><?php echo $row['contact']; ?></td>
-               <td><?php echo $row['dept_head_fullname']; ?></td>
-               <td><?php echo $row['euser_fullname']; ?></td>
-               <td><?php echo $row['position']; ?></td>
-               <td><?php echo $row['equip_type']; ?></td>
-               <td><?php echo $row['equip_num']; ?></td>
-               <td><?php echo $row['equip_issues']; ?></td>
-               <td><?php echo $row['required_services']; ?></td>
-               <td><?php echo date("M d, Y",strtotime($row['date_added'])); ?></td>
-               <td><?php echo ucfirst($row['reason']); ?></td>
+               <td><?php echo $row['req_name']; ?></td>
                <td><?php echo $row['changed_status_by']?></td>
+               <td><a href='view.php?id=<?php echo $id?>'><button class="btn btn-success">View</button></a></td>
              </tr>
 
              <?php
@@ -73,12 +63,21 @@ if(isset($userdetails)){
            ?>
          </tbody>
        </table>
+  </div>
+</div>
+
+    
+     </div>
      </div>
    </div>
      <?php
 
    }else{
-    echo "No records yet";
+    ?>
+    <tr>
+      <td colspan='20' class='text-danger text-center'>No approved forms yet!</td>
+    </tr>
+      <?php
   } 
 }else{
   echo "You do not belong here!";

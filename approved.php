@@ -23,24 +23,21 @@ if(isset($userdetails)){
 
     <?php include "adminpanel.php";?>
      <div class="content">
-    <h2 class="ms-3">APPROVED REQUESTS</h2>
-     
-    <div class="container-fluid">   
-        <table class="table table-striped table-bordered">
-        <thead class="table-dark">
+    <div class="container-fluid">  
+      <div class="card">
+  <div class="card-header">
+    <h2 class="fw-bold">APPROVED REQUESTS</h2>
+  </div>
+  <div class="card-body overflow-auto">
+    <table class="table table-hover text-center">
+        <thead class="fs-5">
           <tr>
-            <th scope="col">Form ID:</th>
+            
+            <th>Form ID:</th>
             <th scope="col">Requesting Department:</th>
-            <th scope="col">Contact Info:</th>
-            <th scope="col">Department Head Name:</th>
-            <th scope="col">End User Name:</th>
-            <th scope="col">Position:</th>
-            <th scope="col">Equipment Type:</th>
-            <th scope="col">Equipment Number:</th>
-            <th scope="col">Equipment Issue:</th>
-            <th scope="col">Required Service:</th>
-            <th scope="col">Date Requested:</th>
+            <th scope="col">Requesting Name:</th>
             <th scope="col">Approved By:</th>
+            <th scope="col">View details:</th>
             <th scope="col">To Remarks:</th>
           </tr>
         </thead>
@@ -51,27 +48,23 @@ if(isset($userdetails)){
             ?>
         <tbody>
           <tr>
+            
             <td><b><?php echo $row['form_id']; ?></b></td>
             <td><?php echo $row['req_dept']; ?></td>
-            <td><?php echo $row['contact']; ?></td>
-            <td><?php echo $row['dept_head_fullname']; ?></td>
-            <td><?php echo $row['euser_fullname']; ?></td>
-            <td><?php echo $row['position']; ?></td>
-            <td><?php echo $row['equip_type']; ?></td>
-            <td><?php echo $row['equip_num']; ?></td>
-            <td><?php echo $row['equip_issues']; ?></td>
-            <td><?php echo $row['required_services']; ?></td>
-            <td><?php echo $row['date_added']; ?></td>
-                  <td><?php echo $row['changed_status_by'];?></td>
-            <td>              
+            <td><?php echo $row['req_name']; ?></td>
+            <td><?php echo $row['changed_status_by'];?></td>
+            <td><a href='view.php?id=<?php echo $id?>'><button class="btn btn-success">View</button></a></td>
+                  
+            <td>           
+
               <!-- Button trigger modal -->
-<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#remarks<?php echo $id;?>">
-  <i class="fa-solid fa-comment"></i>
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#remarks<?php echo $id;?>">
+  <i class="fa-solid fa-comment"></i> Add remarks
 </button>
 
 <!-- Modal -->
 <div class="modal fade" id="remarks<?php echo $id;?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="exampleModalLabel">Remarks for Completion</h1>
@@ -81,27 +74,32 @@ if(isset($userdetails)){
         <form method="get">
               <input type="hidden" name="id" value="<?php echo $row['id'];?>">
               <input type="hidden" name="admin" value="<?php echo $userdetails['fullname']?>">
-              <textarea name="remarks" rows="10" cols="60" placeholder="Add remarks" required></textarea>
+              <textarea name="remarks" class="form-control" rows="10" cols="55" placeholder="Add remarks" required></textarea>
        </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         <button type="submit" name="comment" class="btn btn-primary">Save</button>
+         </form>
       </div>
     </div>
   </div>
 </div>
-              </form>
-      	   	</td>
+             
+            </td>
                        <?php
                }
 
               }else{
-                echo "No forms yet";
+                echo "<td colspan='20' class='text-danger'>No approved forms yet</td>";
               }
               ?>
               </tr>
         </tbody>
       </table>
+  </div>
+</div>
+
+        
       </div>
     </div>
 

@@ -1,9 +1,6 @@
 <?php
 require_once('formclass.php');
 $userdetails = $class->get_userdata();
-$str = $userdetails['fullname'];
-          preg_match_all('/(?<=\b)\w/iu',$str,$matches);
-          $result=mb_strtoupper(implode(' ',$matches[0]));
 ?>
 <head>
          <link rel="shortcut icon" type="x-icon" href="CH.jpg">
@@ -24,20 +21,21 @@ $str = $userdetails['fullname'];
     <div class="collapse navbar-collapse" id="mynavbar">
       <ul class="navbar-nav me-auto ms-4">
         <li class="nav-item">
-          <a class="nav-link" href="submitted.php">Submitted Forms</a>
+          <a class="nav-link fs-5 <?php if (basename($_SERVER['PHP_SELF']) == 'submitted.php') { echo 'active'; }?>" 
+            href="submitted.php">Submitted</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="Reqform.php">Request Form</a>
+          <a class="nav-link fs-5 <?php if (basename($_SERVER['PHP_SELF']) == 'reqform.php') { echo 'active'; }?>" href="reqform.php">Request</a>
         </li>
-      </ul>
-      <ul class="navbar-nav me-5">
+      
         <li class="nav-item">
-          <a href="" class="nav-link"><?php echo $result;?></a>
+          <a href="profile.php" class="nav-link fs-5 <?php if (basename($_SERVER['PHP_SELF']) == 'profile.php') { echo 'active'; }?>">Profile</a>
         </li>
         </ul>
                  <form class="d-flex">
       <!-- <a id="logout" href="logout.php"> <button>LOGOUT</button></a> -->
-        <a class="btn btn-secondary" id="logout" href="logout.php"><i class="fa-solid fa-right-from-bracket"></i></a>
+        <a class="btn btn-secondary" id="logout" href="logout.php"><i class="fa-solid fa-right-from-bracket"></i> 
+        Logout</a>
       </form>
        
 
