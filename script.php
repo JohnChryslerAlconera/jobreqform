@@ -12,10 +12,10 @@ integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0
       var passwordInput = document.getElementById(id);
       if (passwordInput.type === "password") {
         passwordInput.type = "text";
-        button.innerHTML = '<i class="fa-solid fa-eye-slash"></i> Hide';
+        button.innerHTML = '<i class="fa-solid fa-eye-slash"></i>';
       } else {
         passwordInput.type = "password";
-        button.innerHTML = '<i class="fa-solid fa-eye"></i> Show';
+        button.innerHTML = '<i class="fa-solid fa-eye"></i>';
 
       }
     }

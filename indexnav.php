@@ -8,9 +8,9 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse justify-content-end me-5 text-center" id="mynavbar">
-        	 <ul class="navbar-nav ms-3">
+        	 <ul class="navbar-nav ms-5">
 		       	<li class="nav-item">
-	           <a href="index.php" class="nav-link fs-4 <?php if (basename($_SERVER['PHP_SELF']) == 'index.php') { echo 'active'; }?>"> Go back to Log in page</a>
+	           <a href="index.php" class="nav-link fs-5 <?php if (basename($_SERVER['PHP_SELF']) == 'index.php') { echo 'active'; }?>"> Go back to log in</a>
 	         	</li>
 		       <!--  <li class="nav-item">
 		          <a href="register.php" class="nav-link fs-4 <?php if (basename($_SERVER['PHP_SELF']) == 'register.php') { echo 'active'; }?>">Sign up</a> -->

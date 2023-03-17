@@ -66,7 +66,6 @@ $_SESSION['csrf_token_time'] = time();
   </nav>
 
 
-</style>
 
   <div class="content">
   <div class="container">
@@ -89,7 +88,7 @@ $_SESSION['csrf_token_time'] = time();
                 <div class="col">
                   <div class="input-group">
                     <input required type="password" name="logpass" id="password" placeholder="Password" class="form-control">
-                    <button class="btn btn-outline-secondary" onclick="togglePassword('password', this)" type="button"><i class="fa-solid fa-eye"></i> Show</button>
+                    <button class="btn btn-outline-secondary" onclick="togglePassword('password', this)" type="button"><i class="fa-solid fa-eye"></i></button>
                   </div>
                 </div>
               </div>

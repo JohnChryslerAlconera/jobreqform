@@ -154,7 +154,7 @@ $_SESSION['csrf_token_time'] = time();
                 <div class="form-outline col">
                   <div class="input-group">
                   <input required type="password" name="password" id="password" class="form-control" placeholder="Set Your Password">
-                  <button class="btn btn-outline-secondary" onclick="togglePassword('password', this)"><i class="fa-solid fa-eye"></i> Show</button>
+                  <button class="btn btn-outline-secondary" onclick="togglePassword('password', this)"><i class="fa-solid fa-eye"></i></button>
                   </div>
                 </div>
               </div>
@@ -164,7 +164,7 @@ $_SESSION['csrf_token_time'] = time();
                   <div class="input-group">
                   <input required type="password" name="cpassword" class="form-control" id="confirmpassword"
                   placeholder="Confirm Your Password">
-                  <button class="btn btn-outline-secondary" onclick="togglePassword('confirmpassword', this)"> <i class="fa-solid fa-eye"></i> Show</button>
+                  <button class="btn btn-outline-secondary" onclick="togglePassword('confirmpassword', this)"> <i class="fa-solid fa-eye"></i></button>
                  </div>
                 </div>
               </div>

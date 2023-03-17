@@ -136,9 +136,9 @@ $_SESSION['csrf_token_time'] = time();
               <div class="row g-1 ms-1 mb-2 me-1">
                 <div class="col">
 
-                  <div class="input-group">
+                  <div class="input-group input-group-lg">
                   <input required type="password" name="password" id="password" class="form-control" aria-describedby="showpassword" placeholder="Password">
-                  <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('password', this)"><i class="fa-solid fa-eye"></i> Show</button>
+                  <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('password', this)"><i class="fa-solid fa-eye"></i></button>
                   </div>
 
                 </div>
@@ -146,10 +146,9 @@ $_SESSION['csrf_token_time'] = time();
 
               <div class="row g-1 ms-1 mb-2 me-1">
                 <div class="col">
-
-                <div class="input-group">
+                <div class="input-group input-group-lg">
                   <input required type="password" name="cpassword" id="cpassword" class="form-control" aria-describedby="showpassword" placeholder="Confirm password">
-                  <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('cpassword', this)"><i class="fa-solid fa-eye"></i> Show</button>
+                  <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('cpassword', this)"><i class="fa-solid fa-eye"></i></button>
 
                   </div>
 
@@ -173,7 +172,7 @@ $_SESSION['csrf_token_time'] = time();
     				<div class="col-10 text-center mx-auto">
 
               <div class="d-grid gap-2">
-    					<button class="btn btn-primary" name="add" type="submit">Confirm</button>
+    					<button class="btn btn-lg btn-primary" name="add" type="submit">Confirm</button>
     				  </div>
 				      </div>
 			</div>
