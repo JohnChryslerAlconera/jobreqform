@@ -8,11 +8,7 @@
 .content{
 	margin-top: 100px;
 }
-/*.form-control {
-  border: none;
-  border-bottom: 5px solid black;
-  outline: none;
-}*/
+
 li, a, button{
 	font-family: 'Roboto', sans-serif ;
 	font-weight: 600;
@@ -21,11 +17,12 @@ li, a, button{
 	text-decoration: none;
 }
 
-th{
+thead{
 	justify-content: flex-start;
 	align-items: center;
 	padding: 30px 10%;
 	text-align: center;
+	background-color: rgba(21, 19, 20, 0.28);
 }
 
 div#output{
@@ -43,7 +40,9 @@ div#output{
 input[type="checkbox"]{
 	transform: scale(1);
 }
-
+.card-header{
+	background-color: rgba(223, 216, 219, 0.8)
+}
 
 /** {
 	box-sizing: border-box;
@@ -97,3 +96,7 @@ img{
 div .wrapper{
 	margin-top: 50px;
 }
+.modal-content{
+
+}
+

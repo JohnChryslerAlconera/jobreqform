@@ -1,15 +1,11 @@
 <?php
 require_once "formclass.php";
 $userdetails = $class->get_userdata();
-$session = $class->sessionAdmin();
 $class->toComplete();
 $class->updateStatus();
 $id = $_GET['id'];
-$conn = $class->openConnection();
-$stmt = $conn->prepare("SELECT * FROM requests WHERE id = :id");
-$stmt->bindValue('id', $id);
-$stmt->execute();
-while($row = $stmt->fetch()){
+$formdetails = $class->viewDetails($id);
+while($row = $formdetails->fetch()){
 
 ?>
 <!DOCTYPE html>
@@ -24,80 +20,101 @@ while($row = $stmt->fetch()){
 
 <body class="bg-dark">
 	<div class="container">
+		<div class="col">
+					<button onclick="history.back()" class="btn btn-secondary btn-lg mb-4 mt-4"><i class="fa-solid fa-backward"></i> Back</button>
+					</div>
 				<div class="card">
-					<button onclick="history.back()" class="btn btn-secondary">Back</button>
-					<div class="card-header"><h1 class="text-primary fw-bold">
-						Form ID: <?php echo $row['form_id']?></h1>
-						<?php
-						 	switch($row['form_status']){
-						 		case 'pending';
-						 		//Diri kalng sa style design ka button
-						 			echo '<button style="color: green;" type="button" data-bs-toggle="modal" data-bs-target="#update">Update</button>';
-						 			break;
-						 		case 'approved';
-						 			echo '<button type="button" data-bs-toggle="modal" data-bs-target="#remarks">Add remarks</button>';
-						 			break;
-						 	}
-						?>
-						</button>
+						
+					<div class="card-header">
+				
+							<h1 class="text-success fw-bold">
+							Form ID: <?php echo $row['form_id']?></h1>
+							<?php
+							 	if($row['form_status'] == 'pending' && $userdetails['access'] == 'administrator'){
+							 		//Diri kalng sa style design ka button
+							 			?>
+							 			<div class="col">
+							 			<button class="btn btn-primary btn-lg" type="button" data-bs-toggle="modal" data-bs-target="#update"><i class="fa-regular fa-pen-to-square"></i> Update</button>
+							 			</div>
+							 			<?php
+							 	}
+							 	if($row['form_status'] == 'approved' && $userdetails['access'] == 'administrator'){
+							 			?>
+							 			<div class="col">
+							 			<button class="btn btn-primary btn-lg" type="button" data-bs-toggle="modal" data-bs-target="#remarks"><i class="fa-solid fa-comment"></i> Add remarks</button>
+							 			</div>
+							 			<?php
+							 	}
+							 	if($userdetails['access'] == 'user'){
+							 		?>
+							 		<form method="get" action="make_fpdf.php" target="_blank">
+				                        <input type="hidden" name="id" value="<?php echo $row['id']?>">
+				                        <button type="submit" class="btn btn-primary btn-lg" name="printpdf"><i class="fas fa-print"></i> Print</button>
+			                     	</form>
+			                     	<?php
+							 	}
+
+
+							?>
+
 					</div>
 					<table class="table table-hover table-striped">
 					<tbody>
 						<tr>
 
-							<th class="bg-secondary">Requesting Name:</th>
+							<th class="text-end">Requesting Name:</th>
 							<td><?php echo $row['req_name']?></td>
 						</tr>
 						<tr>
-							<th class="bg-secondary">Requesting Department:</th>
+							<th class="text-end">Requesting Department:</th>
 							<td><?php echo $row['req_dept']?></td>
 						</tr>
 						<tr>
-							<th class="bg-secondary">Employee ID:</th>
+							<th class="text-end">Employee ID:</th>
 							<td><?php echo $row['employee_id']?></td>
 						</tr>
 						<tr>
-							<th class="bg-secondary">Contact:</th>
+							<th class="text-end">Contact:</th>
 							<td><?php echo $row['contact']?></td>
 						</tr>
 						<tr>
-							<th class="bg-secondary">Department Head Name:</th>
+							<th class="text-end">Department Head Name:</th>
 							<td><?php echo $row['dept_head_fullname'] ?></td>
 						</tr>
 						<tr>
-							<th class="bg-secondary">Division:</th>
+							<th class="text-end">Division:</th>
 							<td><?php echo $row['division']?></td>
 						</tr>
 						<tr>
-							<th class="bg-secondary">End User Name:</th>
+							<th class="text-end">End User Name:</th>
 							<td><?php echo $row['euser_fullname']?></td>
 						</tr>
 						<tr>
-							<th class="bg-secondary">Equipment Type:</th>
+							<th class="text-end">Equipment Type:</th>
 							<td> <?php echo $row['equip_type']?></td>
 						</tr>
 						<tr>
-							<th class="bg-secondary">Equipment Number:</th>
+							<th class="text-end">Equipment Number:</th>
 							<td><?php echo $row['equip_num']?></td>
 						</tr>
 						<tr>
-							<th class="bg-secondary">Equipment Issues:</th>
+							<th class="text-end">Equipment Issues:</th>
 							<td><?php echo $row['equip_issues']?></td>
 						</tr>
 						<tr>
-							<th class="bg-secondary">Required Services:</th>
+							<th class="text-end">Required Services:</th>
 							<td><?php echo $row['required_services']?></td>
 						</tr>
 						<tr>
-							<th class="bg-secondary">Date Requested:</th>
+							<th class="text-end">Date Requested:</th>
 							<td><?php echo date("M d, Y",strtotime($row['date_added'])); ?></td>
 						</tr>
 						<tr>
-							<th class="bg-secondary">Form Status:</th>
+							<th class="text-end">Form Status:</th>
 							<td><?php echo ucfirst($row['form_status'])?></td>
 						</tr>
 						<tr>
-							<th class="bg-secondary">Reason/Remarks:</th>
+							<th class="text-end">Reason/Remarks:</th>
 							<td><?php echo $row['reason']?></td>
 						</tr>
 					</tbody>

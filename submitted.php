@@ -20,20 +20,20 @@ if(isset($userdetails)){
      <?php include 'navbar.php';?>
      <div class="content">
       <div class="container-fluid">
-        <h2 class="ms-3">Submitted REQUESTS</h2>
+        <div class="card">
+
+        <div class="card-header">
+        <h2 class="fw-bold">SUBMITTED REQUESTS</h2>
+        </div>
+        <div class="card-body">
         <div class="table-responsive">
-          <table class="table table-striped table-hover">
-            <thead class="table-dark">
+          <table class="table table-hover text-center">
+            <thead class="fs-5">
               <tr>
                 <th scope="col">Form ID</th>
                 <th scope="col">End User Name</th>
-                <th scope="col">Equipment Type</th>
-                <th scope="col">Equipment Number</th>
-                <th scope="col">Equipment Issue</th>
-                <th scope="col">Required Service</th>
-                <th scope="col">Date Submitted</th>
                 <th scope="col">Status</th>
-                <th scope="col">Remarks</th>
+                <th scope="col">View details</th>
                 <th scope="col">Print</th>
               </tr>
             </thead>
@@ -43,19 +43,14 @@ if(isset($userdetails)){
                 while ($row = $submitted->fetch()) {
                   ?>
                   <tr>
-                    <td><?php echo $row['form_id']; ?></td>
+                    <td class="fw-semibold"><?php echo $row['form_id']; ?></td>
                     <td><?php echo $row['euser_fullname']; ?></td>
-                    <td><?php echo $row['equip_type']; ?></td>
-                    <td><?php echo $row['equip_num']; ?></td>
-                    <td><?php echo $row['equip_issues']; ?></td>
-                    <td><?php echo $row['required_services']; ?></td>
-                    <td><?php echo date("M d, Y",strtotime($row['date_added'])); ?></td>
                     <td><?php echo $row['form_status']; ?></td>
-                    <td><?php echo $row['reason']?></td>
+                    <td><a href='view.php?id=<?php echo $row['id'];?>'><button class="btn btn-success">View</button></a></td>
                     <td>
                       <form method="get" action="make_fpdf.php" target="_blank">
                         <input type="hidden" name="id" value="<?php echo $row['id']?>">
-                        <button type="submit" class="btn btn-success btn-sm" name="printpdf"><i class="fas fa-print"></i> Print</button>
+                        <button type="submit" class="btn btn-success btn-md" name="printpdf"><i class="fas fa-print"></i> Print</button>
                       </form>
                     </td>
                   </tr>
@@ -69,12 +64,12 @@ if(isset($userdetails)){
                 <?php
               }
               ?>
-            </tbody>
-          </table>
-        </div>
-      
+          
     </tbody>
-  </table>  
+  </table> 
+  </div> 
+</div>
+</div>
 </div>
 </div>
 

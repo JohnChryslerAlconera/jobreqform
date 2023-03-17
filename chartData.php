@@ -1,7 +1,6 @@
 <?php
 $department = $_POST['department'];
 include "formclass.php";
-$year = date("Y");
 $conn = $class->openConnection();
 $stmt = $conn->prepare("SELECT SUM(equip_issues LIKE :issues1) as issue1,
 		SUM(equip_issues LIKE :issues2) as issue2,
@@ -24,7 +23,7 @@ $stmt = $conn->prepare("SELECT SUM(equip_issues LIKE :issues1) as issue1,
 		SUM(equip_issues LIKE :issues19) as issue19,
 		SUM(equip_issues LIKE :issues20) as issue20,
 		SUM(equip_issues LIKE :issues21) as issue21
-		FROM requests WHERE YEAR(date_added) = :year AND req_dept = :department");
+		FROM requests WHERE req_dept = :department");
 $stmt->execute(["issues1" => "%Application crash or OS blue screen%",
 	   "issues2" => "%Equipment freezes or hangs%",
 	   "issues3" => "%Damaged motherboard%",
@@ -46,7 +45,7 @@ $stmt->execute(["issues1" => "%Application crash or OS blue screen%",
 	   "issues19" => "%Application won't open%",
 	   "issues20" => "%Installation(OS, Apps, Internet)%",
 	   "issues21" => "%Inspection%",
-	   "year" => $year, "department" => $department]);
+	    "department" => $department]);
 
 $count = $stmt->rowCount();
 if($count > 0){

@@ -41,7 +41,18 @@ $_SESSION['csrf_token_time'] = time();
 			<link rel="stylesheet" type="text/css" href="style.css">
 			<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 			<title>Services Request Form</title>
-				
+				<script> 
+					$(document).ready(function(){
+						$('.submitbtn').prop('disabled', true);
+						$('.btn1').on('change', function(){
+							if($('.btn1:checked').length == 3){
+								$('.submitbtn').prop('disabled', false);
+							}else{
+								$('.submitbtn').prop('disabled', true);
+							}
+						});
+					});
+				</script>
 		</head>
 
 		<body>
@@ -316,55 +327,29 @@ $_SESSION['csrf_token_time'] = time();
 	</div> 
 <div class="checkbox-group">
 	<div class="row g-2 mt-1 mx-auto">
-		<div class="col">
+		<?php 
+		$u = 3;
+		for ($i=0; $i < $u ; $i++) { 
+			# code...?>
+	<div class="col">
 			<label for="sp1">
-			<input class="form-check-input" type="checkbox" data-textarea="textarea1" name="system[]" id="sp1" value="">
-			System Name</label>
+			<input class="form-check-input sp1" type="checkbox" data-textarea="textarea1" name="system[]"  value="">
+			system Name</label>
 		</div>
 		<div class="col">
 			<label for="sp2">
-			<input class="form-check-input" type="checkbox" data-textarea="textarea2" name="system[]" id="sp2" value="">
-			System Name</label>
+			<input class="form-check-input sp2" type="checkbox" data-textarea="textarea2" name="system[]" value="">
+			system Name</label>
 		</div>
 		<div class="col">
 			<label for="sp3">
-			<input class="form-check-input" type="checkbox" data-textarea="textarea3" name="system[]" id="sp3" value="">
-			System Name</label>
+			<input class="form-check-input sp3" type="checkbox" data-textarea="textarea3" name="system[]"  value="">
+			system Name</label>
 		</div>
-	</div>
-	<div class="row g-2 mt-1 mx-auto">
-		<div class="col">
-			<label for="sp4">
-			<input class="form-check-input" type="checkbox" data-textarea="textarea4" name="system[]" id="sp4" value="">
-			System Name</label>
-		</div>
-		<div class="col">
-			<label for="sp5">
-			<input class="form-check-input" type="checkbox" data-textarea="textarea5" name="system[]" id="sp5" value="">
-			System Name</label>
-		</div>
-		<div class="col">
-			<label for="sp6">
-			<input class="form-check-input" type="checkbox" data-textarea="textarea6" name="system[]" id="sp6" value="">
-			System Name</label>
-		</div>
-	</div>
-	<div class="row g-2 mt-1 mx-auto">
-		<div class="col">
-			<label for="sp7">
-			<input class="form-check-input" type="checkbox" data-textarea="textarea7" name="system[]" id="sp7" value="">
-			System Name</label>
-		</div>
-		<div class="col">
-			<label for="sp8">
-			<input class="form-check-input" type="checkbox" data-textarea="textarea8" name="system[]" id="sp8" value="">
-			System Name</label>
-		</div>
-		<div class="col">
-			<label for="sp9">
-			<input class="form-check-input" type="checkbox" data-textarea="textarea9" name="system[]" id="sp9" value="">
-			System Name</label>
-		</div>
+			<?php
+		}
+
+		 ?>
 	</div>
 </div>
 	<div class="textarea-group mt-3">
@@ -444,12 +429,12 @@ $_SESSION['csrf_token_time'] = time();
 		<div class="col"> 
 				<p class="fw-semibold">Service Term Agreement:</p>
 			<div class="container mt-2 mb-4 ms-4"> 
-				<input required type="checkbox" value="tanda[]" class="form-check-input" id="tanda1" required="">
+				<input required type="checkbox" value="tanda[]" class="form-check-input btn1" id="tanda1" required="">
 				<label class="ms-2" for="tanda1"><i>I understand that it is my sole responsibility to back up my files before turning over my equipment to be repaired;</i></label><br>
-				<input required type="checkbox" value="tanda[]" class="form-check-input" id="tanda2">
+				<input required type="checkbox" value="tanda[]" class="form-check-input btn1" id="tanda2">
 				<label class="ms-2" for="tanda2"><i>I will not hold the office in-charge of repair for any loss/damage to
 				the data/information stored in my device or computer;</i></label><br>
-				<input required type="checkbox" value="tanda[]" class="form-check-input" id="tanda3">
+				<input required type="checkbox" value="tanda[]" class="form-check-input btn1" id="tanda3">
 				<label class="ms-2" for="tanda3"><i>I hereby authorize the office in charge to make required dianostic, repairs, and other services needed on the equipment;</i></label>
 			</div> 
 		</div> 
@@ -475,7 +460,7 @@ $_SESSION['csrf_token_time'] = time();
 	<div class="row g-2 mt-3 mb-5">
 		<div class="col-8 mx-auto"> 
 		   <div class="d-grid gap-0">	
-			<button type="submit" name="reqform" class="btn btn-success">Submit</button>
+			<button type="submit" name="reqform" class="btn btn-success submitbtn">Submit</button>
 		</div>
 		</div>
 	</div>

@@ -30,7 +30,7 @@ include "adminpanel.php";
   <div class="card-header">
     <h2 class="fw-bold">PENDING REQUESTS</h2>
   </div>
-  <div class="card-body">
+  <div class="card-body overflow-auto">
     <table class="table table-hover text-center">
   <thead class="fs-5">
     <tr>
@@ -54,7 +54,7 @@ include "adminpanel.php";
       <td><?php echo $pending['req_dept']; ?></td>
       <td><?php echo $pending['req_name']; ?></td>
       <td><a href='view.php?id=<?php echo $id?>'><button class="btn btn-success">View</button></a></td>
-      <td colspan="3">
+      <td>
         <!-- Button trigger modal -->
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#update<?php echo $id;?>"><i class="fa-regular fa-pen-to-square"></i> Update
 </button>
@@ -62,14 +62,14 @@ include "adminpanel.php";
     </td>
       </tr>
   <!-- Modal -->
-<div class="modal fade" id="update<?php echo $id;?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="update<?php echo $id;?>"  tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Update Form Status</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body mx-auto">
+      <div class="modal-body bg-info mx-auto">
          <form method="get">
           <input type="hidden" name="id" value="<?php echo $id?>">
            <input type="hidden" name="admin" value="<?php echo $userdetails['fullname'];?>">

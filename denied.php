@@ -29,7 +29,7 @@ if(isset($userdetails)){
       <h2 class="fw-bold">DENIED REQUESTS</h2>
 
   </div>
-  <div class="card-body">
+  <div class="card-body overflow-auto">
     <table class="table table-hover text-center">
   <thead class="fs-5">
     <tr>

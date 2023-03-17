@@ -29,7 +29,7 @@ $_SESSION['csrf_token_time'] = time();
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
+<meta charset="utf-8">
  <link rel="shortcut icon" type="x-icon" href="CH.jpg">
  <meta name="viewport" content="width=device-width, initial-scale=1">
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -153,8 +153,8 @@ $_SESSION['csrf_token_time'] = time();
               <div class="row ms-1 me-1 mb-1">
                 <div class="form-outline col">
                   <div class="input-group">
-                  <input required type="password" name="password" class="form-control" placeholder="Set Your Password">
-                  <button class="btn btn-outline-secondary" id="showpassword"><i class="fa-solid fa-eye"></i> Show</button>
+                  <input required type="password" name="password" id="password" class="form-control" placeholder="Set Your Password">
+                  <button class="btn btn-outline-secondary" onclick="togglePassword('password', this)"><i class="fa-solid fa-eye"></i> Show</button>
                   </div>
                 </div>
               </div>
@@ -162,9 +162,9 @@ $_SESSION['csrf_token_time'] = time();
               <div class="row ms-1 me-1 mb-1">
                 <div class="form-outline col">
                   <div class="input-group">
-                  <input required type="password" name="cpassword" class="form-control" 
+                  <input required type="password" name="cpassword" class="form-control" id="confirmpassword"
                   placeholder="Confirm Your Password">
-                  <button class="btn btn-outline-secondary" id="showpassword"> <i class="fa-solid fa-eye"></i> Show</button>
+                  <button class="btn btn-outline-secondary" onclick="togglePassword('confirmpassword', this)"> <i class="fa-solid fa-eye"></i> Show</button>
                  </div>
                 </div>
               </div>
@@ -194,6 +194,33 @@ $_SESSION['csrf_token_time'] = time();
  </form>
 </div>
 </div>
+<?php include "script.php"?>
 </body>
-<script src="script.js"></script>
+  <script>
+    
+ // Get the checkbox element
+const checkbox = $("#checkEdit");
+
+// Get all input fields with the readonly attribute
+const readonlyInputs = $("input[readonly]");
+
+// Get the submit button
+const submitButton = $("#editBtn");
+submitButton.hide();
+// Add event listener to the checkbox
+checkbox.on("click", function() {
+  if ($(this).is(":checked")) {
+    // If checkbox is checked, remove the readonly attribute from all input fields
+    readonlyInputs.prop("readonly", false);
+    // Show the submit button
+    submitButton.show();
+  } else {
+    // If checkbox is not checked, set the readonly attribute to all input fields
+    readonlyInputs.prop("readonly", true);
+    // Hide the submit button
+    submitButton.hide();
+  }
+});
+  </script>
+<!-- <script src="script.js"></script> -->
 </html>

@@ -1,7 +1,6 @@
 <?php
 require_once "formclass.php";
 $query = $class->chartForms();
-$issues = $class->distinctIssues();
 $chartTable = $class->chartTable();
 ?>
 
@@ -26,10 +25,9 @@ $chartTable = $class->chartTable();
   ?>
   <div class="content">
     <div class="container">
-      <div class="chart">
         <div class="col">
           <div class="card mb-5">
-            <div class="card-header"><h2 class="text-success text-center">YEAR <?php echo date("Y");?> STATISTICS OF FORM STATUS BY EVERY DEPARTMENTS<br></h2>
+            
               <?php
               if(!empty($query)){
                 foreach($query as $data)
@@ -40,29 +38,7 @@ $chartTable = $class->chartTable();
                   $completed[] = $data['COMPLETED'];
                   $pending[] = $data['PENDING'];
                 }
-                foreach ($issues as $issue) {
-                  $equip_issues1 = $issue['issue1'];
-                  $equip_issues2 = $issue['issue2'];
-                  $equip_issues3 = $issue['issue3'];
-                  $equip_issues4 = $issue['issue4'];
-                  $equip_issues5 = $issue['issue5'];
-                  $equip_issues6 = $issue['issue6'];
-                  $equip_issues7 = $issue['issue7'];
-                  $equip_issues8 = $issue['issue8'];
-                  $equip_issues9 = $issue['issue9'];
-                  $equip_issues10 = $issue['issue10'];
-                  $equip_issues11 = $issue['issue11'];
-                  $equip_issues12 = $issue['issue12'];
-                  $equip_issues13 = $issue['issue13'];
-                  $equip_issues14 = $issue['issue14'];
-                  $equip_issues15 = $issue['issue15'];
-                  $equip_issues16 = $issue['issue16'];
-                  $equip_issues17 = $issue['issue17'];
-                  $equip_issues18 = $issue['issue18'];
-                  $equip_issues19 = $issue['issue19'];
-                  $equip_issues20 = $issue['issue20'];
-                  $equip_issues21 = $issue['issue21'];
-                }
+
                 if(!empty($chartTable)){
                   foreach ($chartTable as $tableData) {
                     $avgApproved = $tableData['avgApproved'];
@@ -72,6 +48,7 @@ $chartTable = $class->chartTable();
                 }
                 ?>
                 <div class="card-body">
+                  <h2 class="text-success text-center">STATISTICS OF FORM STATUS BY EVERY DEPARTMENTS<br></h2>
                  <canvas id="myChartForms"></canvas>
                <?php }else{
                 echo "No data to show yet";
@@ -80,25 +57,25 @@ $chartTable = $class->chartTable();
           </div>
         </div>
       </div>
-    </div>
-  </div>
   <div class="container">
-   <div class="card col me-1 ms-1">
-    <div class="card-header"><h2 class="text-success text-center">STATISTICS FOR DEPARTMENT ISSUES PROVIDED</h2></div>
+   <div class="card col me-1 ms-1 mb-3">
     <div class="card-body">
-      <select id="mySelect" class="form-control">
-        <option selected>IT Department</option>
-        <?php 
-        $dept = $class->departments();
-        while($row = $dept->fetch()){?>
-          <option value="<?php echo $row['req_dept']?>"><?php echo $row['req_dept']?></option>
-          <?php
-        }
-        ?>
-      </select>
+      <h2 class="text-success text-center mb-5">STATISTICS FOR DEPARTMENT ISSUES PROVIDED</h2>
+      <div class="col-8 mx-auto mb-3">
+        <select id="mySelect" class="form-control">
+          <option selected>IT Department</option>
+          <?php 
+          $dept = $class->departments();
+          while($row = $dept->fetch()){?>
+            <option value="<?php echo $row['req_dept']?>"><?php echo $row['req_dept']?></option>
+            <?php
+          }
+          ?>
+        </select>
+      </div>
       <div class="row">
         <div class="col" id="divGraph">
-          
+
         </div>
       </div>
     </div>
@@ -150,61 +127,56 @@ $chartTable = $class->chartTable();
   const configforms = {
     type: 'bar',
     data: dataform,
-     options: {
-        scales: {
-            xAxes: [{
-                gridLines: {
+    options: {
+      scales: {
+        xAxes: [{
+          gridLines: {
                     display: false // Set display to false to hide the x-axis grid lines
-                }
-            }],
-            yAxes: [{
-                gridLines: {
+                  }
+                }],
+                yAxes: [{
+                  gridLines: {
                     display: false // Set display to false to hide the y-axis grid lines
+                  }
+                }]
+              }
+            },
+          };
+
+          const myChartForms = new Chart(
+            document.getElementById('myChartForms'),
+            configforms
+            );
+
+          $(document).ready(function(){
+            $.ajax({
+              url: "chartData.php",
+              type: 'post',
+              data: {
+                department: 'IT Department'
+              },
+              success: function(bar_graph){
+                $("#divGraph").html(bar_graph);
+                $("#graph").chart = new Chart($("#graph"), $("#graph").data("settings"));
+
+              }
+            });
+            $("#mySelect").change(function(){
+              $.ajax({
+                url: "chartData.php",
+                type: 'post',
+                data: {
+                  department: $(this).val()
+                },
+                success: function(bar_graph){
+                  $("#divGraph").html(bar_graph);
+                  $("#graph").chart = new Chart($("#graph"), $("#graph").data("settings"));
+
                 }
-            }]
-        }
-    },
-  };
+              }); 
 
-  const myChartForms = new Chart(
-    document.getElementById('myChartForms'),
-    configforms
-    );
-  
-  $(document).ready(function(){
-    $.ajax({
-      url: "chartData.php",
-      type: 'post',
-      data: {
-        department: 'IT Department'
-      },
-      success: function(bar_graph){
-        $("#divGraph").html(bar_graph);
-        $("#graph").chart = new Chart($("#graph"), $("#graph").data("settings"));
-
-      }
-    });
-    $("#mySelect").change(function(){
-      $.ajax({
-        url: "chartData.php",
-        type: 'post',
-        data: {
-          department: $(this).val()
-        },
-        success: function(bar_graph){
-          $("#divGraph").html(bar_graph);
-          $("#graph").chart = new Chart($("#graph"), $("#graph").data("settings"));
-
-        }
-      }); 
-
-    });
-  });
-
-
-
-  
-
-</script>
-</body>
-</html>
+            });
+          });
+        </script>
+      </body>
+      </html>

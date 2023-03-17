@@ -40,8 +40,33 @@ $_SESSION['csrf_token_time'] = time();
  <link rel="stylesheet" type="text/css" href="style.css">
  <title>Login | Job Request Form</title>
 </head>
-<body class="bg-light border">
- <?php include "indexnav.php";?>
+<body>
+ <!-- <?php include "indexnav.php";?> -->
+ <nav class="navbar fixed-top navbar-expand-sm navbar-dark bg-dark bg-gradient">
+      <div class="container-fluid">
+        <a href="index.php" class="nav link active">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/e/e8/Seal_of_Iloilo_City.png" style="width:90px; height:80px;">
+
+        </a>
+         <span class="navbar-brand ms-3 fs-2 fw-bold text-center text-light">Job Request Form</span>
+         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+       <!--  <div class="collapse navbar-collapse justify-content-end me-5 text-center" id="mynavbar">
+           <ul class="navbar-nav ms-5">
+            <li class="nav-item">
+             <a href="index.php" class="nav-link fs-4 <?php if (basename($_SERVER['PHP_SELF']) == 'index.php') { echo 'active'; }?>">Log in</a>
+            </li>
+           <!--  <li class="nav-item">
+              <a href="register.php" class="nav-link fs-4 <?php if (basename($_SERVER['PHP_SELF']) == 'register.php') { echo 'active'; }?>">Sign up</a> -->
+            </li> -->
+        </ul>
+      </div>
+  </div>
+  </nav>
+
+
+</style>
 
   <div class="content">
   <div class="container">
@@ -63,8 +88,8 @@ $_SESSION['csrf_token_time'] = time();
               <div class="row mt-4">
                 <div class="col">
                   <div class="input-group">
-                    <input required type="password" name="logpass" placeholder="Password" class="form-control" aria-describedby="showpassword">
-                    <button class="btn btn-outline-secondary" id="showpassword" type="button"><i class="fa-solid fa-eye"></i> Show</button>
+                    <input required type="password" name="logpass" id="password" placeholder="Password" class="form-control">
+                    <button class="btn btn-outline-secondary" onclick="togglePassword('password', this)" type="button"><i class="fa-solid fa-eye"></i> Show</button>
                   </div>
                 </div>
               </div>
@@ -91,10 +116,10 @@ $_SESSION['csrf_token_time'] = time();
              <div class="row">
                <div class="col">
                 <hr>
-                <p>Don't have an account?</p>
-                 <a href="register.php"><button type="button" class="btn btn-success mb-4">
+                <p>Don't have an account?
+                 <a href="register.php"><button type="button" class="btn btn-success mb-2">
                  Create new Account
-                </button></a>
+                </button></a></p>
               </div>
             </div>
           </div>
@@ -106,6 +131,5 @@ $_SESSION['csrf_token_time'] = time();
 </div>
 
 <?php include "script.php"?>
-<script src="script.js"></script>
 </body>
 </html>

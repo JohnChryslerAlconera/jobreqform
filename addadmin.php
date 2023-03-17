@@ -41,19 +41,13 @@ $_SESSION['csrf_token_time'] = time();
 	
 </head>
 <body>
-<style>
-  body {
-/*    background-image: url('https://upload.wikimedia.org/wikipedia/en/3/33/Iloilo_City_Hall.jpg');
-*/    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-size: cover;
-  }
-</style>
 	<?php include 'adminpanel.php';?>
+
+<div style="overflow: hidden;">
 	<div class="content"> 
 		<div class="container">
 			<div class="row">
-				<div class="col text-center mt-2">
+				<div class="col text-center mt-1">
 					<h2 class="fw-bold">New Admin</h2>
 					<hr>
 				</div>
@@ -95,7 +89,7 @@ $_SESSION['csrf_token_time'] = time();
 
               </div>
 
-              <div class="row g-1 ms-1 mb-2 me-1">
+              <div class="row g-1 ms-1 mb-1 me-1">
                 <div class="col">
 
                     <div class="form-floating">
@@ -106,7 +100,7 @@ $_SESSION['csrf_token_time'] = time();
                 </div>
               </div>
 
-              <div class="row g-1 ms-1 mb-2 me-1">
+              <div class="row g-1 ms-1 mb-1 me-1">
                 <div class="col">
 
                   <div class="form-floating">
@@ -117,7 +111,7 @@ $_SESSION['csrf_token_time'] = time();
                 </div>
               </div>
     
-              <div class="row g-1 ms-1 mb-2 me-1">
+              <div class="row g-1 ms-1 mb-1 me-1">
                 <div class="col">
 
                   <div class="form-floating">
@@ -143,8 +137,8 @@ $_SESSION['csrf_token_time'] = time();
                 <div class="col">
 
                   <div class="input-group">
-                  <input required type="password" name="password"  class="form-control" aria-describedby="showpassword">
-                  <button class="btn btn-outline-secondary" type="button" id="showpassword"><i class="fa-solid fa-eye"></i> Show</button>
+                  <input required type="password" name="password" id="password" class="form-control" aria-describedby="showpassword" placeholder="Password">
+                  <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('password', this)"><i class="fa-solid fa-eye"></i> Show</button>
                   </div>
 
                 </div>
@@ -154,8 +148,8 @@ $_SESSION['csrf_token_time'] = time();
                 <div class="col">
 
                 <div class="input-group">
-                  <input required type="password" name="cpassword" class="form-control" aria-describedby="showpassword" placeholder="Confirm password">
-                  <button class="btn btn-outline-secondary" type="button" id="showpassword"><i class="fa-solid fa-eye"></i> Show</button>
+                  <input required type="password" name="cpassword" id="cpassword" class="form-control" aria-describedby="showpassword" placeholder="Confirm password">
+                  <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('cpassword', this)"><i class="fa-solid fa-eye"></i> Show</button>
 
                   </div>
 
@@ -187,9 +181,10 @@ $_SESSION['csrf_token_time'] = time();
 			</div>
 		</div>
 	</div>
+
    
      
 		<?php include "script.php";?>  
-    <script src="script.js"></script>     
-	</body>
-	</html>
+
+</body>
+</html>
